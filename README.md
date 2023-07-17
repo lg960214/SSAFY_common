@@ -1,9 +1,9 @@
 # Git strategy - (Github Flow)
 
 **0. Convention**
-(Coding convention)[https://github.com/naver/hackday-conventions-java]
-(Commit convention)[https://kdjun97.github.io/git-github/commit-convention/]
-(Code review)[https://lg960214.tistory.com/80]
+[Coding convention](https://github.com/naver/hackday-conventions-java)
+[Commit convention](https://kdjun97.github.io/git-github/commit-convention/)
+[Code review](https://lg960214.tistory.com/80)
 
 **1. 브랜치 생성**
 
