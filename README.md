@@ -1,7 +1,9 @@
 # Git strategy - (Github Flow)
 
-**0. Commit Convention**
-블로그 글 참조 (추후 정리 예정)
+**0. Convention**
+(Coding convention)[https://github.com/naver/hackday-conventions-java]
+(Commit convention)[https://kdjun97.github.io/git-github/commit-convention/]
+(Code review)[https://lg960214.tistory.com/80]
 
 **1. 브랜치 생성**
 
