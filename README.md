@@ -1,19 +1,13 @@
 # Git strategy - (Github Flow)
 
-**0. Convention**  
-[Coding convention](https://github.com/naver/hackday-conventions-java)  
-[Commit convention](https://kdjun97.github.io/git-github/commit-convention/)  
-[Code review](https://lg960214.tistory.com/80)
-
 **1. 브랜치 생성**
 
 - 브랜치 생성시 다음과 같은 방식으로 브랜치 목적에 맞는 브랜치 헤더를 설정한다.
 
-| 생성 목적 | 브랜치 위치                      |
-| --------- | -------------------------------- |
-| 기능 개발 | [origin/Feature/{issue_number}]  |
-| 버그 픽스 | [origin/Fix/{issue_number}]      |
-| 코드 개선 | [origin/Refactor/{issue_number}] |
+| 생성 목적 | 브랜치 위치                  |
+| --------- | ---------------------------- |
+| 기능 개발 | [origin/feat/{issue_number}] |
+| 버그 픽스 | [origin/fix/{issue_number}]  |
 
 ```
 issue_number: 해당 이슈가 진행되는 스프린트에서 할당받은 고유 이슈 번호
