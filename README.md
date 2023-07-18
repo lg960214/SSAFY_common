@@ -25,6 +25,8 @@ issue_number: 해당 이슈가 진행되는 스프린트에서 할당받은 고�
 
 - 원격 브랜치로 수시로 push하여 상황을 공유한다.
 
+- ./dev/README.md 를 참고하라.
+
 **3. MR(Merge Request) 생성**
 
 - 피드백이나 도움이 필요할 때 그리고 merge 준비가 완료되었을 때 Merge Request를 생성한다.
