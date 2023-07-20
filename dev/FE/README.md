@@ -1,46 +1,47 @@
-- 네이밍 컨벤션
+# 네이밍 컨벤션
 
-  - constants
+- constants
 
-    - 대문자 + \_
-      ```js
-      const SCREAM_SNAKE_CASE = true;
-      ```
+  - 대문자 + \_
 
-  - variables : camelCase
+  ```js
+  const SCREAM_SNAKE_CASE = true;
+  ```
 
-    ```js
-    const [camelCase, setCamelCase] = useState < boolean > true;
-    ```
+- variables : camelCase
 
-  - function : camelCase
+  ```js
+  const [camelCase, setCamelCase] = useState < boolean > true;
+  ```
 
-    ```js
-    const countUp = () => setCount(count + 1);
-    ```
+- function : camelCase
 
-  - event handler function : `handle` 로 시작
+  ```js
+  const countUp = () => setCount(count + 1);
+  ```
 
-    ```js
-    const handleButtonPress = () => console.log(count);
-    ```
+- event handler function : `handle` 로 시작
 
-  - props interface : `컴포넌트 명` + `Props`
+  ```js
+  const handleButtonPress = () => console.log(count);
+  ```
 
-    ```js
-         interface ComponentProps {
-            name: string,
-            age: number,
-         }
+- props interface : `컴포넌트 명` + `Props`
 
-         const Component = ({ name, age }: ComponentProps) => {
-            return <div>This is Component</div>
-         }
+  ```js
+    interface ComponentProps {
+      name: string,
+      age: number,
+    }
 
-         export default Component;
-    ```
+    const Component = ({ name, age }: ComponentProps) => {
+      return <div>This is Component</div>
+    }
 
-- 컴포넌트 자동 완성 명령어: rafce
+    export default Component;
+  ```
+
+# 컴포넌트 자동 완성 명령어: rafce
 
 ```js
 import React from 'react';
@@ -52,18 +53,18 @@ const temp = () => {
 export default temp;
 ```
 
-- 폴더 구조
+# 폴더 구조
 
 ```
 src
 ├─ components
     ├─ common
     ├─ manager
-      ├─ main
-      ├─ member
-      ├─ equipment
-      ├─ usage
-      └─ waitlist
+        ├─ main
+        ├─ member
+        ├─ equipment
+        ├─ usage
+        └─ waitlist
     └─ user
 ├─ assets : 동적 이미지 파일 / 정적 이미지 파일은 public으로.
 ├─ hooks (= hoc)
@@ -78,4 +79,4 @@ src
 └─ main.tsx
 ```
 
-- 알잘딱깔센
+# 알잘딱깔센
