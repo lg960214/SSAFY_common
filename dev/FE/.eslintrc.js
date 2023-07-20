@@ -34,7 +34,6 @@ module.exports = {
     'jsx-a11y',
     'react-hooks',
     'react-refresh',
-    'import',
   ],
   rules: {
     'react/react-in-jsx-scope': 'off',
@@ -45,11 +44,6 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'import/no-unresolved': [2, { commonjs: true, amd: true }],
-    'import/named': 2,
-    'import/namespace': 2,
-    'import/default': 2,
-    'import/export': 2,
     'react/button-has-type': 'off',
     'react/jsx-filename-extension': [
       1,
