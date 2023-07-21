@@ -1,9 +1,12 @@
 import './App.css';
+import MainPage from './pages/manager/MainPage';
 
 function App() {
   return (
     <>
-      <div>wait weight</div>
+      <div style={{ width: 1980 }}>
+        <MainPage />
+      </div>
     </>
   );
 }

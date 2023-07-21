@@ -29,16 +29,16 @@
 - props interface : `컴포넌트 명` + `Props`
 
   ```js
-    interface ComponentProps {
-      name: string,
-      age: number,
-    }
+  interface ComponentProps {
+    name: string;
+    age: number;
+  }
 
-    const Component = ({ name, age }: ComponentProps) => {
-      return <div>This is Component</div>
-    }
+  const Component = ({ name, age }: ComponentProps) => {
+    return <div>This is Component</div>;
+  };
 
-    export default Component;
+  export default Component;
   ```
 
 # 컴포넌트 자동 완성 명령어: rafce
@@ -69,6 +69,13 @@ src
 ├─ assets : 동적 이미지 파일 / 정적 이미지 파일은 public으로.
 ├─ hooks (= hoc)
 ├─ pages : 라우팅 페이지
+    ├─ manager
+        ├─ MainPage.tsx
+        ├─ MemberPage.tsx
+        ├─ EquipmentPage.tsx
+        ├─ UsagePage.tsx
+        └─ WaitListPage.tsx
+    └─ user
 ├─ constants
 ├─ styles
 ├─ api

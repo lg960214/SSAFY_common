@@ -1,0 +1,42 @@
+.sectionBackground {
+  width: 1520px;
+  height: 600px;
+}
+
+.sectionfloatbackground {
+  position: absolute;
+  z-index: -1;
+  width: 1440px;
+  height: 600px;
+  margin-left: 40px;
+  background-color: rgb(242, 242, 242);
+}
+
+.mainImage {
+  width: 696px;
+  height: 464px;
+}
+
+.fontJeju {
+  font-family: 'jejuGodic';
+}
+
+.fontBungee {
+  font-family: 'Bungee-Regular';
+}
+
+.textBox {
+  width: 670px;
+}
+
+.contactSectionBackground {
+  width: 1520px;
+  height: 400px;
+}
+
+.contactBox {
+  width: 1325px;
+  height: 353px;
+  border-radius: 20px;
+  border: 1px solid black;
+}
