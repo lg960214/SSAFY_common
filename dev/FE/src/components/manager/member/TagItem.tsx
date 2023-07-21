@@ -6,10 +6,10 @@ interface TagItemProps {
 
 export const TagItem = (tagItemProps: TagItemProps) => {
   return (
-    <div className="flex justify-evenly items-center h-10 text-center">
+    <li className="flex justify-evenly items-center h-10 text-center">
       <span className="basis-1/3">{tagItemProps.name}</span>
       <span className="basis-1/3">{tagItemProps.memberNumber}</span>
       <span className="basis-1/3">{tagItemProps.tagNumber}</span>
-    </div>
+    </li>
   );
 };
