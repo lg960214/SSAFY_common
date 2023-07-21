@@ -15,7 +15,7 @@ const EquipmentMatchingSection = ({
 }: EquipmentMatchingSectionProps) => {
   return (
     <div
-      className="py-8 px-4 shadow-lg rounded-xl flex flex-wrap"
+      className="py-8 px-4 shadow-lg rounded-xl flex flex-wrap bg-slate-200"
       style={{ width: 800, height: 520 }}
     >
       {readers?.map((reader) => (

@@ -1,8 +1,9 @@
 import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
+import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import { Reader } from '@/types/Reader';
 import { useState } from 'react';
 
-const dummys = [
+const readerDummy = [
   {
     region: 'A',
     reader: 'WW809',
@@ -35,12 +36,16 @@ const dummys = [
   },
 ];
 
+const zoneDummy = ['A', 'B', 'C'];
+
 const EquipmentPage = () => {
   const [isOnEdit, setIsOnEdit] = useState<boolean>(true);
-  const [readerData, setReaderData] = useState<Reader[]>(dummys);
+  const [readerData, setReaderData] = useState<Reader[]>(readerDummy);
+  const [zoneList, setZoneList] = useState<string[]>(zoneDummy);
   const handleReaderAddClick = () => {};
   return (
     <div>
+      <ZoneChoice zoneList={zoneList} isOnEdit={isOnEdit} />
       <EquipmentMatchingSection
         readers={readerData}
         isOnEdit={isOnEdit}
