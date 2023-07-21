@@ -1,9 +1,10 @@
 import './App.css';
+import EquipmentPage from './pages/manager/EquipmentPage';
 
 function App() {
   return (
     <>
-      <div>wait weight</div>
+      <EquipmentPage />
     </>
   );
 }
