@@ -36,11 +36,16 @@ const dummys = [
 ];
 
 const EquipmentPage = () => {
-  const [isOnEdit, setIsOnEdit] = useState<boolean>(false);
+  const [isOnEdit, setIsOnEdit] = useState<boolean>(true);
   const [readerData, setReaderData] = useState<Reader[]>(dummys);
+  const handleReaderAddClick = () => {};
   return (
     <div>
-      <EquipmentMatchingSection readers={readerData} isOnEdit={isOnEdit} />
+      <EquipmentMatchingSection
+        readers={readerData}
+        isOnEdit={isOnEdit}
+        onReaderAddClick={handleReaderAddClick}
+      />
     </div>
   );
 };
