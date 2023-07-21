@@ -41,9 +41,9 @@ issue_number: 해당 이슈가 진행되는 스프린트에서 할당받은 고�
 
   | 생성 목적 | MR 제목                                 |
   | --------- | --------------------------------------- |
-  | 기능 개발 | [Feature] [{sprint_name}]:{issue_name}  |
-  | 버그 픽스 | [Fix] [{sprint_name}]:{issue_name}      |
-  | 코드 개선 | [Refactor] [{sprint_name}]:{issue_name} |
+  | 기능 개발 | [Feature] [{sprint_name}]:{issue_name}({issue_number})  |
+  | 버그 픽스 | [Fix] [{sprint_name}]:{issue_name}({issue_number})      |
+  | 코드 개선 | [Refactor] [{sprint_name}]:{issue_name}({issue_number}) |
 
   - MR 설명
 
