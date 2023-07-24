@@ -1,5 +1,8 @@
+import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
 import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
 import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
 import { useState } from 'react';
 
@@ -69,20 +72,26 @@ const EquipmentPage = () => {
       setZoneList([...zoneList, { name: nextAlphabet, isSelected: false }]);
     }
   };
+
   return (
-    <div>
+    <DndProvider backend={HTML5Backend}>
       <ZoneChoice
         zoneList={zoneList}
         isOnEdit={isOnEdit}
         onZoneClick={handleZoneClick}
         onAddZoneClick={handleAddZoneClick}
       />
-      <EquipmentMatchingSection
-        readers={readerData}
-        isOnEdit={isOnEdit}
-        onReaderAddClick={handleReaderAddClick}
-      />
-    </div>
+      <div className="flex flex-row">
+        <EquipmentMatchingSection
+          readers={readerData}
+          isOnEdit={isOnEdit}
+          onReaderAddClick={handleReaderAddClick}
+        />
+        <div>
+          <EquipmentListSection />
+        </div>
+      </div>
+    </DndProvider>
   );
 };
 
