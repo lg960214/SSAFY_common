@@ -1,6 +1,12 @@
 import MemberPaginatedItems from '@/components/manager/member/MemberPaginatedItems';
 
-export const MemberTableList = () => {
+interface MemberTableListProps {
+  checkText: string;
+}
+
+export const MemberTableList: React.FC<MemberTableListProps> = ({
+  checkText,
+}) => {
   return (
     <div className="bg-black w-full mt-12 text-white p-2 rounded-2xl">
       <div className="flex justify-evenly items-center h-12 basis-32 text-center">
@@ -13,7 +19,7 @@ export const MemberTableList = () => {
       </div>
       <div className="border-white border-b-2 h-0"></div>
       <div>
-        <MemberPaginatedItems itemsPerPage={13} />
+        <MemberPaginatedItems checkText={checkText} itemsPerPage={13} />
       </div>
     </div>
   );

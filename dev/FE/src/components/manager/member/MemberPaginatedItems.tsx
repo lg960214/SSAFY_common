@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { MemberItem } from './MemberItem';
+
+// 더미데이터 import
 import dummy from '@/components/manager/member/dummy.json';
 
 interface Item {
@@ -16,19 +18,19 @@ interface ItemsProps {
   currentItems: Item[];
 }
 
-const items = dummy.data;
+// 더미데이터
+const dummyData = dummy.data;
 
 const Items: React.FC<ItemsProps> = ({ currentItems }) => {
   return (
     <>
       {currentItems &&
         currentItems.map((item) => {
-          //   const tagItemProps = {
-          //     name: item.name,
-          //     memberNumber: item.userid,
-          //     tagNumber: item.tag,
-          //   };
-          return <MemberItem key={item.userid} {...item} />;
+          return (
+            <div>
+              <MemberItem key={item.userid} {...item} />
+            </div>
+          );
         })}
     </>
   );
@@ -36,12 +38,22 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
 
 interface PaginatedItemsProps {
   itemsPerPage: number;
-  // items: Item[];
+  checkText: string;
 }
 
 const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   itemsPerPage,
+  checkText,
 }) => {
+  const [items, setDummyItems] = useState(dummy.data);
+
+  useEffect(() => {
+    const filterItems = dummyData.filter((item) =>
+      item.name.includes(checkText),
+    );
+    setDummyItems(filterItems);
+  }, [checkText]);
+
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = items.slice(itemOffset, endOffset);

@@ -7,11 +7,20 @@ import { ApproveContent } from '@/components/manager/member/ApproveContent';
 
 export const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
+  const [isSearchText, setIsSearchText] = useState('');
+
+  const handleInputSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
+    // console.log(e.target.value);
+    setIsSearchText(e.target.value);
+  };
   const openApproveModal = () => {
     setIsApproveModal(!isApproveModalOpen);
   };
+
   const closeModal = () => {
-    if (isApproveModalOpen) setIsApproveModal(false);
+    if (isApproveModalOpen) {
+      setIsApproveModal(false);
+    }
   };
   return (
     <div
@@ -24,12 +33,15 @@ export const MemberPage = () => {
         <TagTableList />
       </div>
       <div className="w-1/2">
-        <Modal isOpen={isApproveModalOpen}>
-          <ApproveContent />
-        </Modal>
         <TableMenu name="회원 정보" />
-        <MemberTableList />
+        <div className="ml-40 border-2 border-black">
+          <input type="text" onInput={handleInputSearchText} />
+        </div>
+        <MemberTableList checkText={isSearchText} />
         <div>
+          <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
+            <ApproveContent />
+          </Modal>
           <button onClick={openApproveModal}>승인 요청</button>
         </div>
       </div>
