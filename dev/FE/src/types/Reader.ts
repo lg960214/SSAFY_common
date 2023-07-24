@@ -4,3 +4,8 @@ export interface Reader {
   name: string;
   gym_code: string;
 }
+
+export interface Zone {
+  name: string;
+  isSelected: boolean;
+}

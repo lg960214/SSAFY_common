@@ -19,7 +19,11 @@ const EquipmentMatchingSection = ({
       style={{ width: 800, height: 520 }}
     >
       {readers?.map((reader) => (
-        <RfidCard code={reader.reader} equipment={reader.name} />
+        <RfidCard
+          key={reader.reader}
+          code={reader.reader}
+          equipment={reader.name}
+        />
       ))}
       {isOnEdit ? <ReaderAddButton onClick={onReaderAddClick} /> : null}
     </div>

@@ -6,6 +6,7 @@ interface RfidCardProps {
 }
 
 const RfidCard = ({ code, equipment }: RfidCardProps) => {
+  // pureName: '벤치프레스A', '벤치프레스B' 들을 '벤치프레스' 로 변환
   const lastIndex = equipment.length - 1;
   const pureName = isNaN(parseInt(equipment[lastIndex]))
     ? equipment

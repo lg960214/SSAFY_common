@@ -1,23 +1,31 @@
+import { Zone } from '@/types/Reader';
+
 interface ZoneChoiceProps {
   isOnEdit: boolean;
-  zoneList: string[];
+  zoneList: Zone[];
+  onZoneClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
+  onAddZoneClick: () => void;
 }
 
-const ZoneChoice = ({ isOnEdit, zoneList }: ZoneChoiceProps) => {
+const ZoneChoice = ({
+  isOnEdit,
+  zoneList,
+  onZoneClick,
+  onAddZoneClick,
+}: ZoneChoiceProps) => {
   return (
     <div className="m-4">
       {zoneList.map((zone) => {
         return (
           <ZoneButton
-            name={zone}
-            selected={false}
-            onClick={() => console.log('clicked')}
+            key={zone.name}
+            name={zone.name}
+            selected={zone.isSelected}
+            onClick={onZoneClick}
           />
         );
       })}
-      {isOnEdit ? (
-        <ZoneButton name={'+'} onClick={() => console.log('clicked')} />
-      ) : null}
+      {isOnEdit ? <ZoneButton name={'+'} onClick={onAddZoneClick} /> : null}
     </div>
   );
 };
@@ -27,7 +35,7 @@ export default ZoneChoice;
 interface ZoneButtonProps {
   selected?: boolean;
   name: string;
-  onClick: () => void;
+  onClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
 }
 
 const ZoneButton = ({ selected = false, name, onClick }: ZoneButtonProps) => {
