@@ -1,4 +1,4 @@
-import useDraggable from '@/hooks/dndhooks';
+import { useDraggable } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
 
 const EquipmentListSection = () => {
@@ -14,15 +14,20 @@ const EquipmentListSection = () => {
   ];
 
   const equipmentList = equipmentNames.map((name) => {
-    const { isDragging, drag, preview } = useDraggable('equipment', name);
+    const { isDragging, getItem, drag, preview } = useDraggable(
+      'equipment',
+      name,
+    );
 
     return {
       name,
       isDragging,
+      getItem,
       drag,
       preview,
     };
   });
+
   return (
     <div
       className="py-8 px-4 shadow-lg rounded-xl flex flex-wrap bg-slate-200"

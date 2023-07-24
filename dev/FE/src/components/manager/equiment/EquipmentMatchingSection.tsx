@@ -6,12 +6,14 @@ interface EquipmentMatchingSectionProps {
   isOnEdit: boolean;
   readers: Reader[];
   onReaderAddClick: () => void;
+  onEquipmentDrop: (readerData: Reader, droppedItem: { id: string }) => void;
 }
 
 const EquipmentMatchingSection = ({
   isOnEdit,
   readers,
   onReaderAddClick,
+  onEquipmentDrop,
 }: EquipmentMatchingSectionProps) => {
   return (
     <div
@@ -21,8 +23,8 @@ const EquipmentMatchingSection = ({
       {readers?.map((reader) => (
         <RfidCard
           key={reader.reader}
-          code={reader.reader}
-          equipment={reader.name}
+          onEquipmentDrop={onEquipmentDrop}
+          data={reader}
         />
       ))}
       {isOnEdit ? <ReaderAddButton onClick={onReaderAddClick} /> : null}

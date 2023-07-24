@@ -4,7 +4,7 @@ import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const readerDummy = [
   {
@@ -34,7 +34,25 @@ const readerDummy = [
   {
     region: 'A',
     reader: 'WW166',
-    name: '레그익스텐션',
+    name: '스쿼트랙',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'B',
+    reader: 'WW999',
+    name: '덤벨',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'B',
+    reader: 'WW113',
+    name: '풀업바',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'B',
+    reader: 'WW134',
+    name: '런닝머신',
     gym_code: 'YS1',
   },
 ];
@@ -47,8 +65,15 @@ const zoneDummy = [
 
 const EquipmentPage = () => {
   const [isOnEdit, setIsOnEdit] = useState<boolean>(true);
-  const [readerData, setReaderData] = useState<Reader[]>(readerDummy);
+  const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
+  const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
+
+  useEffect(() => {
+    const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
+    setSelectedZoneData(wholeData.filter((cur) => cur.region === currentZone));
+  }, [zoneList, wholeData]);
+
   const handleReaderAddClick = () => {};
   const handleZoneClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
     // 이벤트 객체의 경우 이렇게 타입 캐스팅하면 에러가 해결된다고 함.
@@ -73,6 +98,28 @@ const EquipmentPage = () => {
     }
   };
 
+  const handleEquipmentDrop = (
+    readerData: Reader,
+    droppedItem: { id: string },
+  ) => {
+    // drop이 발생 했을 때 처리할 이벤트 함수
+    // readerData는 drag된 대상을 받은 리더기 정보, droppedItem.id은 drop된 기구 명
+    const alreadyExistCount = wholeData.filter((cur) =>
+      cur.name.includes(droppedItem.id),
+    ).length;
+    let equipmentOrderName = droppedItem.id;
+    if (alreadyExistCount) {
+      equipmentOrderName = equipmentOrderName + (alreadyExistCount + 1);
+    }
+    const updateMatching = wholeData.map((cur) => {
+      if (readerData.reader === cur.reader) {
+        return { ...cur, name: equipmentOrderName };
+      }
+      return cur;
+    });
+    setWholeData(updateMatching);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <ZoneChoice
@@ -83,7 +130,8 @@ const EquipmentPage = () => {
       />
       <div className="flex flex-row">
         <EquipmentMatchingSection
-          readers={readerData}
+          onEquipmentDrop={handleEquipmentDrop}
+          readers={selectedZoneData}
           isOnEdit={isOnEdit}
           onReaderAddClick={handleReaderAddClick}
         />
