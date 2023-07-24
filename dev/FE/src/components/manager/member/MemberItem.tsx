@@ -15,7 +15,20 @@ export const MemberItem = (item: MemberitemProps) => {
       <span className="basis-1/6">{item.number}</span>
       <span className="basis-1/6">{item.sex}</span>
       <span className="basis-1/6">{item.date}</span>
-      <span className="basis-1/6">{item.tag}</span>
+      <span className="basis-1/6">{createTagRegi(item.tag)}</span>
     </div>
   );
+};
+
+const createTagRegi = (tagStatus: string | null) => {
+  if (tagStatus === null) {
+    return <button className="text-black">등록</button>;
+  } else {
+    return (
+      <div>
+        <span>{tagStatus}</span>
+        <button className="text-black">해제</button>
+      </div>
+    );
+  }
 };
