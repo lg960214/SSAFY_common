@@ -3,11 +3,16 @@ import { Reader } from '@/types/Reader';
 import IssueReaderRow from './IssueReaderRow';
 
 interface IssueSectionProps {
+  isOnEdit: boolean;
   readers: Reader[];
   onIssueDrop: (droppedItem: { id: string }) => void;
 }
 
-const IssueSection = ({ readers, onIssueDrop }: IssueSectionProps) => {
+const IssueSection = ({
+  isOnEdit,
+  readers,
+  onIssueDrop,
+}: IssueSectionProps) => {
   const { isOver, drop } = useDroppable('reader', onIssueDrop);
   return (
     <div
@@ -20,7 +25,7 @@ const IssueSection = ({ readers, onIssueDrop }: IssueSectionProps) => {
       }}
     >
       {readers.map((reader) => (
-        <IssueReaderRow key={reader.reader} data={reader} />
+        <IssueReaderRow key={reader.reader} data={reader} isOnEdit={isOnEdit} />
       ))}
     </div>
   );

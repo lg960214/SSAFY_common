@@ -1,8 +1,17 @@
 import { useDraggable } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
 import { useEffect, useState } from 'react';
+import EditSaveButton from './editSaveButton';
 
-const EquipmentListSection = () => {
+interface EquipmentListSectionProps {
+  isOnEdit: boolean;
+  onEditClick: () => void;
+}
+
+const EquipmentListSection = ({
+  isOnEdit,
+  onEditClick,
+}: EquipmentListSectionProps) => {
   const equipmentNames = [
     '벤치프레스',
     '데드리프트',
@@ -61,27 +70,38 @@ const EquipmentListSection = () => {
   });
 
   return (
-    <div
-      className="py-8 px-4 shadow-lg rounded-xl flex items-center bg-slate-200"
-      style={{ width: 580, height: 300 }}
-    >
-      <div className="flex flex-wrap">
-        {equipmentList.slice(sliceIndex.start, sliceIndex.end).map((eq) => (
-          <div key={eq.name} className="mx-3 my-2">
-            <EquipmentCard
-              title={eq.name}
-              equipment={eq.name}
-              dragRef={eq.drag}
-              isDragging={eq.isDragging}
-            />
+    <>
+      {isOnEdit ? (
+        <div
+          className="py-8 px-4 shadow-lg rounded-xl flex items-center bg-slate-200"
+          style={{ width: 580, height: 300 }}
+        >
+          <div className="flex flex-wrap">
+            {equipmentList.slice(sliceIndex.start, sliceIndex.end).map((eq) => (
+              <div key={eq.name} className="mx-3 my-2">
+                <EquipmentCard
+                  title={eq.name}
+                  equipment={eq.name}
+                  dragRef={isOnEdit ? eq.drag : null}
+                  isDragging={eq.isDragging}
+                />
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
-      <div className="mr-4 flex flex-col justify-between h-32">
-        <PagenateArrow onClick={handleUpClick} isUp={true} />
-        <PagenateArrow onClick={handleDownClick} isUp={false} />
-      </div>
-    </div>
+          <div className="mr-4 flex flex-col justify-between h-32">
+            <PagenateArrow onClick={handleUpClick} isUp={true} />
+            <PagenateArrow onClick={handleDownClick} isUp={false} />
+          </div>
+        </div>
+      ) : (
+        <div
+          className="py-8 px-4 shadow-lg rounded-xl flex items-center justify-center bg-slate-200"
+          style={{ width: 580, height: 300 }}
+        >
+          <EditSaveButton title="수정" onClick={onEditClick} />
+        </div>
+      )}
+    </>
   );
 };
 

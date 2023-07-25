@@ -6,6 +6,7 @@ import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
 import { useEffect, useState } from 'react';
 import IssueSection from '@/components/manager/equiment/IssueSection';
+import EditSaveButton from '@/components/manager/equiment/editSaveButton';
 
 const readerDummy = [
   {
@@ -77,7 +78,7 @@ const zoneDummy = [
 ];
 
 const EquipmentPage = () => {
-  const [isOnEdit, setIsOnEdit] = useState<boolean>(true);
+  const [isOnEdit, setIsOnEdit] = useState<boolean>(false);
   const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
@@ -162,15 +163,24 @@ const EquipmentPage = () => {
     setWholeData(editedwholeData);
   };
 
+  const handleEditClick = () => {
+    setIsOnEdit(true);
+  };
+
+  const handleSaveClick = () => alert('저장');
+
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
-        <ZoneChoice
-          zoneList={zoneList}
-          isOnEdit={isOnEdit}
-          onZoneClick={handleZoneClick}
-          onAddZoneClick={handleAddZoneClick}
-        />
+        <div className="flex justify-between">
+          <ZoneChoice
+            zoneList={zoneList}
+            isOnEdit={isOnEdit}
+            onZoneClick={handleZoneClick}
+            onAddZoneClick={handleAddZoneClick}
+          />
+          <EditSaveButton title="저장" onClick={handleSaveClick} />
+        </div>
         <div className="flex justify-between">
           <EquipmentMatchingSection
             onEquipmentDrop={handleEquipmentDrop}
@@ -180,8 +190,12 @@ const EquipmentPage = () => {
             onIssueDrop={handleIssueToMatchingSection}
           />
           <div>
-            <EquipmentListSection />
+            <EquipmentListSection
+              isOnEdit={isOnEdit}
+              onEditClick={handleEditClick}
+            />
             <IssueSection
+              isOnEdit={isOnEdit}
               readers={issueZoneData}
               onIssueDrop={handleIssueDrop}
             />

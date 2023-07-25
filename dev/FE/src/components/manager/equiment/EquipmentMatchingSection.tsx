@@ -32,6 +32,7 @@ const EquipmentMatchingSection = ({
       {readers?.map((reader) => (
         <RfidCard
           key={reader.reader}
+          isOnEdit={isOnEdit}
           onEquipmentDrop={onEquipmentDrop}
           data={reader}
         />
