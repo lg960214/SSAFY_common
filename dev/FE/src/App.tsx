@@ -1,8 +1,10 @@
 import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Main from './pages/Main';
-import Tmp from './pages/Tmp';
-import Contact from './pages/Contact';
+import MemberPage from './pages/manager/MemberPage';
+import EquipmentPage from './pages/manager/EquipmentPage';
+import UsagePage from './pages/manager/UsagePage';
+import WaitListPage from './pages/manager/WaitListPage';
+import MainPage from './pages/manager/MainPage';
 import NavBar from './components/common/NavBar';
 import AuthProvider from './components/common/AuthProvider';
 import AuthContext from './components/common/AuthContext';
@@ -16,13 +18,13 @@ const App: React.FC = () => {
         <Routes>
           {isLoggedIn ? (
             <>
-              <Route path="/member" element={<Main />} />
-              <Route path="/equipment" element={<Tmp />} />
-              <Route path="/usage" element={<Contact />} />
-              <Route path="/waitlist" element={<Contact />} />
+              <Route path="/member" element={<MemberPage />} />
+              <Route path="/equipment" element={<EquipmentPage />} />
+              <Route path="/usage" element={<UsagePage />} />
+              <Route path="/waitlist" element={<WaitListPage />} />
             </>
           ) : (
-            <Route path="/" element={<Main />} />
+            <Route path="/" element={<MainPage />} />
           )}
         </Routes>
       </Router>
