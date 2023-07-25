@@ -28,6 +28,7 @@ void setup() {
   rfid.PCD_Init();
 }
 
+
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
