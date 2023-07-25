@@ -7,6 +7,7 @@ import UsagePage from './pages/manager/UsagePage';
 import WaitListPage from './pages/manager/WaitListPage';
 import MainPage from './pages/manager/MainPage';
 import NavBar from './components/common/NavBar';
+import UsagePage from './pages/manager/UsagePage';
 import AuthProvider from './components/common/AuthProvider';
 import AuthContext from './components/common/AuthContext';
 
