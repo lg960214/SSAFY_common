@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react';
+import React, { FC, ReactNode, useEffect } from 'react';
 
 interface ModalProps {
   isOpen: boolean;
@@ -16,17 +16,29 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
     event.stopPropagation(); // 모달 내용 클릭시 이벤트 전파 방지
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      // Disable scrolling on the body by setting overflow to hidden
+      document.body.style.overflow = 'hidden';
+    } else {
+      // Re-enable scrolling when modal is closed
+      document.body.style.overflow = 'unset';
+    }
+
+    // Cleanup method to reset body's overflow property when component is unmounted
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen]);
+
   return (
     <>
       {isOpen && (
         <div
-          className="modal-content fixed border-2 top-0 left-0 flex align-middle justify-center bg-white border-black w-full h-full z-20"
+          className="modal-content fixed top-0 left-0 flex justify-center items-center bg-black/40  w-full h-full z-20"
           onClick={handleBackgroundClick}
         >
-          <div className="h-1/2" onClick={handleContentClick}>
-            {children}
-            <button onClick={onClose}>Close</button>
-          </div>
+          <div onClick={handleContentClick}>{children}</div>
         </div>
       )}
     </>

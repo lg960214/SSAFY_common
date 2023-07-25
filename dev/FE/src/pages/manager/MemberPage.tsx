@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { TagTableList } from '@/components/manager/member/TagTableList';
-import { TableMenu } from '@/components/manager/member/TableMenu';
 import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
-import { ApproveContent } from '@/components/manager/member/ApproveContent';
+import ApproveContent from '@/components/manager/member/ApproveContent';
 
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
 
   const handleInputSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // console.log(e.target.value);
     setIsSearchText(e.target.value);
   };
   const openApproveModal = () => {
@@ -26,11 +24,12 @@ const MemberPage = () => {
     <div
       onClick={closeModal}
       className="flex justify-evenly mx-auto mt-8"
-      style={{ height: '900px', width: '1440px' }}
+      style={{ height: '920px', width: '1440px' }}
     >
       <div className="w-1/3">
         <TableMenu name="태그 현황" />
         <TagTableList />
+        <div>12명 이용중</div>
       </div>
       <div className="w-2/3">
         <div className="flex justify-between">
@@ -50,9 +49,26 @@ const MemberPage = () => {
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
             <ApproveContent />
           </Modal>
-          <button onClick={openApproveModal}>승인 요청</button>
+          <button
+            className="mt-2 bg-CustomOrange text-white text-lg float-right"
+            onClick={openApproveModal}
+          >
+            승인 요청
+          </button>
         </div>
       </div>
+    </div>
+  );
+};
+
+interface TableMenuProps {
+  name: string;
+}
+
+const TableMenu = (props: TableMenuProps) => {
+  return (
+    <div className="w-40 h-24 p-2 bg-CustomOrange -z-10 text-white text-center rounded-2xl text-xl">
+      {props.name}
     </div>
   );
 };

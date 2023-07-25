@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
-import { TagLists } from './TagLists';
+import TagLists from './TagLists';
 
 interface MemberitemProps {
   name: string;
@@ -30,7 +30,7 @@ export const MemberItem = (item: MemberitemProps) => {
   return (
     <li
       onClick={handleClick}
-      className="flex justify-evenly items-center h-12 basis-32 text-center"
+      className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer"
     >
       <span className="basis-1/6">{item.name}</span>
       <span className="basis-1/6">{item.userid}</span>
@@ -43,7 +43,6 @@ export const MemberItem = (item: MemberitemProps) => {
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
         <MemberInfomation {...item} />
-        <button onClick={handleClose}>Close</button>
       </Modal>
     </li>
   );
@@ -57,20 +56,27 @@ const createTagRegi = (tagStatus: string | null) => {
   const handleIstagListClose = () => {
     setIsTagListOpen(false);
   };
+  const dummyClose = () => {
+    console.log('해제하는 기능 들어가는곳');
+  };
   if (tagStatus === null) {
     return (
-      <div>
-        <TagRegiButton name="등록" color="" />
+      <>
+        <TagRegiButton
+          handleEvent={handleIsTagListClick}
+          name="등록"
+          color=""
+        />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
           <TagLists />
         </Modal>
-      </div>
+      </>
     );
   } else {
     return (
       <div className="flex justify-evenly items-center">
         <span className="font-bold">{tagStatus}</span>
-        <TagRegiButton name="해제" color="indigo" />
+        <TagRegiButton handleEvent={dummyClose} name="해제" color="indigo" />
       </div>
     );
   }
@@ -79,11 +85,20 @@ const createTagRegi = (tagStatus: string | null) => {
 interface TagRegiButtonProps {
   name: string;
   color: string;
+  handleEvent: () => void;
 }
 
-export const TagRegiButton = ({ name, color }: TagRegiButtonProps) => {
+export const TagRegiButton = ({
+  name,
+  color,
+  handleEvent,
+}: TagRegiButtonProps) => {
   const colorClass = color === 'indigo' ? 'bg-indigo-700' : 'bg-green-700';
   const regiBtnClassName = `w-16 h-8 text-white p-0 content-center ${colorClass}`;
 
-  return <button className={regiBtnClassName}>{name}</button>;
+  return (
+    <button onClick={handleEvent} className={regiBtnClassName}>
+      {name}
+    </button>
+  );
 };

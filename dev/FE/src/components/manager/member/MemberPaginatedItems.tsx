@@ -61,25 +61,29 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   };
 
   return (
-    <>
-      <ul className="">
-        <Items currentItems={currentItems} />
-      </ul>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel=">"
-        nextLinkClassName="text-white hover:text-red-600"
-        className="flex justify-evenly"
-        pageLinkClassName="text-white hover:text-red-600"
-        activeLinkClassName="text-red-600 underline decoration-red-600"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="<"
-        previousLinkClassName="text-white hover:text-red-600"
-        renderOnZeroPageCount={null}
-      />
-    </>
+    <div className="flex flex-col h-[660px] justify-between">
+      <div>
+        <ul className="">
+          <Items currentItems={currentItems} />
+        </ul>
+      </div>
+      <div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          nextLinkClassName="text-white hover:text-red-600"
+          className="flex justify-evenly"
+          pageLinkClassName="text-white hover:text-red-600"
+          activeLinkClassName="text-red-600 underline decoration-red-600"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="<"
+          previousLinkClassName="text-white hover:text-red-600"
+          renderOnZeroPageCount={null}
+        />
+      </div>
+    </div>
   );
 };
 
