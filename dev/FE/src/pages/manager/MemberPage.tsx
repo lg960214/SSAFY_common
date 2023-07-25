@@ -5,7 +5,7 @@ import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
 import { ApproveContent } from '@/components/manager/member/ApproveContent';
 
-export const MemberPage = () => {
+const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
 
@@ -48,3 +48,5 @@ export const MemberPage = () => {
     </div>
   );
 };
+
+export default MemberPage;
