@@ -73,7 +73,7 @@ public class UserController {
          TokenResponse tokenResponse;
         try{
             if (user.size()!=0 && BCrypt.checkpw(map.get("password"),user.get(0).getPassword())){
-                String token = JwtTokenProvider.createToken(user.get(0).getId(),user.get(0).getRegist()); // 토큰 생성
+                String token = JwtTokenProvider.createToken(user.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
                 tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
