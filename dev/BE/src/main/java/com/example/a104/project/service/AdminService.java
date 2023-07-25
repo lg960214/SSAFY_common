@@ -15,7 +15,13 @@ public class AdminService {
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
 
-    public void Approval(int regist,String id){
+    // 회원 검색
+    public List<UserVo> search(String keyword,int gymCode){
+        return userRepository.findByNameContainingAndGymCode(keyword,gymCode);
+    }
+
+    // 회원 승인
+    public void approval(int regist,String id){
         System.out.println("Service: "+id);
         System.out.println(regist);
         userRepository.Approval(regist,id);

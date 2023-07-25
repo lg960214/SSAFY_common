@@ -27,11 +27,15 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
 
-//    // 헬스장 회원 검색(이름으로 검색)
-//    @GetMapping("users")
-//    public List<UserVo> search(@RequestHeader(value = "Authorization") String token,@RequestParam String keyword){
-//
-//    }
+    // 헬스장 회원 검색(이름으로 검색)
+    @GetMapping("search")
+    public List<UserVo> search(@RequestHeader(value = "Authorization") String token,@RequestParam String keyword){
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        int gymCode = adminService.getGymCode((String) claims.get("sub"));
+        List<UserVo> users = adminService.search(keyword,gymCode);
+        System.out.println(users);
+        return users;
+    }
 
     // 헬스장 회원 삭제
     @Transactional
@@ -53,7 +57,7 @@ public class AdminController {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         String id = map.get("id");
-        adminService.Approval(1,id);
+        adminService.approval(1,id);
 
         // 승인 후 승인 날짜 저장
         int userId = userDateService.createUserId(id);
@@ -94,7 +98,7 @@ public class AdminController {
         TokenResponse tokenResponse;
         try {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
-                String token = JwtTokenProvider.createToken(admin.get(0).getId(),1); // 토큰 생성
+                String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
                 tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
