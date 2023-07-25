@@ -9,8 +9,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.util.Base64;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 @Component
 public class JwtTokenProvider {
@@ -19,11 +17,10 @@ public class JwtTokenProvider {
     private static String secretKey ="SSAFY104A";
 
     //==토큰 생성 메소드==//
-    public static String createToken(String subject, int regist) {
+    public static String createToken(String subject) {
         Date now = new Date();
         Date expiration = new Date(now.getTime() + Duration.ofDays(1).toMillis()); // 만료기간 1일
-        Map<String,Integer> payloads = new HashMap<>();
-        payloads.put("regist",regist);
+
         return Jwts.builder()
                 .setHeaderParam(Header.TYPE, Header.JWT_TYPE) // (1)
                 .setIssuer("test") // 토큰발급자(iss)
