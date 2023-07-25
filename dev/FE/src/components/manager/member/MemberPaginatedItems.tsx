@@ -26,11 +26,7 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
     <>
       {currentItems &&
         currentItems.map((item) => {
-          return (
-            <div>
-              <MemberItem key={item.userid} {...item} />
-            </div>
-          );
+          return <MemberItem key={item.userid} {...item} />;
         })}
     </>
   );

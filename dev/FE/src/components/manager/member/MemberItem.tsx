@@ -15,7 +15,7 @@ interface MemberitemProps {
 export const MemberItem = (item: MemberitemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
+  const handleClick: React.MouseEventHandler<HTMLElement> = () => {
     setIsModalOpen(true);
   };
 
@@ -28,7 +28,7 @@ export const MemberItem = (item: MemberitemProps) => {
   };
 
   return (
-    <div
+    <li
       onClick={handleClick}
       className="flex justify-evenly items-center h-12 basis-32 text-center"
     >
@@ -37,7 +37,7 @@ export const MemberItem = (item: MemberitemProps) => {
       <span className="basis-1/6">{item.number}</span>
       <span className="basis-1/6">{item.sex}</span>
       <span className="basis-1/6">{item.date}</span>
-      <span className="basis-1/6" onClick={handleRegiClick}>
+      <span className="basis-1/6 items-center" onClick={handleRegiClick}>
         {createTagRegi(item.tag)}
       </span>
 
@@ -45,7 +45,7 @@ export const MemberItem = (item: MemberitemProps) => {
         <MemberInfomation {...item} />
         <button onClick={handleClose}>Close</button>
       </Modal>
-    </div>
+    </li>
   );
 };
 
@@ -60,10 +60,7 @@ const createTagRegi = (tagStatus: string | null) => {
   if (tagStatus === null) {
     return (
       <div>
-        <button onClick={handleIsTagListClick} className="text-black">
-          등록
-        </button>
-        ;
+        <TagRegiButton name="등록" color="" />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
           <TagLists />
         </Modal>
@@ -71,10 +68,22 @@ const createTagRegi = (tagStatus: string | null) => {
     );
   } else {
     return (
-      <div>
-        <span>{tagStatus}</span>
-        <button className="text-black">해제</button>
+      <div className="flex justify-evenly items-center">
+        <span className="font-bold">{tagStatus}</span>
+        <TagRegiButton name="해제" color="indigo" />
       </div>
     );
   }
+};
+
+interface TagRegiButtonProps {
+  name: string;
+  color: string;
+}
+
+export const TagRegiButton = ({ name, color }: TagRegiButtonProps) => {
+  const colorClass = color === 'indigo' ? 'bg-indigo-700' : 'bg-green-700';
+  const regiBtnClassName = `w-16 h-8 text-white p-0 content-center ${colorClass}`;
+
+  return <button className={regiBtnClassName}>{name}</button>;
 };
