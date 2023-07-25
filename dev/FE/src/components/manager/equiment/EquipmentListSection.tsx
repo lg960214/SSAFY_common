@@ -1,5 +1,6 @@
 import { useDraggable } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
+import { useEffect, useState } from 'react';
 
 const EquipmentListSection = () => {
   const equipmentNames = [
@@ -11,7 +12,38 @@ const EquipmentListSection = () => {
     '런닝머신',
     '레그익스텐션',
     '레그프레스',
+    '사이클',
+    '천국의계단',
+    '케이블',
+    '케틀벨',
+    '풀업바',
   ];
+
+  const itemsPerPage = 8;
+  const totalPage = Math.ceil(equipmentNames.length / itemsPerPage);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [sliceIndex, setSliceIndex] = useState<{ start: number; end: number }>({
+    start: 0,
+    end: 8,
+  });
+
+  const handleUpClick = () => {
+    if (currentPage === 1) return;
+    setCurrentPage((prev) => prev - 1);
+  };
+
+  const handleDownClick = () => {
+    if (currentPage >= totalPage) return;
+    setCurrentPage((prev) => prev + 1);
+  };
+
+  useEffect(() => {
+    const newSliceIndex = {
+      start: (currentPage - 1) * itemsPerPage,
+      end: currentPage * itemsPerPage,
+    };
+    setSliceIndex(newSliceIndex);
+  }, [currentPage]);
 
   const equipmentList = equipmentNames.map((name) => {
     const { isDragging, getItem, drag, preview } = useDraggable(
@@ -30,21 +62,43 @@ const EquipmentListSection = () => {
 
   return (
     <div
-      className="py-8 px-4 shadow-lg rounded-xl flex flex-wrap bg-slate-200"
-      style={{ width: 520, height: 300 }}
+      className="py-8 px-4 shadow-lg rounded-xl flex items-center bg-slate-200"
+      style={{ width: 580, height: 300 }}
     >
-      {equipmentList.map((eq) => (
-        <div key={eq.name} className="mx-3 my-2">
-          <EquipmentCard
-            title={eq.name}
-            equipment={eq.name}
-            dragRef={eq.drag}
-            isDragging={eq.isDragging}
-          />
-        </div>
-      ))}
+      <div className="flex flex-wrap">
+        {equipmentList.slice(sliceIndex.start, sliceIndex.end).map((eq) => (
+          <div key={eq.name} className="mx-3 my-2">
+            <EquipmentCard
+              title={eq.name}
+              equipment={eq.name}
+              dragRef={eq.drag}
+              isDragging={eq.isDragging}
+            />
+          </div>
+        ))}
+      </div>
+      <div className="mr-4 flex flex-col justify-between h-32">
+        <PagenateArrow onClick={handleUpClick} isUp={true} />
+        <PagenateArrow onClick={handleDownClick} isUp={false} />
+      </div>
     </div>
   );
 };
 
 export default EquipmentListSection;
+
+interface PagenateArrowProps {
+  isUp: boolean;
+  onClick: () => void;
+}
+
+const PagenateArrow = ({ isUp, onClick }: PagenateArrowProps) => {
+  return (
+    <button
+      onClick={onClick}
+      className="bg-orange-300 w-8 h-8 rounded-full flex justify-center items-center"
+    >
+      {isUp ? '▲' : '▼'}
+    </button>
+  );
+};

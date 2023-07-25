@@ -53,19 +53,19 @@ const readerDummy = [
   {
     region: 'B',
     reader: 'WW134',
-    name: '런닝머신',
+    name: '런닝머신1',
     gym_code: 'YS1',
   },
   {
     region: 'issue',
     reader: 'WW837',
-    name: '런닝머신',
+    name: '런닝머신2',
     gym_code: 'YS1',
   },
   {
     region: 'issue',
     reader: 'WW822',
-    name: '런닝머신',
+    name: '런닝머신3',
     gym_code: 'YS1',
   },
 ];
@@ -137,7 +137,13 @@ const EquipmentPage = () => {
   };
 
   const handleIssueDrop = (droppedItem: { id: string }) => {
-    console.log(droppedItem.id);
+    const totalIssueNum = wholeData.filter(
+      (cur) => cur.region === 'issue',
+    ).length;
+    if (totalIssueNum > 3) {
+      alert('더이상 추가할 수 없습니다.');
+      return;
+    }
     const editedwholeData = wholeData.map((cur) => {
       if (cur.reader === droppedItem.id) {
         return { ...cur, region: 'issue' };
@@ -157,27 +163,32 @@ const EquipmentPage = () => {
   };
 
   return (
-    <DndProvider backend={HTML5Backend}>
-      <ZoneChoice
-        zoneList={zoneList}
-        isOnEdit={isOnEdit}
-        onZoneClick={handleZoneClick}
-        onAddZoneClick={handleAddZoneClick}
-      />
-      <div className="flex flex-row">
-        <EquipmentMatchingSection
-          onEquipmentDrop={handleEquipmentDrop}
-          readers={selectedZoneData}
+    <div className="w-[1440px] mx-auto">
+      <DndProvider backend={HTML5Backend}>
+        <ZoneChoice
+          zoneList={zoneList}
           isOnEdit={isOnEdit}
-          onReaderAddClick={handleReaderAddClick}
-          onIssueDrop={handleIssueToMatchingSection}
+          onZoneClick={handleZoneClick}
+          onAddZoneClick={handleAddZoneClick}
         />
-        <div>
-          <EquipmentListSection />
-          <IssueSection readers={issueZoneData} onIssueDrop={handleIssueDrop} />
+        <div className="flex justify-between">
+          <EquipmentMatchingSection
+            onEquipmentDrop={handleEquipmentDrop}
+            readers={selectedZoneData}
+            isOnEdit={isOnEdit}
+            onReaderAddClick={handleReaderAddClick}
+            onIssueDrop={handleIssueToMatchingSection}
+          />
+          <div>
+            <EquipmentListSection />
+            <IssueSection
+              readers={issueZoneData}
+              onIssueDrop={handleIssueDrop}
+            />
+          </div>
         </div>
-      </div>
-    </DndProvider>
+      </DndProvider>
+    </div>
   );
 };
 

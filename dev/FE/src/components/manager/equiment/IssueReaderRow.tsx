@@ -12,7 +12,7 @@ const IssueReaderRow = ({ data }: IssueReaderRowProps) => {
   return (
     <div
       ref={drag}
-      className="mx-5 my-1 px-5 py-1 bg-blue-300 flex justify-between"
+      className="mx-5 my-2 px-5 py-1 bg-orange-400 flex justify-between"
     >
       <span>{data.reader}</span>
       <span>{data.name}</span>

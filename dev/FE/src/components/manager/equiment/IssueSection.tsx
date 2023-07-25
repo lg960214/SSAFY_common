@@ -14,9 +14,9 @@ const IssueSection = ({ readers, onIssueDrop }: IssueSectionProps) => {
       ref={drop}
       className="mt-4 py-2 shadow-lg rounded-xl flex flex-col bg-slate-200"
       style={{
-        width: 520,
+        width: 580,
         height: 205,
-        backgroundColor: isOver ? 'green' : undefined,
+        backgroundColor: isOver ? 'skyblue' : undefined,
       }}
     >
       {readers.map((reader) => (
