@@ -11,7 +11,9 @@ export default {
         CustomGray: '#D9D9D9',
         CustomBg: '#F2F2F2',
       },
+      boxShadow: {
+        'inner-deep': 'inset 0 3px 3px rgba(0, 0, 0, 0.5)',
+      },
     },
-  },
   plugins: [],
 };
