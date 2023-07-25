@@ -17,8 +17,6 @@ export const MemberItem = (item: MemberitemProps) => {
 
   const handleClick: React.MouseEventHandler<HTMLDivElement> = () => {
     setIsModalOpen(true);
-    // console.log('??');
-    // console.log(e.currentTarget.textContent);
   };
 
   const handleRegiClick = (e: React.MouseEvent) => {

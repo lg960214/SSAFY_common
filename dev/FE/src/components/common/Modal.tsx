@@ -16,7 +16,6 @@ const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const handleBackgroundClick = (e: React.MouseEvent) => {
     onClose(); // 배경 클릭시 모달 닫기
     e.stopPropagation();
-    // console.log('aaa');
   };
 
   const handleContentClick = (event: React.MouseEvent) => {

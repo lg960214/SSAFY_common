@@ -26,12 +26,12 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
         <div>
           <p>{item.name}</p>
           <p>{item.number}</p>
-          <p>아이디 뭔데 그래서</p>
+          <p>아이디 받는 api가 없어요</p>
           <p>{item.userid}</p>
-          <p>이메일 무너데</p>
+          <p>이메일 받는 api가 없어요</p>
           <p>{item.sex}</p>
           <p>{item.date}</p>
-          <p>헥 이것도 업성요!</p>
+          <p>가입일 받는 api가 없어요</p>
         </div>
       </div>
       <div>
