@@ -15,5 +15,6 @@ export default {
         'inner-deep': 'inset 0 3px 3px rgba(0, 0, 0, 0.5)',
       },
     },
-  plugins: [],
+    plugins: [],
+  },
 };

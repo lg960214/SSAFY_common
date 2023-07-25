@@ -3,7 +3,6 @@ import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MemberPage from './pages/manager/MemberPage';
 import EquipmentPage from './pages/manager/EquipmentPage';
-import UsagePage from './pages/manager/UsagePage';
 import WaitListPage from './pages/manager/WaitListPage';
 import MainPage from './pages/manager/MainPage';
 import NavBar from './components/common/NavBar';
