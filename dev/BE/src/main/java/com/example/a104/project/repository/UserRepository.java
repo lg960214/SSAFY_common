@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<UserVo,Integer> {
     @Query("update UserVo u set u.regist = NULL, u.gymCode = NULL where u.id = :id")
     int Delete(String id);
 
+    List<UserVo> findByNameContainingAndGymCode(String keyword,int gymCode);
     List<UserVo> findById(String Id);
     List<UserVo> findByGymCodeAndRegistIsNotNull(int GymCode);
 
