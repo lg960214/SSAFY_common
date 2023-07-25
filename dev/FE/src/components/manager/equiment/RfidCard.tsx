@@ -1,7 +1,7 @@
-import { useDroppable } from '@/hooks/dndhooks';
+import { useDraggable, useDroppableForRfidCard } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
 import { Reader } from '@/types/Reader';
-
+import { useRef } from 'react';
 interface RfidCardProps {
   data: Reader;
   onEquipmentDrop: (readerData: Reader, droppedItem: { id: string }) => void;
@@ -13,12 +13,23 @@ const RfidCard = ({ data, onEquipmentDrop }: RfidCardProps) => {
   const pureName = isNaN(parseInt(data.name[lastIndex]))
     ? data.name
     : data.name.slice(0, lastIndex);
-  const { isOver, drop } = useDroppable('equipment', onEquipmentDrop, data);
+  const ref = useRef(null);
+  const { isOver, drop } = useDroppableForRfidCard(
+    'equipment',
+    onEquipmentDrop,
+    data,
+  );
+  const { isDragging, getItem, drag, preview } = useDraggable(
+    'reader',
+    data.reader,
+  );
+  drag(drop(ref));
+
   return (
     <div
-      ref={drop}
+      ref={ref}
       style={{ backgroundColor: isOver ? 'red' : '#FF8000' }}
-      className="m-4 bg-orange-500 w-40 h-48 rounded-3xl flex flex-col justify-around items-center"
+      className="mx-4 bg-orange-500 w-40 h-48 rounded-3xl flex flex-col justify-around items-center"
     >
       <p className="text-white">{data.reader}</p>
       <EquipmentCard title={data.name} equipment={pureName} />

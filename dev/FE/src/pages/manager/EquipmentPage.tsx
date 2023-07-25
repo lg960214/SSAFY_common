@@ -5,6 +5,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
 import { useEffect, useState } from 'react';
+import IssueSection from '@/components/manager/equiment/IssueSection';
 
 const readerDummy = [
   {
@@ -55,6 +56,18 @@ const readerDummy = [
     name: '런닝머신',
     gym_code: 'YS1',
   },
+  {
+    region: 'issue',
+    reader: 'WW837',
+    name: '런닝머신',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'issue',
+    reader: 'WW822',
+    name: '런닝머신',
+    gym_code: 'YS1',
+  },
 ];
 
 const zoneDummy = [
@@ -68,10 +81,13 @@ const EquipmentPage = () => {
   const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
+  const [issueZoneData, setIssueZoneData] = useState<Reader[]>([]);
 
   useEffect(() => {
     const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
     setSelectedZoneData(wholeData.filter((cur) => cur.region === currentZone));
+    const issueFiltering = wholeData.filter((cur) => cur.region === 'issue');
+    setIssueZoneData(issueFiltering);
   }, [zoneList, wholeData]);
 
   const handleReaderAddClick = () => {};
@@ -120,6 +136,26 @@ const EquipmentPage = () => {
     setWholeData(updateMatching);
   };
 
+  const handleIssueDrop = (droppedItem: { id: string }) => {
+    console.log(droppedItem.id);
+    const editedwholeData = wholeData.map((cur) => {
+      if (cur.reader === droppedItem.id) {
+        return { ...cur, region: 'issue' };
+      } else return cur;
+    });
+    setWholeData(editedwholeData);
+  };
+
+  const handleIssueToMatchingSection = (droppedItem: { id: string }) => {
+    const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
+    const editedwholeData = wholeData.map((cur) => {
+      if (cur.reader === droppedItem.id) {
+        return { ...cur, region: currentZone };
+      } else return cur;
+    });
+    setWholeData(editedwholeData);
+  };
+
   return (
     <DndProvider backend={HTML5Backend}>
       <ZoneChoice
@@ -134,9 +170,11 @@ const EquipmentPage = () => {
           readers={selectedZoneData}
           isOnEdit={isOnEdit}
           onReaderAddClick={handleReaderAddClick}
+          onIssueDrop={handleIssueToMatchingSection}
         />
         <div>
           <EquipmentListSection />
+          <IssueSection readers={issueZoneData} onIssueDrop={handleIssueDrop} />
         </div>
       </div>
     </DndProvider>

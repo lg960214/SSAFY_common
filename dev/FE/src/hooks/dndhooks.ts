@@ -16,6 +16,23 @@ export const useDraggable = (type: string, id: string) => {
 
 export const useDroppable = (
   accept: string,
+  onDrop: (droppedItem: { id: string }) => void,
+) => {
+  const [{ isOver }, drop] = useDrop({
+    accept: accept,
+    drop: (item: { id: string }) => {
+      // do something when an item is dropped
+      onDrop(item);
+    },
+    collect: (monitor) => ({
+      isOver: monitor.isOver(),
+    }),
+  });
+  return { isOver, drop };
+};
+
+export const useDroppableForRfidCard = (
+  accept: string,
   onDrop: (readerData: Reader, droppedItem: { id: string }) => void,
   data: Reader,
 ) => {
