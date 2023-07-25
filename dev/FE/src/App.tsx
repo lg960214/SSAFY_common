@@ -3,7 +3,7 @@ import React, { useContext } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import MemberPage from './pages/manager/MemberPage';
 import EquipmentPage from './pages/manager/EquipmentPage';
-import WaitListPage from './pages/manager/WaitListPage';
+import WaitListDetailPage from './pages/manager/WaitListDetailPage';
 import MainPage from './pages/manager/MainPage';
 import NavBar from './components/common/NavBar';
 import UsagePage from './pages/manager/UsagePage';
@@ -22,7 +22,7 @@ const App: React.FC = () => {
               <Route path="/member" element={<MemberPage />} />
               <Route path="/equipment" element={<EquipmentPage />} />
               <Route path="/usage" element={<UsagePage />} />
-              <Route path="/waitlist" element={<WaitListPage />} />
+              <Route path="/waitlist" element={<WaitListDetailPage />} />
             </>
           ) : (
             <Route path="/" element={<MainPage />} />

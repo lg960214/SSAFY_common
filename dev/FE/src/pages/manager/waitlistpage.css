@@ -1,0 +1,45 @@
+.waitpage {
+  width: 1440px;
+  min-height: 800px;
+  background-color: #f2f2f2;
+}
+
+.fontJeju {
+  font-family: 'jejuGodic';
+}
+
+.fontBungee {
+  font-family: 'Bungee-Regular';
+}
+
+.selectbox {
+  width: 1000px;
+  flex-wrap: wrap;
+  border-radius: 20px;
+  background-color: white;
+}
+
+.selectbox > button {
+  border-radius: 20px;
+  text-align: center;
+  color: white;
+  background-color: #ff8000;
+}
+
+.sectionbox {
+  width: 250px;
+}
+.sectionbox > div {
+  width: 250px;
+  height: 120px;
+  border-radius: 68px;
+  background-color: #ff8000;
+  position: absolute;
+  left: -70px;
+  padding-left: 85px;
+}
+
+.waitlistbox {
+  width: 1600px;
+  height: 900px;
+}
