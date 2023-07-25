@@ -1,0 +1,38 @@
+.navbar {
+  width: 1440px;
+  height: 100px;
+  background-color: #06092b;
+}
+
+.fontJeju {
+  font-family: 'jejuGodic';
+}
+
+.fontBungee {
+  font-family: 'Bungee-Regular';
+}
+
+.navmenu {
+  width: 100px;
+  color: white;
+}
+
+.activeLink {
+  color: #ff8000;
+  padding-bottom: 5px;
+  border-bottom: #ff8000 solid 4px;
+  font-size: x-large;
+  font-family: 'jejuGodic';
+}
+
+.noactive {
+  color: white;
+  font-size: x-large;
+  font-family: 'jejuGodic';
+}
+
+.inputbox {
+  height: 24px;
+  width: 138px;
+  border-radius: 5px;
+}
