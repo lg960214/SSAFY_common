@@ -1,10 +1,10 @@
-import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
-import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
-import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
+import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
-import { useEffect, useState } from 'react';
+import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
+import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
+import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import IssueSection from '@/components/manager/equiment/IssueSection';
 import EditSaveButton from '@/components/manager/equiment/editSaveButton';
 
