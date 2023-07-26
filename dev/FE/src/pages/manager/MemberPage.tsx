@@ -34,7 +34,8 @@ const MemberPage = () => {
       <div className="w-2/3">
         <div className="flex justify-between">
           <TableMenu name="회원 정보" />
-          <div className="ml-40 float-right border-2 justify-evenly align-middle items-center border-black flex w-64 h-10 rounded-2xl px-3">
+          <div className="ml-40 float-right border-2 justify-evenly align-middle items-center border-black flex w-80 h-10 rounded-2xl px-3">
+            검색
             <input
               className="h-6 border-b-2 border-black"
               type="text"
