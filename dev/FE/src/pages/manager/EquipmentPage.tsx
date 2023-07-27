@@ -1,12 +1,14 @@
 import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Reader, Zone } from '@/types/Reader';
+import { Reader, Zone } from '@/types/reader.type';
 import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
 import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
 import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import IssueSection from '@/components/manager/equiment/IssueSection';
 import EditSaveButton from '@/components/manager/equiment/editSaveButton';
+import Modal from '@/components/common/Modal';
+import RegisterModalChildren from '@/components/manager/equiment/RegisterModalChildren';
 
 const readerDummy = [
   {
@@ -69,6 +71,18 @@ const readerDummy = [
     name: '런닝머신3',
     gym_code: 'YS1',
   },
+  {
+    region: null,
+    reader: 'WW384',
+    name: null,
+    gym_code: 'YS1',
+  },
+  {
+    region: null,
+    reader: 'WW563',
+    name: null,
+    gym_code: 'YS1',
+  },
 ];
 
 const zoneDummy = [
@@ -83,6 +97,8 @@ const EquipmentPage = () => {
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
   const [issueZoneData, setIssueZoneData] = useState<Reader[]>([]);
+  const [isRegisterModalOn, setIsRegisterModalOn] = useState<boolean>(false);
+  const [isSaveModalOn, setIsSaveModalOn] = useState<boolean>(false);
 
   useEffect(() => {
     const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
@@ -91,7 +107,13 @@ const EquipmentPage = () => {
     setIssueZoneData(issueFiltering);
   }, [zoneList, wholeData]);
 
-  const handleReaderAddClick = () => {};
+  const handleReaderAddClick = () => {
+    setIsRegisterModalOn(true);
+  };
+
+  const handleModalOutsideClick = () => {
+    setIsRegisterModalOn(false);
+  };
   const handleZoneClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
     // 이벤트 객체의 경우 이렇게 타입 캐스팅하면 에러가 해결된다고 함.
     const target = e?.target as HTMLButtonElement;
@@ -122,7 +144,7 @@ const EquipmentPage = () => {
     // drop이 발생 했을 때 처리할 이벤트 함수
     // readerData는 drag된 대상을 받은 리더기 정보, droppedItem.id은 drop된 기구 명
     const alreadyExistCount = wholeData.filter((cur) =>
-      cur.name.includes(droppedItem.id),
+      cur.name?.includes(droppedItem.id),
     ).length;
     let equipmentOrderName = droppedItem.id;
     if (alreadyExistCount) {
@@ -204,6 +226,17 @@ const EquipmentPage = () => {
           </div>
         </div>
       </DndProvider>
+      <Modal
+        isOpen={isRegisterModalOn}
+        children={
+          <RegisterModalChildren
+            setWholeData={setWholeData}
+            currentZone={zoneList.filter((cur) => cur.isSelected)[0].name}
+            readerData={wholeData}
+          />
+        }
+        onClose={handleModalOutsideClick}
+      />
     </div>
   );
 };

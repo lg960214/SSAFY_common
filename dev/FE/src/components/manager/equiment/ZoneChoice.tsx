@@ -1,4 +1,4 @@
-import { Zone } from '@/types/Reader';
+import { Zone } from '@/types/reader.type';
 
 interface ZoneChoiceProps {
   isOnEdit: boolean;
