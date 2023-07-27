@@ -1,10 +1,12 @@
-import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
-import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
-import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
+import { useEffect, useState } from 'react';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { Reader, Zone } from '@/types/Reader';
-import { useEffect, useState } from 'react';
+import EquipmentListSection from '@/components/manager/equiment/EquipmentListSection';
+import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
+import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
+import IssueSection from '@/components/manager/equiment/IssueSection';
+import EditSaveButton from '@/components/manager/equiment/editSaveButton';
 
 const readerDummy = [
   {
@@ -52,7 +54,19 @@ const readerDummy = [
   {
     region: 'B',
     reader: 'WW134',
-    name: '런닝머신',
+    name: '런닝머신1',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'issue',
+    reader: 'WW837',
+    name: '런닝머신2',
+    gym_code: 'YS1',
+  },
+  {
+    region: 'issue',
+    reader: 'WW822',
+    name: '런닝머신3',
     gym_code: 'YS1',
   },
 ];
@@ -64,14 +78,17 @@ const zoneDummy = [
 ];
 
 const EquipmentPage = () => {
-  const [isOnEdit, setIsOnEdit] = useState<boolean>(true);
+  const [isOnEdit, setIsOnEdit] = useState<boolean>(false);
   const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
+  const [issueZoneData, setIssueZoneData] = useState<Reader[]>([]);
 
   useEffect(() => {
     const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
     setSelectedZoneData(wholeData.filter((cur) => cur.region === currentZone));
+    const issueFiltering = wholeData.filter((cur) => cur.region === 'issue');
+    setIssueZoneData(issueFiltering);
   }, [zoneList, wholeData]);
 
   const handleReaderAddClick = () => {};
@@ -120,26 +137,74 @@ const EquipmentPage = () => {
     setWholeData(updateMatching);
   };
 
+  const handleIssueDrop = (droppedItem: { id: string }) => {
+    const totalIssueNum = wholeData.filter(
+      (cur) => cur.region === 'issue',
+    ).length;
+    if (totalIssueNum > 3) {
+      alert('더이상 추가할 수 없습니다.');
+      return;
+    }
+    const editedwholeData = wholeData.map((cur) => {
+      if (cur.reader === droppedItem.id) {
+        return { ...cur, region: 'issue' };
+      } else return cur;
+    });
+    setWholeData(editedwholeData);
+  };
+
+  const handleIssueToMatchingSection = (droppedItem: { id: string }) => {
+    const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
+    const editedwholeData = wholeData.map((cur) => {
+      if (cur.reader === droppedItem.id) {
+        return { ...cur, region: currentZone };
+      } else return cur;
+    });
+    setWholeData(editedwholeData);
+  };
+
+  const handleEditClick = () => {
+    setIsOnEdit(true);
+  };
+
+  const handleSaveClick = () => alert('저장');
+
   return (
-    <DndProvider backend={HTML5Backend}>
-      <ZoneChoice
-        zoneList={zoneList}
-        isOnEdit={isOnEdit}
-        onZoneClick={handleZoneClick}
-        onAddZoneClick={handleAddZoneClick}
-      />
-      <div className="flex flex-row">
-        <EquipmentMatchingSection
-          onEquipmentDrop={handleEquipmentDrop}
-          readers={selectedZoneData}
-          isOnEdit={isOnEdit}
-          onReaderAddClick={handleReaderAddClick}
-        />
-        <div>
-          <EquipmentListSection />
+    <div className="w-[1440px] mx-auto">
+      <DndProvider backend={HTML5Backend}>
+        <div className="flex justify-between">
+          <ZoneChoice
+            zoneList={zoneList}
+            isOnEdit={isOnEdit}
+            onZoneClick={handleZoneClick}
+            onAddZoneClick={handleAddZoneClick}
+          />
+          {isOnEdit ? (
+            <EditSaveButton title="저장" onClick={handleSaveClick} />
+          ) : null}
         </div>
-      </div>
-    </DndProvider>
+        <div className="flex justify-between">
+          <EquipmentMatchingSection
+            onEquipmentDrop={handleEquipmentDrop}
+            readers={selectedZoneData}
+            isOnEdit={isOnEdit}
+            onReaderAddClick={handleReaderAddClick}
+            onIssueDrop={handleIssueToMatchingSection}
+          />
+          <div>
+            <EquipmentListSection
+              isOnEdit={isOnEdit}
+              onEditClick={handleEditClick}
+            />
+            <IssueSection
+              isOnEdit={isOnEdit}
+              readers={issueZoneData}
+              onIssueDrop={handleIssueDrop}
+            />
+          </div>
+        </div>
+      </DndProvider>
+    </div>
   );
 };
 
