@@ -39,7 +39,9 @@ const App: React.FC = () => {
               </Route>
             </>
           ) : (
-            <Route path="/" element={<MainPage />} />
+            <Route path="/" element={<Layout1 />}>
+              <Route element={<MainPage />} />
+            </Route>
           )}
         </Routes>
       </Router>
@@ -48,6 +50,15 @@ const App: React.FC = () => {
 };
 
 function Layout() {
+  return (
+    <div>
+      <NavBar />
+      <Outlet />
+    </div>
+  );
+}
+
+function Layout1() {
   return (
     <div>
       <NavBar />
