@@ -5,7 +5,7 @@ import AuthContext from './AuthContext';
 import AuthProvider from './AuthProvider';
 import { useLocation } from 'react-router-dom';
 export default function Root() {
-  const { isLoggedIn } = useContext(AuthContext);
+  const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
   const pathList: string[] = ['/member', '/equipment', '/usage', 'waitlist'];
   const location = useLocation();
   const currentPath = location.pathname;
@@ -21,6 +21,8 @@ export default function Root() {
       return index;
     });
   };
+  const handleLogIn = () => setLoggedIn(!isLoggedIn);
+
   return (
     <AuthProvider>
       <nav className="flex justify-between navbar mx-auto">
@@ -74,7 +76,10 @@ export default function Root() {
               <input className="inputbox me-4 " type="text" />
               <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
               <input className="inputbox me-4 " type="text" />
-              <button className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee">
+              <button
+                className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
+                onClick={handleLogIn}
+              >
                 Login
               </button>
             </ul>
