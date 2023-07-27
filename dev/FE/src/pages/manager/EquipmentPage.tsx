@@ -9,6 +9,7 @@ import IssueSection from '@/components/manager/equiment/IssueSection';
 import EditSaveButton from '@/components/manager/equiment/editSaveButton';
 import Modal from '@/components/common/Modal';
 import RegisterModalChildren from '@/components/manager/equiment/RegisterModalChildren';
+import ConfirmModal from '@/components/common/ConfirmModal';
 
 const readerDummy = [
   {
@@ -111,9 +112,6 @@ const EquipmentPage = () => {
     setIsRegisterModalOn(true);
   };
 
-  const handleModalOutsideClick = () => {
-    setIsRegisterModalOn(false);
-  };
   const handleZoneClick = (e?: React.MouseEvent<HTMLButtonElement>) => {
     // 이벤트 객체의 경우 이렇게 타입 캐스팅하면 에러가 해결된다고 함.
     const target = e?.target as HTMLButtonElement;
@@ -185,10 +183,6 @@ const EquipmentPage = () => {
     setWholeData(editedwholeData);
   };
 
-  const handleEditClick = () => {
-    setIsOnEdit(true);
-  };
-
   const handleSaveClick = () => alert('저장');
 
   return (
@@ -202,7 +196,10 @@ const EquipmentPage = () => {
             onAddZoneClick={handleAddZoneClick}
           />
           {isOnEdit ? (
-            <EditSaveButton title="저장" onClick={handleSaveClick} />
+            <EditSaveButton
+              title="저장"
+              onClick={() => setIsSaveModalOn(true)}
+            />
           ) : null}
         </div>
         <div className="flex justify-between">
@@ -216,7 +213,7 @@ const EquipmentPage = () => {
           <div>
             <EquipmentListSection
               isOnEdit={isOnEdit}
-              onEditClick={handleEditClick}
+              onEditClick={() => setIsOnEdit(true)}
             />
             <IssueSection
               isOnEdit={isOnEdit}
@@ -235,7 +232,20 @@ const EquipmentPage = () => {
             readerData={wholeData}
           />
         }
-        onClose={handleModalOutsideClick}
+        onClose={() => setIsRegisterModalOn(false)}
+      />
+      <Modal
+        isOpen={isSaveModalOn}
+        children={
+          <ConfirmModal
+            text={'정말 저장하시겠습니까?'}
+            leftButtonTitle={'취소'}
+            rightButtonTitle={'저장'}
+            onLeftButtonClick={() => setIsSaveModalOn(false)}
+            onRightButtonClick={handleSaveClick}
+          />
+        }
+        onClose={() => setIsSaveModalOn(false)}
       />
     </div>
   );
