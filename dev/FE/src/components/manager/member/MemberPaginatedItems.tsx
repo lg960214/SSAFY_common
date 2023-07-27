@@ -1,25 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { MemberItem } from './MemberItem';
-
-// 더미데이터 import
-import dummy from '@/components/manager/member/dummy.json';
-
-interface Item {
-  name: string;
-  userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
-}
+import { MemberInfo } from '@/types/member.type';
 
 interface ItemsProps {
-  currentItems: Item[];
+  currentItems: MemberInfo[];
 }
-
-// 더미데이터
-const dummyData = dummy.data;
 
 const Items: React.FC<ItemsProps> = ({ currentItems }) => {
   return (
@@ -35,16 +21,18 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
 interface PaginatedItemsProps {
   itemsPerPage: number;
   checkText: string;
+  memberInfoLists: MemberInfo[];
 }
 
 const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   itemsPerPage,
   checkText,
+  memberInfoLists,
 }) => {
-  const [items, setDummyItems] = useState(dummy.data);
+  const [items, setDummyItems] = useState(memberInfoLists);
 
   useEffect(() => {
-    const filterItems = dummyData.filter((item) =>
+    const filterItems = memberInfoLists.filter((item) =>
       item.name.includes(checkText),
     );
     setDummyItems(filterItems);
@@ -63,7 +51,7 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-[660px] justify-between">
+    <div className="flex flex-col h-[620px] justify-between">
       <div>
         <ul className="">
           <Items currentItems={currentItems} />

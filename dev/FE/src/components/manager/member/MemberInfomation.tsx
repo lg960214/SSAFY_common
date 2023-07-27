@@ -26,8 +26,12 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
       <div className="border-white border-b-2 h-0"></div>
       <div className="flex align-middle text-center">
         <div className="basis-1/3">
-          {infoTitle.map((item) => {
-            return <p className="h-12 align-middle content-center">{item}</p>;
+          {infoTitle.map((item, idx) => {
+            return (
+              <p key={idx} className="h-12 align-middle content-center">
+                {item}
+              </p>
+            );
           })}
         </div>
         <div className="basis-2/3 text-start">
