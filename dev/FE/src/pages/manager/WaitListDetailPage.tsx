@@ -6,7 +6,6 @@ import { useParams } from 'react-router-dom';
 export const WaitListDetailPage = () => {
   const handle = useFullScreenHandle();
   const { sectionName } = useParams(); // params에서 'item' 값을 받아옴
-  console.log(sectionName);
   return (
     <>
       <FullScreen className="full-screen" handle={handle}>

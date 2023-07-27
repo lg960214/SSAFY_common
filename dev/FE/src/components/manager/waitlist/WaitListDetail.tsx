@@ -1,6 +1,6 @@
 import './waitlistdetail.css';
 
-type EquipList = {
+interface EquipList {
   region: string;
   reader: string;
   name: string;
@@ -8,7 +8,7 @@ type EquipList = {
   inUse: string;
   waitingList: string[];
   waitingCount: number;
-};
+}
 
 const equipList: EquipList[] = [
   {
