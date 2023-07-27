@@ -32,12 +32,12 @@ export const MemberItem = (item: MemberitemProps) => {
       onClick={handleClick}
       className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer"
     >
-      <span className="basis-1/6">{item.name}</span>
-      <span className="basis-1/6">{item.userid}</span>
-      <span className="basis-1/6">{item.number}</span>
-      <span className="basis-1/6">{item.sex}</span>
-      <span className="basis-1/6">{item.date}</span>
-      <span className="basis-1/6 items-center" onClick={handleRegiClick}>
+      <span className="w-24">{item.name}</span>
+      <span className="w-20">{item.userid}</span>
+      <span className="w-28">{item.number}</span>
+      <span className="w-16">{item.sex}</span>
+      <span className="w-28">{item.date}</span>
+      <span className="w-44" onClick={handleRegiClick}>
         {createTagRegi(item.tag)}
       </span>
 
@@ -74,7 +74,7 @@ const createTagRegi = (tagStatus: string | null) => {
     );
   } else {
     return (
-      <div className="flex justify-evenly items-center">
+      <div className="flex justify-evenly">
         <span className="font-bold">{tagStatus}</span>
         <TagRegiButton handleEvent={dummyClose} name="해제" color="indigo" />
       </div>

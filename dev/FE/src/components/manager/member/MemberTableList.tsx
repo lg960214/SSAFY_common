@@ -11,20 +11,20 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
   memberInfoLists,
 }) => {
   const tableName = [
-    '이름',
-    '회원 번호',
-    '전화 번호',
-    '성별',
-    '최근 방문',
-    '태그 번호',
+    { title: '이름', className: 'w-24' },
+    { title: '회원 번호', className: 'w-20' },
+    { title: '전화 번호', className: 'w-28' },
+    { title: '성별', className: 'w-16' },
+    { title: '최근 방문', className: 'w-28' },
+    { title: '태그 번호', className: 'w-44' },
   ];
   return (
     <div className="bg-black w-full h-[700px] -mt-12 text-white p-2 rounded-2xl">
-      <div className="flex justify-evenly items-center h-12 basis-32 text-center">
-        {tableName.map((item: string, idx: number) => {
+      <div className="flex justify-evenly items-center h-12 text-center text-lg font-bold">
+        {tableName.map((item, idx: number) => {
           return (
-            <span key={idx} className="basis-1/6">
-              {item}
+            <span key={idx} className={item.className}>
+              {item.title}
             </span>
           );
         })}
