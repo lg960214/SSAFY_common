@@ -13,7 +13,6 @@ export default function Root() {
       return index;
     });
   };
-
   return (
     <AuthProvider>
       <nav className="flex justify-between navbar mx-auto">
