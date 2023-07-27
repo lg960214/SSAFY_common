@@ -179,7 +179,9 @@ const EquipmentPage = () => {
             onZoneClick={handleZoneClick}
             onAddZoneClick={handleAddZoneClick}
           />
-          <EditSaveButton title="저장" onClick={handleSaveClick} />
+          {isOnEdit ? (
+            <EditSaveButton title="저장" onClick={handleSaveClick} />
+          ) : null}
         </div>
         <div className="flex justify-between">
           <EquipmentMatchingSection
