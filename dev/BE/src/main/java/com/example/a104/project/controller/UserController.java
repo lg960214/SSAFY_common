@@ -65,8 +65,6 @@ public class UserController {
      // 로그인
      @PostMapping("login")
      public TokenResponse login(@RequestBody Map<String,String> map) {
-        System.out.println(map);
-
          List<UserVo> user = userService.login(map.get("id"));
          System.out.println(user);
          TokenDataResponse tokenDataResponse;
@@ -75,7 +73,7 @@ public class UserController {
             if (user.size()!=0 && BCrypt.checkpw(map.get("password"),user.get(0).getPassword())){
                 String token = JwtTokenProvider.createToken(user.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
-                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
+                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(),user.get(0).getName(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
                 return tokenResponse;
 

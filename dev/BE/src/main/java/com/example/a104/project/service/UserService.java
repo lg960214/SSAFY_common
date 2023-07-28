@@ -12,6 +12,15 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
 
+    public void MatchDevice(String deviceCode,String id){
+        userRepository.MatchDevice(deviceCode,id);
+    }
+
+    public void DeleteDevice(String id){
+        userRepository.DeleteDevice(id);
+    }
+
+
     public void DeleteUser(String id){
         userRepository.Delete(id);
     }
