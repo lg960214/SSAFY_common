@@ -4,6 +4,9 @@ import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
 import ApproveContent from '@/components/manager/member/ApproveContent';
 
+// 더미 데이터
+import dummy from '@/components/manager/member/dummy.json';
+
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
@@ -23,29 +26,31 @@ const MemberPage = () => {
   return (
     <div
       onClick={closeModal}
-      className="flex justify-evenly mx-auto mt-8"
-      style={{ height: '920px', width: '1440px' }}
+      className="flex justify-between mx-auto mt-8"
+      style={{ height: '830px', width: '1440px' }}
     >
-      <div className="w-1/3">
+      <div className="w-[404px]">
         <TableMenu name="태그 현황" />
-        <TagTableList />
-        <div>12명 이용중</div>
+        <TagTableList memberInfoLists={dummy.data} />
       </div>
-      <div className="w-2/3">
+      <div className="w-[908px]">
         <div className="flex justify-between">
           <TableMenu name="회원 정보" />
           <div className="ml-40 float-right border-2 justify-evenly align-middle items-center border-black flex w-80 h-10 rounded-2xl px-3">
-            검색
             <input
               className="h-6 border-b-2 border-black"
               type="text"
               onInput={handleInputSearchText}
             />
+            검색
             <img className="w-8" src={`/img/member/loupe.png`} alt="" />
           </div>
         </div>
 
-        <MemberTableList checkText={isSearchText} />
+        <MemberTableList
+          memberInfoLists={dummy.data}
+          checkText={isSearchText}
+        />
         <div>
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
             <ApproveContent />

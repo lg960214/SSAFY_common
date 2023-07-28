@@ -19,46 +19,50 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
     '가입일',
   ];
   return (
-    <div className="text-black p-8 w-[460px] h-[580px] border-2 bg-white border-black rounded-2xl">
-      <div className="w-50 h-12 border-b-2 border-black text-xl font-bold flex justify-center items-center">
-        <p>회원 상세 정보</p>
+    <div className="text-black pt-2 px-6 w-[460px] h-[580px] border-2 bg-white border-black rounded-2xl">
+      <div className="w-50 h-16 border-b-2 border-black text-xl font-bold flex justify-center items-center">
+        <span>회원 상세 정보</span>
       </div>
       <div className="border-white border-b-2 h-0"></div>
       <div className="flex align-middle text-center">
         <div className="basis-1/3">
-          {infoTitle.map((item) => {
-            return <p className="h-12 align-middle content-center">{item}</p>;
+          {infoTitle.map((item, idx) => {
+            return (
+              <p key={idx} className="h-12 flex justify-center items-center">
+                <span>{item}</span>
+              </p>
+            );
           })}
         </div>
         <div className="basis-2/3 text-start">
-          <p className="h-12 align-middle border-b-2 border-black">
-            {item.name}
+          <p className="h-12 flex items-center">
+            <span className="">{item.name}</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            {item.number}
+          <p className="h-12 flex items-center">
+            <span className="">{item.number}</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            아이디 받는 api가 없어요
+          <p className="h-12 flex items-center">
+            <span className="">아이디 받는 api가 없어요</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            {item.userid}
+          <p className="h-12 flex items-center">
+            <span className="">{item.userid}</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            이메일 받는 api가 없어요
+          <p className="h-12 flex items-center">
+            <span className="">이메일 받는 api가 없어요</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            {item.sex}
+          <p className="h-12 flex items-center">
+            <span className="">{item.sex}</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            {item.date}
+          <p className="h-12 flex items-center">
+            <span className="">{item.date}</span>
           </p>
-          <p className="h-12 align-middle border-b-2 border-black">
-            가입일 받는 api가 없어요
+          <p className="h-12 flex items-center">
+            <span className="">가입일 받는 api가 없어요</span>
           </p>
         </div>
       </div>
-      <div>
-        <button className="bg-black mt-3 float-right text-white w-24 h-12 text-center p-0">
+      <div className="">
+        <button className="bg-black float-right text-white w-24 h-12 text-center p-0">
           회원 해제
         </button>
       </div>
