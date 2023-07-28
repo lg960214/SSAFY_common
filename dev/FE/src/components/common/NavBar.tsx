@@ -3,16 +3,26 @@ import { NavLink } from 'react-router-dom';
 import { useState, useContext } from 'react';
 import AuthContext from './AuthContext';
 import AuthProvider from './AuthProvider';
-
+import { useLocation } from 'react-router-dom';
 export default function Root() {
-  const { isLoggedIn } = useContext(AuthContext);
-  const [clickedLinks, setClickedLinks] = useState<number>(0);
+  const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
+  const pathList: string[] = ['/member', '/equipment', '/usage', 'waitlist'];
+  const location = useLocation();
+  const currentPath = location.pathname;
+  let currentPage: number = pathList.indexOf(currentPath);
+  if (currentPage === -1) {
+    currentPage = 3;
+  }
+
+  const [clickedLinks, setClickedLinks] = useState<number>(currentPage);
 
   const handleAnchorClick = (index: number) => {
     setClickedLinks((): number => {
       return index;
     });
   };
+  const handleLogIn = () => setLoggedIn(!isLoggedIn);
+
   return (
     <AuthProvider>
       <nav className="flex justify-between navbar mx-auto">
@@ -21,18 +31,6 @@ export default function Root() {
           <span className="text-4xl">WEIGHT</span>
         </p>
         {isLoggedIn ? (
-          <div className="my-auto">
-            <ul className="flex items-center">
-              <p className="text-white fontBungee text-2xl mx-3 ">ID</p>
-              <input className="inputbox me-4 " type="text" />
-              <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
-              <input className="inputbox me-4 " type="text" />
-              <button className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee">
-                Login
-              </button>
-            </ul>
-          </div>
-        ) : (
           <ul className="flex text-right me-5">
             <li className="navmenu my-auto mx-4">
               <NavLink
@@ -71,6 +69,21 @@ export default function Root() {
               </NavLink>
             </li>
           </ul>
+        ) : (
+          <div className="my-auto">
+            <ul className="flex items-center">
+              <p className="text-white fontBungee text-2xl mx-3 ">ID</p>
+              <input className="inputbox me-4 " type="text" />
+              <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
+              <input className="inputbox me-4 " type="text" />
+              <button
+                className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
+                onClick={handleLogIn}
+              >
+                Login
+              </button>
+            </ul>
+          </div>
         )}
       </nav>
     </AuthProvider>
