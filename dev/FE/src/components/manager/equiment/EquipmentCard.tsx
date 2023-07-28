@@ -1,7 +1,7 @@
 import { DragElementWrapper } from 'react-dnd';
 
 interface EquipmentCardProps {
-  title?: string;
+  title?: string | null;
   equipment: string | null;
   dragRef?: DragElementWrapper<any> | null;
   isDragging?: boolean;

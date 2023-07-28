@@ -1,4 +1,4 @@
-import { Reader } from '@/types/Reader';
+import { Reader } from '@/types/reader.type';
 import RfidCard from './RfidCard';
 import ReaderAddButton from './ReaderAddButton';
 import { useDroppable } from '@/hooks/dndhooks';
