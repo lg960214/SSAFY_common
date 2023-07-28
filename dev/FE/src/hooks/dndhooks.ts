@@ -1,4 +1,4 @@
-import { Reader } from '@/types/Reader';
+import { Reader } from '@/types/reader.type';
 import { useDrag, useDrop } from 'react-dnd';
 
 export const useDraggable = (type: string, id: string) => {

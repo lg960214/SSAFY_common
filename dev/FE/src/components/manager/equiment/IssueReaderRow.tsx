@@ -1,5 +1,5 @@
 import { useDraggable } from '@/hooks/dndhooks';
-import { Reader } from '@/types/Reader';
+import { Reader } from '@/types/reader.type';
 
 interface IssueReaderRowProps {
   isOnEdit: boolean;

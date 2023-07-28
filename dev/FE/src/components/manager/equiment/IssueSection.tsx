@@ -1,5 +1,5 @@
 import { useDroppable } from '@/hooks/dndhooks';
-import { Reader } from '@/types/Reader';
+import { Reader } from '@/types/reader.type';
 import IssueReaderRow from './IssueReaderRow';
 
 interface IssueSectionProps {

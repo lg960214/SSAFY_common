@@ -1,7 +1,7 @@
 export interface Reader {
-  region: string;
+  region: string | null;
   reader: string;
-  name: string;
+  name: string | null;
   gym_code: string;
 }
 
