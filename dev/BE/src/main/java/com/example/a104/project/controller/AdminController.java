@@ -88,11 +88,6 @@ public class AdminController {
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String,String> map) {
         List<AdminVo> admin = adminService.login(map.get("id"));
-        System.out.println(admin.size());
-        System.out.println(admin.get(0).getPassword());
-        System.out.println(map.get("password"));
-//        String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
-//        Claims claims = JwtTokenProvider.parseJwtToken("Bearer "+ token); // 토큰 검증
 
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
@@ -100,7 +95,7 @@ public class AdminController {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
-                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
+                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(),admin.get(0).getName(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 
                 return tokenResponse;
