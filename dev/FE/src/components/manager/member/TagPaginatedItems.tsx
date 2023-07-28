@@ -1,34 +1,18 @@
 import React, { useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { TagItem } from './TagItem';
-import dummy from '@/components/manager/member/dummy.json';
-
-interface Item {
-  name: string;
-  userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
-}
+import { MemberInfo } from '@/types/member.type';
 
 interface ItemsProps {
-  currentItems: Item[];
+  currentItems: MemberInfo[];
 }
-
-const items = dummy.data;
 
 const Items: React.FC<ItemsProps> = ({ currentItems }) => {
   return (
     <>
       {currentItems &&
         currentItems.map((item) => {
-          const tagItemProps = {
-            name: item.name,
-            memberNumber: item.userid,
-            tagNumber: item.tag,
-          };
-          return <TagItem key={item.userid} {...tagItemProps} />;
+          return <TagItem key={item.userid} {...item} />;
         })}
     </>
   );
@@ -36,10 +20,14 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
 
 interface PaginatedItemsProps {
   itemsPerPage: number;
-  // items: Item[];
+  usingTagMember: MemberInfo[];
 }
 
-const TagPaginatedItems: React.FC<PaginatedItemsProps> = ({ itemsPerPage }) => {
+const TagPaginatedItems: React.FC<PaginatedItemsProps> = ({
+  usingTagMember,
+  itemsPerPage,
+}) => {
+  const items = usingTagMember;
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = items.slice(itemOffset, endOffset);
@@ -51,25 +39,27 @@ const TagPaginatedItems: React.FC<PaginatedItemsProps> = ({ itemsPerPage }) => {
   };
 
   return (
-    <>
+    <div className="flex flex-col h-[620px] justify-between">
       <ul className="">
         <Items currentItems={currentItems} />
       </ul>
-      <ReactPaginate
-        breakLabel="..."
-        nextLabel=">"
-        nextLinkClassName="text-white hover:text-red-600"
-        className="flex justify-evenly"
-        pageLinkClassName="text-white hover:text-red-600"
-        activeLinkClassName="text-red-600 underline decoration-red-600"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={5}
-        pageCount={pageCount}
-        previousLabel="<"
-        previousLinkClassName="text-white hover:text-red-600"
-        renderOnZeroPageCount={null}
-      />
-    </>
+      <div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          nextLinkClassName="text-white hover:text-red-600"
+          className="flex justify-center text-xl"
+          pageLinkClassName="mx-2 text-white hover:text-red-600"
+          activeLinkClassName="font-extrabold border-b-2 border-white"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="<"
+          previousLinkClassName="text-white hover:text-red-600"
+          renderOnZeroPageCount={null}
+        />
+      </div>
+    </div>
   );
 };
 
