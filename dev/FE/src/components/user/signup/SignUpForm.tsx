@@ -18,8 +18,9 @@ const SignUpForm = () => {
     if (!errorMessage) {
       // TODO: 회원 가입 처리
       console.log('가입 가능');
+    } else {
+      alert(errorMessage);
     }
-    alert(errorMessage);
   };
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
