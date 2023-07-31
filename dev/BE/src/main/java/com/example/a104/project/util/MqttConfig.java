@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MqttConfig implements MqttCallback {
     private MqttClient mqttClient;
-    private MqttClient client;
     private MqttConnectOptions mqttOptions;
 
     //clientId는 broker가 클라이언트를 식별하기 위한 문자열 - 고유
@@ -16,7 +15,6 @@ public class MqttConfig implements MqttCallback {
             mqttOptions.setCleanSession(true);
             //mqttOptions.setKeepAliveInterval(30);
             //broker의 subscriber하기위한 클라이언트 객체 생성
-            System.out.println("start3");
             mqttClient = new MqttClient(server, clientId);
             System.out.println(mqttClient);
             //클라이언트 객체에 Mqttcallback을 등록- 구독신청 후 적절한 시점에 처리하고 싶은 기능을 구현하고
@@ -78,7 +76,6 @@ public class MqttConfig implements MqttCallback {
         if(arr[2].equals("noshow")){
             System.out.println("노쇼");
             send("esp32/led","on");
-
         }
         else{
             System.out.println("종료를 안찍음");

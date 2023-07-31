@@ -4,6 +4,7 @@ import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+// 사용 안함
 public class TagInfoVoId implements Serializable {
 
     @Column(name = "tag_date")
