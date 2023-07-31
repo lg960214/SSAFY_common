@@ -76,8 +76,10 @@ function NoNavbarLayout() {
 
 function UserLayout() {
   return (
-    <div>
-      <Outlet />
+    <div className="bg-UserBg min-h-[840px]">
+      <div className="w-[360px] mx-auto">
+        <Outlet />
+      </div>
       <UserNavBar />
     </div>
   );
@@ -85,7 +87,7 @@ function UserLayout() {
 
 function NoNavbarUserLayout() {
   return (
-    <div>
+    <div className="w-[360px] mx-auto">
       <Outlet />
     </div>
   );
