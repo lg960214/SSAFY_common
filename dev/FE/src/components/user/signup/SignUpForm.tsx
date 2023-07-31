@@ -1,6 +1,6 @@
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
-import { useState, FormEvent, ChangeEvent } from 'react';
+import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
 
 const SignUpForm = () => {
   const [name, setName] = useState<string>('');
@@ -9,11 +9,17 @@ const SignUpForm = () => {
   const [passwordCheck, setPasswordCheck] = useState<string>('');
   const [phoneNumber, setPhoneNumber] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-  const [gender, setGender] = useState<string>('남');
+  const [gender, setGender] = useState<string>('');
+
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    console.log(`id: ${id}, Password: ${password}`);
+    if (!errorMessage) {
+      // TODO: 회원 가입 처리
+      console.log('가입 가능');
+    }
+    alert(errorMessage);
   };
 
   const handleNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +45,56 @@ const SignUpForm = () => {
   const handleEmailChange = (event: ChangeEvent<HTMLInputElement>) => {
     setEmail(event.target.value);
   };
+
+  const handleMaleClick = () => {
+    setGender('남');
+  };
+
+  const handleFemaleClick = () => {
+    setGender('여');
+  };
+
+  useEffect(() => {
+    // 모든 필드가 채워졌는지 확인
+    if (
+      !name ||
+      !id ||
+      !password ||
+      !passwordCheck ||
+      !phoneNumber ||
+      !email ||
+      !gender
+    ) {
+      setErrorMessage('모든 필드를 채워주세요.');
+      return;
+    }
+
+    // ID가 알파벳과 숫자로만 구성되어 있는지 확인
+    if (!/^[A-Za-z0-9]+$/.test(id)) {
+      setErrorMessage('ID는 알파벳과 숫자로만 구성되어야 합니다.');
+      return;
+    }
+
+    // 비밀번호의 길이가 8자 이상 15자 이하인지 확인
+    if (password.length < 8 || password.length > 15) {
+      setErrorMessage('비밀번호는 8자 이상 15자 이하이어야 합니다.');
+      return;
+    }
+
+    // 비밀번호가 일치하는지 확인
+    if (password !== passwordCheck) {
+      setErrorMessage('비밀번호가 일치하지 않습니다.');
+      return;
+    }
+
+    // 전화번호 형식이 맞는지 확인
+    if (!/^01([0|1|6|7|8|9])-([0-9]{3,4})-([0-9]{4})$/.test(phoneNumber)) {
+      setErrorMessage('전화번호 형식이 올바르지 않습니다.');
+      return;
+    }
+    setErrorMessage('');
+  }, [name, id, password, passwordCheck, phoneNumber, email, gender]);
+
   return (
     <form className="flex flex-col items-center" onSubmit={handleSubmit}>
       <FormInput
@@ -77,7 +133,12 @@ const SignUpForm = () => {
         onChange={handleEmailChange}
         placeholder="이메일"
       />
-      <div className="my-10">
+      <GenderSelectButton
+        onMaleClick={handleMaleClick}
+        onFemaleClick={handleFemaleClick}
+        gender={gender}
+      />
+      <div className="my-5">
         <SubmitButton
           title="회 원 가 입"
           color="CustomNavy"
@@ -90,3 +151,36 @@ const SignUpForm = () => {
 };
 
 export default SignUpForm;
+
+interface GenderSelectButtonProps {
+  gender: string;
+  onMaleClick: () => void;
+  onFemaleClick: () => void;
+}
+
+const GenderSelectButton = ({
+  gender,
+  onMaleClick,
+  onFemaleClick,
+}: GenderSelectButtonProps) => {
+  const selectedClass =
+    'bg-CustomOrange text-white mx-2 my-2 px-10 py-2 rounded-xl';
+  const unSelectedClass =
+    'text-gray-400 bg-white mx-2 my-2 px-10 py-2 rounded-xl';
+  return (
+    <div className="flex ">
+      <div
+        onClick={onMaleClick}
+        className={gender === '남' ? selectedClass : unSelectedClass}
+      >
+        남
+      </div>
+      <div
+        onClick={onFemaleClick}
+        className={gender === '여' ? selectedClass : unSelectedClass}
+      >
+        여
+      </div>
+    </div>
+  );
+};
