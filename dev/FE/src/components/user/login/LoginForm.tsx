@@ -1,4 +1,5 @@
 import FormInput from '@/components/common/FormInput';
+import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent } from 'react';
 
 const LoginForm = () => {
@@ -32,9 +33,12 @@ const LoginForm = () => {
         placeholder="비밀번호"
       />
       <div className="my-10">
-        <button className="bg-CustomOrange text-white w-[200px]" type="submit">
-          로 그 인
-        </button>
+        <SubmitButton
+          title="로 그 인"
+          color="CustomOrange"
+          textColor="white"
+          width="[200px]"
+        />
       </div>
     </form>
   );

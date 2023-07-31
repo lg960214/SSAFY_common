@@ -10,7 +10,7 @@ interface FormInputProps {
 const FormInput = ({ type, value, onChange, placeholder }: FormInputProps) => {
   return (
     <input
-      className="my-3 px-5 py-2 rounded-xl"
+      className="my-2 px-5 py-2 rounded-xl"
       type={type}
       value={value}
       onChange={onChange}
