@@ -44,23 +44,27 @@ void beep(int duration = 250) {
 
 // RFID 태그 UID 읽기
 String getRFIDTagUID() {
-  String tagUID;
-  for (int i = 0; i < rfid.uid.size; i++) {
-    tagUID += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
-    tagUID += String(rfid.uid.uidByte[i], HEX);
-  }
-  return tagUID;
+  //if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
+    // RFID 태그 UID를 문자열로 변환
+    String tagUID;
+    for (int i = 0; i < rfid.uid.size; i++) {
+      tagUID += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
+      tagUID += String(rfid.uid.uidByte[i], HEX);
+    }
+    Serial.println(tagUID);
+    return tagUID;
+  //}
 }
 
 // HTTP POST 요청 보내기
 void sendPostRequest(const String& tagUID) {
   HTTPClient http;
-  http.begin("http://i9a104.p.ssafy.io:8080/sdata");
+  http.begin("http://i9a104.p.ssafy.io:8080/tags");
   http.addHeader("Content-Type", "application/json");
   
   StaticJsonDocument<200> doc;
-  doc["RFID_Tag_Type"] = rfid.PICC_GetTypeName(rfid.PICC_GetType(rfid.uid.sak));
-  doc["RFID_Tag_UID"] = tagUID;
+  doc["device_code"] = tagUID;
+  doc["reader"] = 1111;
   
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);
@@ -89,10 +93,13 @@ void setup() {
 }
 
 void loop() {
-  if (WiFi.status() == WL_CONNECTED && rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
-    beep();
-    String tagUID = getRFIDTagUID();
-    sendPostRequest(tagUID);
+  if (WiFi.status() == WL_CONNECTED) {
+    Serial.println("Please tag your band");
+    if(rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()){
+      beep();
+      String tagUID = getRFIDTagUID();
+      sendPostRequest(tagUID);
+    }
   } 
   else {
     Serial.println("Error in WiFi connection or RFID reading.");

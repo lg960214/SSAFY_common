@@ -14,7 +14,7 @@ const int ledPinMax = 22; // LED가 연결된 핀 번호
 const int movePin = 17; // 진동센서가 연결된 핀 번호
 
 // 장치 및 리더 번호 설정
-const char* deviceNum = "23145C09"; // 53E26709
+const char* deviceNum = "23145c09"; // 53E26709
 const char* readerNum = "1111";     // 2222
 
 
@@ -66,7 +66,7 @@ void handleReceivedMessage(char* topic, byte* payload, unsigned int length) {
   Serial.print("Message: ");
   Serial.println(message);
 
-  if (message == "on") {
+  if (message == "your turn") {
     digitalWrite(ledPin, HIGH);
     digitalWrite(movePin, HIGH);
     // led가 켜지면 2분 카운트 시작
@@ -92,7 +92,7 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
     if (client.connect(clientId)) {
       Serial.println("connected");
-      client.subscribe("esp32/led");  // Topic
+      client.subscribe("23145c09");  // Topic
     } 
     else {
       Serial.print("failed, rc=");
