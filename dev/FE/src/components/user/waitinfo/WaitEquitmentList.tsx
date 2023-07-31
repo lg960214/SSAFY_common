@@ -28,6 +28,7 @@ const WaitEquitmentList = ({
       {filterEquipment.map((item) => {
         return (
           <EquipmentButton
+            key={item}
             handlePickEquipment={handlePickEquipment}
             equipment={item}
           />

@@ -44,7 +44,7 @@ const App: React.FC = () => {
             <Route path="/user" element={<UserLayout />}>
               <Route path="record" element={<RecordPage />} />
               <Route path="record/:month" element={<MonthRecordPage />} />
-              <Route path="infomation" element={<WaitInfoPage />} />
+              <Route path="information" element={<WaitInfoPage />} />
             </Route>
             <Route path="/user" element={<NoNavbarUserLayout />}>
               <Route path="login" element={<LoginPage />} />
