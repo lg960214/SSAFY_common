@@ -9,6 +9,7 @@ import lombok.Data;
     public class TokenDataResponse<T> {
         private String token;
         private String subject;
+        private String name;
         private String issued_time;
         private String expired_time;
     }
