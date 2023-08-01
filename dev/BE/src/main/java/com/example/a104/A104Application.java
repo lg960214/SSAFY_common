@@ -11,8 +11,8 @@ public class A104Application {
 
         SpringApplication.run(A104Application.class, args);
         MqttConfig mqtt = new MqttConfig();
-        //mqtt.init("tcp://localhost:1883","backend").subscriber("sub");
-        mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
+        mqtt.init("tcp://localhost:1883","backend").subscriber("sub");
+        //mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
     }
 
 }

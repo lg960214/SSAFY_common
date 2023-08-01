@@ -1,9 +1,6 @@
 package com.example.a104.project.controller;
 
-import com.example.a104.project.entity.TokenDataResponse;
-import com.example.a104.project.entity.TokenResponse;
-import com.example.a104.project.entity.UserDateVo;
-import com.example.a104.project.entity.UserVo;
+import com.example.a104.project.entity.*;
 import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
 import com.example.a104.project.util.JwtTokenProvider;
@@ -27,7 +24,15 @@ public class UserController {
     private final UserService userService;
     private final UserDateService userDateService;
 
-
+    @GetMapping("records")
+    public List<TagInfoVo> userDate(@RequestHeader(value = "Authorization") String token, @RequestParam String date){
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        String id = (String) claims.get("sub");
+        int userId = userDateService.createUserId(id);
+        System.out.println(userId);
+        System.out.println(date);
+        return userService.getUserDate(date,userId);
+    }
     // 헬스장 등록
     @Transactional
     @PutMapping("regist-gym")
