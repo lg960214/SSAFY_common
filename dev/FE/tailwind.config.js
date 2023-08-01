@@ -18,4 +18,9 @@ export default {
     },
     plugins: [],
   },
+  variants: {
+    extend: {
+      underline: ['hover'],
+    },
+  },
 };
