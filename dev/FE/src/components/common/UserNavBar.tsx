@@ -1,5 +1,9 @@
 const UserNavBar = () => {
-  return <div className="bg-blue-400 fixed bottom-0">UserNavBar</div>;
+  return (
+    <div className="fixed bottom-0 h-[100px] max-w bg-black text-white">
+      UserNavBar
+    </div>
+  );
 };
 
 export default UserNavBar;
