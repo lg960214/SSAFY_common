@@ -128,16 +128,28 @@ const EquipmentPage = () => {
     setIsOnEdit(false);
   };
 
+  const handleRefreshClick = () => {
+    setWholeData(data);
+  };
+
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
         <div className="flex justify-between">
           <ZoneChoice zoneList={zoneList} onZoneClick={handleZoneClick} />
           {isOnEdit ? (
-            <EditSaveButton
-              title="저장"
-              onClick={() => setIsSaveModalOn(true)}
-            />
+            <div className="flex">
+              <img
+                className="mr-3"
+                onClick={handleRefreshClick}
+                src="/img/equipments/refresh.svg"
+                alt="초기화"
+              />
+              <EditSaveButton
+                title="저장"
+                onClick={() => setIsSaveModalOn(true)}
+              />
+            </div>
           ) : null}
         </div>
         <div className="flex justify-between">
