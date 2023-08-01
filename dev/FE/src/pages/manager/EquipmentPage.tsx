@@ -33,7 +33,7 @@ const EquipmentPage = () => {
   const [isRegisterModalOn, setIsRegisterModalOn] = useState<boolean>(false);
   const [isSaveModalOn, setIsSaveModalOn] = useState<boolean>(false);
 
-  const { data, isLoading } = useQuery(['readers'], getReaders);
+  const { data, isLoading } = useQuery<Reader[]>(['readers'], getReaders);
   const mutatation = useMutation(() => putReaders(wholeData), {
     onSuccess: () => {
       console.log('readers PUT 성공');
@@ -45,7 +45,7 @@ const EquipmentPage = () => {
 
   useEffect(() => {
     if (!isLoading) {
-      setWholeData(data);
+      setWholeData(data ?? []);
     }
   }, [data, isLoading]);
 
@@ -129,7 +129,7 @@ const EquipmentPage = () => {
   };
 
   const handleRefreshClick = () => {
-    setWholeData(data);
+    setWholeData(data ?? []);
   };
 
   return (
@@ -140,7 +140,7 @@ const EquipmentPage = () => {
           {isOnEdit ? (
             <div className="flex">
               <img
-                className="mr-3"
+                className="mr-3 hover:cursor-pointer"
                 onClick={handleRefreshClick}
                 src="/img/equipments/refresh.svg"
                 alt="초기화"
