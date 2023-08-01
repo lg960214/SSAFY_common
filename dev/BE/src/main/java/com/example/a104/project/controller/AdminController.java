@@ -29,10 +29,10 @@ public class AdminController {
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")
-    public List<UserVo> search(@RequestHeader(value = "Authorization") String token,@RequestParam String keyword){
+    public List<UserVo> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.search(keyword,gymCode);
+        List<UserVo> users = adminService.search(keyword, gymCode);
         System.out.println(users);
         return users;
     }
@@ -40,7 +40,7 @@ public class AdminController {
     // 헬스장 회원 삭제
     @Transactional
     @PutMapping("users")
-    public String delete(@RequestBody Map<String,String> map){
+    public String delete(@RequestBody Map<String, String> map) {
         // 회원의 gymCode 와 regist 모두 null 로 초기화
         userService.DeleteUser(map.get("id"));
         // 회원의 탈퇴 날짜 저장
@@ -53,11 +53,11 @@ public class AdminController {
     @Modifying
     @Transactional
     @PutMapping("approval")
-    public String approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String,String> map){
+    public String approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, String> map) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         String id = map.get("id");
-        adminService.approval(1,id);
+        adminService.approval(1, id);
 
         // 승인 후 승인 날짜 저장
         int userId = userDateService.createUserId(id);
@@ -67,7 +67,7 @@ public class AdminController {
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
     @GetMapping("unauthorized-users")
-    public List<UserVo> unautorizedUsers(@RequestHeader(value = "Authorization") String token){
+    public List<UserVo> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         List<UserVo> users = adminService.unauthorizedUser(gymCode);
@@ -75,8 +75,8 @@ public class AdminController {
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
-   @GetMapping("users")
-    public List<UserVo> userList(@RequestHeader(value = "Authorization") String token){
+    @GetMapping("users")
+    public List<UserVo> userList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         System.out.println(gymCode);
@@ -86,7 +86,7 @@ public class AdminController {
     }
 
     @PostMapping("login")
-    public TokenResponse login(@RequestBody Map<String,String> map) {
+    public TokenResponse login(@RequestBody Map<String, String> map) {
         List<AdminVo> admin = adminService.login(map.get("id"));
 
         TokenDataResponse tokenDataResponse;
@@ -95,7 +95,8 @@ public class AdminController {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
-                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(),admin.get(0).getName(), claims.getIssuedAt().toString(), claims.getExpiration().toString());
+                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),
+                        claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 
                 return tokenResponse;
@@ -107,26 +108,25 @@ public class AdminController {
         tokenResponse = new TokenResponse("200", "FAIL", "FAIL");
         return tokenResponse;
     }
-//        if(admin.size()!=0 && admin.get(0).getPassword().equals(map.get("password")) ){
-//            returnMsg.put("msg","로그인 성공");
-//        }
-//        else{
-//            returnMsg.put("msg","로그인 실패");
-//        }
-//        return returnMsg;
+    // if(admin.size()!=0 && admin.get(0).getPassword().equals(map.get("password"))
+    // ){
+    // returnMsg.put("msg","로그인 성공");
+    // }
+    // else{
+    // returnMsg.put("msg","로그인 실패");
+    // }
+    // return returnMsg;
 
     @PostMapping("create")
-    public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map){
+    public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map) {
         AdminVo admin = AdminVo.builder()
-                .gymCode((int)map.get("code"))
-                .id((String)map.get("id"))
-                .name((String)map.get("name"))
-                .password((String)map.get("password"))
+                .gymCode((int) map.get("code"))
+                .id((String) map.get("id"))
+                .name((String) map.get("name"))
+                .password((String) map.get("password"))
                 .build();
         AdminVo savedAdmin = adminService.createAdmin(admin);
         return new ResponseEntity<>(savedAdmin, HttpStatus.OK);
     }
-
-
 
 }

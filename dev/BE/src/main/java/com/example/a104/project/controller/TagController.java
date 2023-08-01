@@ -1,6 +1,5 @@
 package com.example.a104.project.controller;
 
-
 import com.example.a104.project.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,10 +16,10 @@ public class TagController {
     private final TagService tagService;
 
     @PostMapping
-    public void Tagging(@RequestBody Map<String,String> map){
+    public void Tagging(@RequestBody Map<String, String> map) {
         String deviceCode = map.get("device_code");
         String reader = map.get("reader");
-        tagService.Tagging(deviceCode,reader);
+        tagService.Tagging(deviceCode, reader);
 
     }
 }
