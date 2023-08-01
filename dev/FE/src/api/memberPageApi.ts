@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { MemberInfo } from '@/types/member.type';
+import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
 
 // 로그인 기능 개발후 토큰자리
 const token =
@@ -19,4 +19,18 @@ const getUserLists = async (): Promise<MemberInfo[]> => {
   return response.data;
 };
 
-export { getUserLists };
+// 미승인 회원 리스트 불러오는 api
+const getUnAuthorizedUsers = async (): Promise<UnAuthorizedUser[]> => {
+  const response = await axios.get<UnAuthorizedUser[]>(
+    BASEURL + 'admin/unauthorized-users',
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  console.log('미승인 회원 리스트 불러오기', response.data);
+  return response.data;
+};
+
+export { getUserLists, getUnAuthorizedUsers };

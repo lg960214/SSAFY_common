@@ -10,3 +10,9 @@ export interface MemberInfo {
   sex: string;
   userId: number;
 }
+
+export interface UnAuthorizedUser {
+  name: string;
+  userid: string;
+  access_user: string | null;
+}

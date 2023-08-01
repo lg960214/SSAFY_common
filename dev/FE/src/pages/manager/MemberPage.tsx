@@ -3,9 +3,9 @@ import { TagTableList } from '@/components/manager/member/TagTableList';
 import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
 import ApproveContent from '@/components/manager/member/ApproveContent';
-import { getUserLists } from '@/api/memberPageApi';
+import { getUserLists, getUnAuthorizedUsers } from '@/api/memberPageApi';
 import { useQuery } from '@tanstack/react-query';
-import { MemberInfo } from '@/types/member.type';
+import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
 
 // 더미 데이터
 // import dummy from '@/components/manager/member/dummy.json';
@@ -27,15 +27,25 @@ const MemberPage = () => {
     }
   };
 
+  // 회원리스트 불러오기
   const { data, status } = useQuery<MemberInfo[]>(
     ['memberLists'],
     getUserLists,
   );
 
+  // 미승인 회원정보 불러오기
+  const { data: unAuthorizedUsers, status: unAuthorizedUsersStatus } = useQuery<
+    UnAuthorizedUser[]
+  >(['unAuthorizedUsers'], getUnAuthorizedUsers);
+
   if (status === 'loading') return <div>로딩중</div>;
   if (status === 'error') return <div>로딩에러</div>;
   if (status === 'success') {
     console.log(data, '완료');
+  }
+
+  if (unAuthorizedUsersStatus === 'loading') {
+    console.log('에휴');
   }
 
   return (
@@ -65,7 +75,7 @@ const MemberPage = () => {
         <MemberTableList memberInfoLists={data} checkText={isSearchText} />
         <div>
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
-            <ApproveContent />
+            <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
           </Modal>
           <button
             className="mt-2 bg-CustomOrange text-white text-lg float-right"
