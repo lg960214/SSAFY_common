@@ -72,7 +72,7 @@ void handleReceivedMessage(char* topic, byte* payload, unsigned int length) {
     // led가 켜지면 2분 카운트 시작
     ledOn = true;
     ledOnTime = millis();
-  } 
+  } //****시작 태그 했을 때 off메시지 받는 거 다시 확인 필요
   else if (message == "off") {
     digitalWrite(ledPin, LOW);
     digitalWrite(movePin, LOW);
@@ -114,7 +114,13 @@ void handleLEDActions(void* parameter) {
       // deviceNum&readerNum&noshow 형식으로 메시지 저장
       snprintf(message, sizeof(message), "%s&%s&noshow", deviceNum, readerNum);
       // topic "esp32/status"으로 메시지 송신
-      client.publish("esp32/status", message);
+       bool result = client.publish("esp32", message);
+      if(result) {
+          Serial.println("Message successfully published!");
+      } else {
+          Serial.println("Failed to publish the message.");
+      }
+      Serial.println(message);
     }
 
     if (ledOff && (millis() - offTimestamp >= offDuration)) {
@@ -123,7 +129,7 @@ void handleLEDActions(void* parameter) {
       // deviceNum&readerNum&notag 형식으로 메시지 저장
       snprintf(message, sizeof(message), "%s&%s&notag", deviceNum, readerNum);
       // topic "esp32/status"으로 메시지 송신
-      client.publish("esp32/status", message);
+      client.publish("esp32", message);
       // max시간(20분)이 다되었음을 led를 깜빡여 알려줌
       for(int t=0; t<5; t++){
         digitalWrite(ledPinMax, HIGH);
