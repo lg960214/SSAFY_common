@@ -79,10 +79,40 @@ const deviceLists = async (): Promise<Device[]> => {
   return response.data;
 };
 
+// 회원승인, 해제 api
+const changeUserGym = async ({
+  userid,
+  check,
+}: {
+  userid: number;
+  check: boolean;
+}) => {
+  const url = check ? 'users/' : 'approval/';
+  const response = await axios.put(
+    BASEURL + 'admin/' + url,
+    {
+      userid: userid,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+  console.log(url);
+  if (url === 'approval/') {
+    console.log('회원 승인', response);
+  } else {
+    console.log('회원 삭제', response);
+  }
+  return response.data;
+};
+
 export {
   getUserLists,
   getUnAuthorizedUsers,
   deleteDevice,
   matchDevice,
   deviceLists,
+  changeUserGym,
 };

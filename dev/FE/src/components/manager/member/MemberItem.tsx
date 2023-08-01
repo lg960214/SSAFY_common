@@ -3,7 +3,6 @@ import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
-// import { useQuery, useMutation } from '@tanstack/react-query';
 import { deleteDevice } from '@/api/memberPageApi';
 import { useMutation } from '@tanstack/react-query';
 

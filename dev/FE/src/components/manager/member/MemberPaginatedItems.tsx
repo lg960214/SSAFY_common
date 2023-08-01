@@ -72,7 +72,6 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
           previousLabel="<"
           previousLinkClassName="text-white hover:text-red-600"
           renderOnZeroPageCount={null}
-          forcePage={pageIndex}
         />
       </div>
     </div>

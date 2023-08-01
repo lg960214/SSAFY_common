@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TagTableList } from '@/components/manager/member/TagTableList';
 import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
@@ -13,6 +13,7 @@ import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
+  const [userListsData, setUserListsData] = useState<MemberInfo[]>([]);
 
   const handleInputSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsSearchText(e.target.value);
@@ -32,21 +33,17 @@ const MemberPage = () => {
     ['memberLists'],
     getUserLists,
   );
+  // 회원리스트 추적
+  useEffect(() => {
+    if (status == 'success' && data) {
+      setUserListsData(data);
+    }
+  }, [data, status]);
 
   // 미승인 회원정보 불러오기
   const { data: unAuthorizedUsers, status: unAuthorizedUsersStatus } = useQuery<
     UnAuthorizedUser[]
   >(['unAuthorizedUsers'], getUnAuthorizedUsers);
-
-  if (status === 'loading') return <div>로딩중</div>;
-  if (status === 'error') return <div>로딩에러</div>;
-  if (status === 'success') {
-    console.log(data, '완료');
-  }
-
-  if (unAuthorizedUsersStatus === 'loading') {
-    console.log('에휴');
-  }
 
   return (
     <div
@@ -56,7 +53,7 @@ const MemberPage = () => {
     >
       <div className="w-[404px]">
         <TableMenu name="태그 현황" />
-        <TagTableList memberInfoLists={data} />
+        <TagTableList memberInfoLists={userListsData} />
       </div>
       <div className="w-[908px]">
         <div className="flex justify-between">
@@ -72,7 +69,10 @@ const MemberPage = () => {
           </div>
         </div>
 
-        <MemberTableList memberInfoLists={data} checkText={isSearchText} />
+        <MemberTableList
+          memberInfoLists={userListsData}
+          checkText={isSearchText}
+        />
         <div>
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
             <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
