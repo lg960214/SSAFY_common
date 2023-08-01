@@ -1,16 +1,15 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import './recordcalendar.css';
 import 'react-calendar/dist/Calendar.css'; // css import
 import exerciseList from './RecordData';
 
 type ValuePiece = Date | null;
 
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-type RecordCalendarProps = {
+interface RecordCalendarProps {
   setPickDate: React.Dispatch<React.SetStateAction<string>>;
-};
+}
 
 const RecordCalendar = ({ setPickDate }: RecordCalendarProps) => {
   const [today, onChange] = useState<Value>(new Date());
@@ -37,7 +36,12 @@ const RecordCalendar = ({ setPickDate }: RecordCalendarProps) => {
               (x) => x.tagDate === moment(date).format('YYYY-MM-DD'),
             )
           ) {
-            html.push(<div key={date.toString()} className="dot mx-auto" />);
+            html.push(
+              <div
+                key={date.toString()}
+                className="dot w-2 h-2 bg-green-500 rounded-full mx-auto"
+              />,
+            );
           } else {
             html.push(<div key={date.toString()} className="w-2 h-2" />);
           }
