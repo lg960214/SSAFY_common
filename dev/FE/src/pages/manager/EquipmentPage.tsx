@@ -140,7 +140,7 @@ const EquipmentPage = () => {
           {isOnEdit ? (
             <div className="flex">
               <img
-                className="mr-3"
+                className="mr-3 hover:cursor-pointer"
                 onClick={handleRefreshClick}
                 src="/img/equipments/refresh.svg"
                 alt="초기화"
