@@ -25,6 +25,7 @@ void initializeWiFi() {
     Serial.println("Connecting to WiFi..");
   }
   Serial.println("Connected to the WiFi network");
+  Serial.println("Please tag your band");
 }
 
 // RFID 초기화
@@ -94,7 +95,7 @@ void setup() {
 
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
-    Serial.println("Please tag your band");
+    
     if(rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()){
       beep();
       String tagUID = getRFIDTagUID();
@@ -104,5 +105,5 @@ void loop() {
   else {
     Serial.println("Error in WiFi connection or RFID reading.");
   }
-  delay(2000);
+  delay(1000);
 }

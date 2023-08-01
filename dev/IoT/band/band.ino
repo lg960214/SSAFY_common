@@ -6,7 +6,7 @@ const char* ssid = "alveo";
 const char* password = "905612yy@@";
 const char* mqttServer = "13.124.11.62"; // MQTT 브로커의 IP 주소
 const int mqttPort = 1883; // MQTT 브로커의 포트 번호
-const char* clientId = "esp32";
+const char* clientId = "esp23145c09";
 
 // 핀 번호 설정
 const int ledPin = 18; // LED가 연결된 핀 번호
