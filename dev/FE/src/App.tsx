@@ -87,7 +87,7 @@ function UserLayout() {
 
 function NoNavbarUserLayout() {
   return (
-    <div>
+    <div className="w-[360px] mx-auto">
       <Outlet />
     </div>
   );
