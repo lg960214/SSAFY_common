@@ -104,10 +104,12 @@ public class MqttConfig implements MqttCallback {
             readerService.deleteReservation(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
             List<ReservationVo> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
-            int next = list.get(0).getUserId();
-            String deviceCode = userRepository.findByUserId(next).getDeviceCode();
-            // 3. 해당 deviceCode(Topic)으로 메세지 전송
-            send(deviceCode,"your turn");
+            if( list.size() != 0) {
+                int next = list.get(0).getUserId();
+                String deviceCode = userRepository.findByUserId(next).getDeviceCode();
+                // 3. 해당 deviceCode(Topic)으로 메세지 전송
+                send(deviceCode, "your turn");
+            }
         }
         else{
             System.out.println("종료를 안찍음");
