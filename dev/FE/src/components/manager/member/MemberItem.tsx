@@ -4,7 +4,7 @@ import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
 // import { useQuery, useMutation } from '@tanstack/react-query';
-import { deleteDevice, matchDevice } from '@/api/memberPageApi';
+import { deleteDevice } from '@/api/memberPageApi';
 import { useMutation } from '@tanstack/react-query';
 
 export const MemberItem = (item: MemberInfo) => {
@@ -43,8 +43,8 @@ export const MemberItem = (item: MemberInfo) => {
   );
 };
 
-const createTagRegi = (id: string, tagStatus: string | null) => {
-  const deleteDeviceMutation = useMutation(() => deleteDevice(id, tagStatus), {
+const createTagRegi = (id: string, deviceCode: string | null) => {
+  const deleteDeviceMutation = useMutation(() => deleteDevice(id, deviceCode), {
     onSuccess: () => {
       console.log('성공');
     },
@@ -62,10 +62,10 @@ const createTagRegi = (id: string, tagStatus: string | null) => {
   };
 
   const dummyClose = () => {
-    deleteDeviceMutation.mutate;
+    deleteDeviceMutation.mutate();
   };
 
-  if (tagStatus === null) {
+  if (deviceCode === null) {
     return (
       <>
         <TagRegiButton
@@ -81,7 +81,7 @@ const createTagRegi = (id: string, tagStatus: string | null) => {
   } else {
     return (
       <div className="flex justify-evenly">
-        <span className="font-bold">{tagStatus}</span>
+        <span className="font-bold">{deviceCode}</span>
         <TagRegiButton handleEvent={dummyClose} name="해제" color="indigo" />
       </div>
     );
