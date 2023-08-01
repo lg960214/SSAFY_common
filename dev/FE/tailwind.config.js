@@ -11,6 +11,7 @@ export default {
         CustomGray: '#D9D9D9',
         CustomBg: '#F2F2F2',
         CustomLightNavy: '#323554',
+        UserBg: '#E5E5E5',
       },
       boxShadow: {
         'inner-deep': 'inset 0 3px 3px rgba(0, 0, 0, 0.5)',
