@@ -24,8 +24,8 @@ public class TagService {
     private final UserRepository userRepository;
     public void Tagging(String deviceCode, String reader){
         MqttConfig mqtt = new MqttConfig();
-        mqtt.init("tcp://localhost:1883","backend");
-        //mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
+        //mqtt.init("tcp://localhost:1883","backend");
+        mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
         ReaderStateVo readerState = readerStateRepository.findByReader(reader);
         List<ReservationVo> reservation = reservationRepository.findByReaderOrderByReservationAsc(reader);
         UserVo user = userRepository.findByDeviceCode(deviceCode);

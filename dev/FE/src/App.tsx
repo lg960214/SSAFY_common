@@ -76,8 +76,8 @@ function NoNavbarLayout() {
 
 function UserLayout() {
   return (
-    <div className="bg-UserBg min-h-[840px] pt-[20px]">
-      <div className="w-[360px] mx-auto">
+    <div>
+      <div className="mx-auto w-[360px]">
         <Outlet />
       </div>
       <UserNavBar />
