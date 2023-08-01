@@ -7,7 +7,7 @@ const UserNavBar = () => {
       <NavLink className="w-[100px]" to="record/">
         내 운동기록
       </NavLink>
-      <div className="fontBungee w-[100px]">
+      <div className="fontBungee text-xl w-[100px]">
         <p className="tracking-widest">Wait</p>
         <p>Weight</p>
       </div>
