@@ -1,13 +1,6 @@
-interface MemberInfomationProps {
-  name: string;
-  userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
-}
+import { MemberInfo } from '@/types/member.type';
 
-export const MemberInfomation = (item: MemberInfomationProps) => {
+export const MemberInfomation = (item: MemberInfo) => {
   const infoTitle = [
     '이름',
     '전화번호',
@@ -39,25 +32,25 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
             <span className="">{item.name}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.number}</span>
+            <span className="">{item.phoneNumber}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">아이디 받는 api가 없어요</span>
+            <span className="">{item.id}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.userid}</span>
+            <span className="">{item.userId}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">이메일 받는 api가 없어요</span>
+            <span className="">{item.email}</span>
           </p>
           <p className="h-12 flex items-center">
             <span className="">{item.sex}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.date}</span>
+            <span className="">{item.regist}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">가입일 받는 api가 없어요</span>
+            <span className="">{item.regist}</span>
           </p>
         </div>
       </div>

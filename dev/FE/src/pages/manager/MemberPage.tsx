@@ -3,9 +3,12 @@ import { TagTableList } from '@/components/manager/member/TagTableList';
 import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
 import ApproveContent from '@/components/manager/member/ApproveContent';
+import { getUserLists } from '@/api/memberPageApi';
+import { useQuery } from '@tanstack/react-query';
+import { MemberInfo } from '@/types/member.type';
 
 // 더미 데이터
-import dummy from '@/components/manager/member/dummy.json';
+// import dummy from '@/components/manager/member/dummy.json';
 
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
@@ -23,6 +26,18 @@ const MemberPage = () => {
       setIsApproveModal(false);
     }
   };
+
+  const { data, status } = useQuery<MemberInfo[]>(
+    ['memberLists'],
+    getUserLists,
+  );
+
+  if (status === 'loading') return <div>로딩중</div>;
+  if (status === 'error') return <div>로딩에러</div>;
+  if (status === 'success') {
+    console.log(data, '완료');
+  }
+
   return (
     <div
       onClick={closeModal}
@@ -31,7 +46,7 @@ const MemberPage = () => {
     >
       <div className="w-[404px]">
         <TableMenu name="태그 현황" />
-        <TagTableList memberInfoLists={dummy.data} />
+        <TagTableList memberInfoLists={data} />
       </div>
       <div className="w-[908px]">
         <div className="flex justify-between">
@@ -47,10 +62,7 @@ const MemberPage = () => {
           </div>
         </div>
 
-        <MemberTableList
-          memberInfoLists={dummy.data}
-          checkText={isSearchText}
-        />
+        <MemberTableList memberInfoLists={data} checkText={isSearchText} />
         <div>
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
             <ApproveContent />

@@ -1,8 +1,12 @@
 export interface MemberInfo {
+  deviceCode: string | null;
+  email: string;
+  gymCode: number;
+  id: string;
   name: string;
-  userid: string;
-  number: string;
+  password: string;
+  phoneNumber: string;
+  regist: number;
   sex: string;
-  date: number;
-  tag: string | null;
+  userId: number;
 }
