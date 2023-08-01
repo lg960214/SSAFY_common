@@ -6,7 +6,16 @@ interface AuthProviderProps {
 }
 
 const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  const loginCheck = () => {
+    const loginData = localStorage.getItem('managerToken');
+    if (loginData === null) {
+      return false;
+    } else {
+      return true;
+    }
+  };
+
+  const [isLoggedIn, setLoggedIn] = useState(loginCheck);
 
   return (
     <AuthContext.Provider value={{ isLoggedIn, setLoggedIn }}>

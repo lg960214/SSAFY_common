@@ -5,7 +5,7 @@ interface LoginData {
 }
 async function ManagerLoginAPI(loginData: LoginData) {
   try {
-    const url = 'http://I9A104.p.ssafy.io:8080/admin/login';
+    const url = 'http://I9A104.p.ssafy.io:8081/admin/login';
     const response = await axios.post(url, loginData, {
       headers: {
         'Content-Type': 'application/json',
