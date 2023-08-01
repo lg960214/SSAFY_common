@@ -10,81 +10,8 @@ import EditSaveButton from '@/components/manager/equiment/editSaveButton';
 import Modal from '@/components/common/Modal';
 import RegisterModalChildren from '@/components/manager/equiment/RegisterModalChildren';
 import ConfirmModal from '@/components/common/ConfirmModal';
-
-const readerDummy = [
-  {
-    region: 'A',
-    reader: 'WW809',
-    name: '벤치프레스1',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW333',
-    name: '벤치프레스2',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW555',
-    name: '랫풀다운',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW129',
-    name: '레그프레스',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW166',
-    name: '스쿼트랙',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW999',
-    name: '덤벨',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW113',
-    name: '풀업바',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW134',
-    name: '런닝머신1',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'issue',
-    reader: 'WW837',
-    name: '런닝머신2',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'issue',
-    reader: 'WW822',
-    name: '런닝머신3',
-    gym_code: 'YS1',
-  },
-  {
-    region: null,
-    reader: 'WW384',
-    name: null,
-    gym_code: 'YS1',
-  },
-  {
-    region: null,
-    reader: 'WW563',
-    name: null,
-    gym_code: 'YS1',
-  },
-];
+import { getReaders } from '@/api/equipmentApi';
+import { useQuery } from '@tanstack/react-query';
 
 const zoneDummy = [
   { name: 'A', isSelected: true },
@@ -94,12 +21,21 @@ const zoneDummy = [
 
 const EquipmentPage = () => {
   const [isOnEdit, setIsOnEdit] = useState<boolean>(false);
-  const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
+  const [wholeData, setWholeData] = useState<Reader[]>([]);
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
   const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
   const [issueZoneData, setIssueZoneData] = useState<Reader[]>([]);
   const [isRegisterModalOn, setIsRegisterModalOn] = useState<boolean>(false);
   const [isSaveModalOn, setIsSaveModalOn] = useState<boolean>(false);
+
+  const { data, isLoading } = useQuery(['readers'], getReaders);
+
+  useEffect(() => {
+    if (!isLoading) {
+      console.log(data);
+      setWholeData(data);
+    }
+  }, [data, isLoading]);
 
   useEffect(() => {
     const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;

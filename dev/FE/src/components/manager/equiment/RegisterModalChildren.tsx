@@ -13,25 +13,27 @@ const RegisterModalChildren = ({
 }: RegisterModalChildrenProps) => {
   const unregisteredReaders = readerData.filter((cur) => cur.region === null);
   return (
-    <div className="bg-white rounded-lg w-[440px] h-[480px] px-4 border-black border-2">
+    <div className="bg-white rounded-lg w-[440px] h-[480px] px-4 border-black border-2 overflow-y-auto">
       <div className="flex justify-evenly items-center h-12 basis-32 text-center border-b-2 border-black">
         <span className="basis-1/2">리더 코드</span>
         <span className="basis-1/2"></span>
       </div>
-      {unregisteredReaders.map((cur) => (
-        <ReaderElement
-          key={cur.reader}
-          reader={cur.reader}
-          onButtonClick={() => {
-            const registerdData = readerData.map((r) => {
-              if (cur.reader === r.reader) {
-                return { ...r, region: currentZone };
-              } else return r;
-            });
-            setWholeData(registerdData);
-          }}
-        />
-      ))}
+      <div className="h-[400px]">
+        {unregisteredReaders.map((cur) => (
+          <ReaderElement
+            key={cur.reader}
+            reader={cur.reader}
+            onButtonClick={() => {
+              const registerdData = readerData.map((r) => {
+                if (cur.reader === r.reader) {
+                  return { ...r, region: currentZone };
+                } else return r;
+              });
+              setWholeData(registerdData);
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };
