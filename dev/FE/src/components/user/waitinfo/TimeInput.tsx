@@ -11,16 +11,6 @@ const TimeInput: React.FC<TimeInputProps> = ({
   setHour,
   setMinute,
 }) => {
-  //   const [hour, setHour] = useState<number>(0);
-  //   const [minute, setMinute] = useState<number>(0);
-
-  //   useEffect(() => {
-  //     const date = new Date();
-  //     const roundedMinute = Math.ceil(date.getMinutes() / 10) * 10;
-  //     setHour(date.getHours());
-  //     setMinute(roundedMinute);
-  //   }, []);
-
   const minutes = Array.from({ length: 6 }, (_, i) => i * 10);
 
   return (
