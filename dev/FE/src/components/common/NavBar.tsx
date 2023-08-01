@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext, FormEvent, ChangeEvent } from 'react';
 import FormInput from './FormInput';
 import { useMutation } from '@tanstack/react-query';
-import ManagerLoginAPI from '@/api/ManagerLoginAPI';
+import managerLoginApi from '@/api/managerLoginApi';
 export default function Root() {
   // 로그인 여부 확인용
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
@@ -40,7 +40,7 @@ export default function Root() {
     setClickedLinks(currentPage);
   }, []);
 
-  const LoginMutation = useMutation(ManagerLoginAPI, {
+  const LoginMutation = useMutation(managerLoginApi, {
     onSuccess: (data) => {
       // 로그인 성공 시 처리할 로직
       const managerToken = {

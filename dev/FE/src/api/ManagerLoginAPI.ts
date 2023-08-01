@@ -3,7 +3,7 @@ interface LoginData {
   id: string;
   password: string;
 }
-async function ManagerLoginAPI(loginData: LoginData) {
+async function managerLoginApi(loginData: LoginData) {
   try {
     const url = 'http://I9A104.p.ssafy.io:8081/admin/login';
     const response = await axios.post(url, loginData, {
@@ -20,4 +20,4 @@ async function ManagerLoginAPI(loginData: LoginData) {
   }
 }
 
-export default ManagerLoginAPI;
+export default managerLoginApi;
