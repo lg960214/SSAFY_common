@@ -1,6 +1,8 @@
 package com.example.a104.project.service;
 
+import com.example.a104.project.entity.TagInfoVo;
 import com.example.a104.project.entity.UserVo;
+import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,7 +13,15 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
+    private final TagInfoRepository tagInfoRepository;
+    public List<TagInfoVo> getUserDate(String date, int userId){
+        List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
+        return userRecords;
+    };
 
+    public UserVo getUser(String deviceCode){
+        return userRepository.findByDeviceCode(deviceCode);
+    }
     public void MatchDevice(String deviceCode,String id){
         userRepository.MatchDevice(deviceCode,id);
     }

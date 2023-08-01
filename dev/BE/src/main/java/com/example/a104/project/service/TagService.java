@@ -24,8 +24,8 @@ public class TagService {
     private final UserRepository userRepository;
     public void Tagging(String deviceCode, String reader){
         MqttConfig mqtt = new MqttConfig();
-        //mqtt.init("tcp://localhost:1883","backend");
-        mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
+        mqtt.init("tcp://localhost:1883","backend");
+        //mqtt.init("tcp://13.124.11.62:1883","backend").subscriber("esp32/status");
         ReaderStateVo readerState = readerStateRepository.findByReader(reader);
         List<ReservationVo> reservation = reservationRepository.findByReaderOrderByReservationAsc(reader);
         UserVo user = userRepository.findByDeviceCode(deviceCode);
@@ -64,6 +64,7 @@ public class TagService {
                                         System.out.println(topic);
                                         mqtt.send(topic,"your turn");
                                         mqtt.send(deviceCode,"end");
+                                        mqtt.close();
                                         System.out.println("다음 사람에게 MQTT 전송!!");
                                         // 위의 토픽으로 다음 순번 사람에게 송신
                                         //
@@ -160,6 +161,7 @@ public class TagService {
                         System.out.println(topic);
                         mqtt.send(topic,"your turn");
                         mqtt.send(deviceCode,"end");
+                        mqtt.close();
                         System.out.println("다음 사람에게 MQTT 전송!!");
                         // 위의 토픽으로 다음 순번 사람에게 송신
                         //
@@ -208,6 +210,7 @@ public class TagService {
                     System.out.println(topic);
                     mqtt.send(topic,"your turn");
                     mqtt.send(deviceCode,"end");
+                    mqtt.close();
                     //=============TOPIC 전송 ========================
                     // 1. 위에서 디바이스코드(= topic)을 알아내었으므로 해당 토픽(=디바이스코드)으로 mqtt 송신
                     // 수신하는 디바이스는 자신 차례가 왔다는 뜻
