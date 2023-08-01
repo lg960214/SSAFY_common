@@ -1,27 +1,65 @@
 import '@/components/common/navbar.css';
 import { NavLink } from 'react-router-dom';
-import { useState, useContext } from 'react';
 import AuthContext from './AuthContext';
 import AuthProvider from './AuthProvider';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useState, useContext, FormEvent, ChangeEvent } from 'react';
+import FormInput from './FormInput';
+import { useMutation } from '@tanstack/react-query';
+import ManagerLoginAPI from '@/api/ManagerLoginAPI';
+
 export default function Root() {
+  // 로그인 여부 확인용
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
+
+  // 라우터 이동시 해당 라우터에 css 활성화하는 로직 (현재 location 확인하여 비교)
   const pathList: string[] = ['/member', '/equipment', '/usage', 'waitlist'];
-  const location = useLocation();
-  const currentPath = location.pathname;
+  const currentPath = useLocation().pathname;
   let currentPage: number = pathList.indexOf(currentPath);
   if (currentPage === -1) {
     currentPage = 3;
   }
-
   const [clickedLinks, setClickedLinks] = useState<number>(currentPage);
-
   const handleAnchorClick = (index: number) => {
     setClickedLinks((): number => {
       return index;
     });
   };
-  const handleLogIn = () => setLoggedIn(!isLoggedIn);
+
+  // 로그인 정보 및 로그인 로직
+  const [managerId, setManagerId] = useState<string>('');
+  const [managerPassword, setManagerPassword] = useState<string>('');
+  const LoginMutation = useMutation(ManagerLoginAPI, {
+    onSuccess: (data) => {
+      // 로그인 성공 시 처리할 로직
+      const managerToken = {
+        token: data.data.token,
+        subject: data.data.subject,
+        name: data.data.name,
+      };
+      localStorage.setItem('managerToken', JSON.stringify(managerToken));
+      setLoggedIn(true);
+      useNavigate()('/member');
+    },
+    onError: () => {
+      // 로그인 실패 시 처리할 로직
+      alert('아이디 또는 비밀번호를 확인하세요!');
+    },
+  });
+  const handleManagerLogIn = (event: FormEvent) => {
+    event.preventDefault();
+    LoginMutation.mutate({ id: managerId, password: managerPassword });
+  };
+
+  const handleManagerIdChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setManagerId(event.target.value);
+  };
+
+  const handleManagerPasswordChange = (
+    event: ChangeEvent<HTMLInputElement>,
+  ) => {
+    setManagerPassword(event.target.value);
+  };
 
   return (
     <AuthProvider>
@@ -73,16 +111,26 @@ export default function Root() {
           <div className="my-auto">
             <ul className="flex items-center">
               <p className="text-white fontBungee text-2xl mx-3 ">ID</p>
-              <input className="inputbox me-4 " type="text" />
+              <FormInput
+                type="text"
+                value={managerId}
+                onChange={handleManagerIdChange}
+                placeholder="아이디"
+              />
               <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
-              <input className="inputbox me-4 " type="text" />
+              <FormInput
+                type="password"
+                value={managerPassword}
+                onChange={handleManagerPasswordChange}
+                placeholder="비밀번호"
+              />
               <button
                 className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
-                onClick={handleLogIn}
+                onClick={handleManagerLogIn}
               >
                 Login
               </button>
-            </ul>
+            </ul>{' '}
           </div>
         )}
       </nav>
