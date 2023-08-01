@@ -21,3 +21,7 @@ export interface aboutDevice {
   deviceCode: string;
   id: string;
 }
+
+export interface Device {
+  deviceCode: string;
+}

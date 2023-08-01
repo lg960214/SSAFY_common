@@ -1,6 +1,5 @@
 import axios from 'axios';
-import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
-import { QueryFunctionContext } from '@tanstack/react-query';
+import { MemberInfo, UnAuthorizedUser, Device } from '@/types/member.type';
 
 // 로그인 기능 개발후 토큰자리
 const token =
@@ -52,6 +51,7 @@ const deleteDevice = async (id: string, device_code: string | null) => {
   return response.data;
 };
 
+// 디바이스 매칭 api
 const matchDevice = async (id: string, device_code: string | null) => {
   const response = await axios.put(
     BASEURL + 'devices/match/',
@@ -68,4 +68,21 @@ const matchDevice = async (id: string, device_code: string | null) => {
   return response.data;
 };
 
-export { getUserLists, getUnAuthorizedUsers, deleteDevice, matchDevice };
+// 디바이스 리스트 api
+const deviceLists = async (): Promise<Device[]> => {
+  const response = await axios.get<Device[]>(BASEURL + 'devices/', {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  console.log('디바이스 불러오기', response.data);
+  return response.data;
+};
+
+export {
+  getUserLists,
+  getUnAuthorizedUsers,
+  deleteDevice,
+  matchDevice,
+  deviceLists,
+};
