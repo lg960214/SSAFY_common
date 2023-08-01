@@ -3,8 +3,9 @@ import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
-
-// interface MemberitemProps {}
+// import { useQuery, useMutation } from '@tanstack/react-query';
+import { deleteDevice, matchDevice } from '@/api/memberPageApi';
+import { useMutation } from '@tanstack/react-query';
 
 export const MemberItem = (item: MemberInfo) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -32,7 +33,7 @@ export const MemberItem = (item: MemberInfo) => {
       <span className="w-16">{item.sex}</span>
       <span className="w-28">{item.regist}</span>
       <span className="w-44" onClick={handleRegiClick}>
-        {createTagRegi(item.deviceCode)}
+        {createTagRegi(item.id, item.deviceCode)}
       </span>
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
@@ -42,7 +43,16 @@ export const MemberItem = (item: MemberInfo) => {
   );
 };
 
-const createTagRegi = (tagStatus: string | null) => {
+const createTagRegi = (id: string, tagStatus: string | null) => {
+  const deleteDeviceMutation = useMutation(() => deleteDevice(id, tagStatus), {
+    onSuccess: () => {
+      console.log('성공');
+    },
+    onError: () => {
+      console.log('실패');
+    },
+  });
+
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const handleIsTagListClick = () => {
     setIsTagListOpen(true);
@@ -50,9 +60,11 @@ const createTagRegi = (tagStatus: string | null) => {
   const handleIstagListClose = () => {
     setIsTagListOpen(false);
   };
+
   const dummyClose = () => {
-    console.log('해제하는 기능 들어가는곳');
+    deleteDeviceMutation.mutate;
   };
+
   if (tagStatus === null) {
     return (
       <>
@@ -62,7 +74,7 @@ const createTagRegi = (tagStatus: string | null) => {
           color=""
         />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
-          <TagLists />
+          <TagLists id={id} />
         </Modal>
       </>
     );

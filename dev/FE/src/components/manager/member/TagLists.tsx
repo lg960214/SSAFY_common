@@ -1,6 +1,12 @@
 import { useState } from 'react';
+import { useMutation } from '@tanstack/react-query';
+import { matchDevice } from '@/api/memberPageApi';
 
-const TagLists = () => {
+interface TagListsProps {
+  id: string;
+}
+
+const TagLists = ({ id }: TagListsProps) => {
   const dummyTagList: string[] = [];
   for (let i = 1; i < 40; i++) {
     if (i < 10) {
@@ -31,7 +37,7 @@ const TagLists = () => {
       </div>
       <div className="flex flex-wrap justify-around">
         {renderedData.map((item, idx) => {
-          return <TagButton key={idx} device_code={item} />;
+          return <TagButton key={idx} id={id} device_code={item} />;
         })}
       </div>
       <div className="flex justify-center text-xl">
@@ -54,11 +60,26 @@ const TagLists = () => {
 
 interface TagButtonProps {
   device_code: string;
+  id: string;
 }
 
-const TagButton = ({ device_code }: TagButtonProps) => {
+const TagButton = ({ id, device_code }: TagButtonProps) => {
+  const matchDeviceMutation = useMutation(() => matchDevice(id, device_code), {
+    onSuccess: () => {
+      console.log('성공');
+    },
+    onError: () => {
+      console.log('실패');
+    },
+  });
+  const handleMatchDevice = () => {
+    matchDeviceMutation.mutate;
+  };
   return (
-    <div className="w-[88px] h-[56px] my-2 flex justify-center items-center bg-[#DFDCDE] text-lg rounded-2xl">
+    <div
+      onClick={handleMatchDevice}
+      className="w-[88px] h-[56px] my-2 flex justify-center items-center bg-[#DFDCDE] text-lg rounded-2xl"
+    >
       <span>{device_code}</span>
     </div>
   );

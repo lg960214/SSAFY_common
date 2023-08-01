@@ -16,3 +16,8 @@ export interface UnAuthorizedUser {
   userid: string;
   access_user: string | null;
 }
+
+export interface aboutDevice {
+  deviceCode: string;
+  id: string;
+}
