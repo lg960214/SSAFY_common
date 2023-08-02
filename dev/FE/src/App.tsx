@@ -20,7 +20,6 @@ import WaitInfoPage from './pages/user/WaitInfoPage';
 import LoginPage from './pages/user/LoginPage';
 import SignUpPage from './pages/user/SignUpPage';
 import UserNavBar from './components/common/UserNavBar';
-
 const App: React.FC = () => {
   return (
     <AuthProvider>

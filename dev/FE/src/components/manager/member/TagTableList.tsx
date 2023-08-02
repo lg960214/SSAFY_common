@@ -7,7 +7,7 @@ interface TagTablelistProps {
 
 export const TagTableList = ({ memberInfoLists }: TagTablelistProps) => {
   const usingTagMember = memberInfoLists.filter((member: MemberInfo) => {
-    return member.tag !== null;
+    return member.deviceCode !== null;
   });
   return (
     <div>
