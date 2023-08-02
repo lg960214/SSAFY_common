@@ -166,7 +166,11 @@ public class TagService {
                             .findByReaderOrderByReservationAsc(readers.getReader());
                     if (reservationList.size() != 0) {
                         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+<<<<<<< dev/BE/src/main/java/com/example/a104/project/service/TagService.java
                         mqtt.init("tcp://13.124.11.62:1883", deviceCode);
+=======
+                                    mqtt.init("tcp://13.124.11.62:1883", deviceCode);
+>>>>>>> dev/BE/src/main/java/com/example/a104/project/service/TagService.java
                         readerStateRepository.ExistReservation(readers.getReader());
                         int userId = reservationList.get(0).getUserId();
                         String topic = userRepository.findByUserId(userId).getDeviceCode();

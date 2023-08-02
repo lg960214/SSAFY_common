@@ -1,21 +1,26 @@
 import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { matchDevice, deviceLists } from '@/api/memberPageApi';
+import { Device } from '@/types/member.type';
 
-const TagLists = () => {
-  const dummyTagList: string[] = [];
-  for (let i = 1; i < 40; i++) {
-    if (i < 10) {
-      dummyTagList.push('TG00' + i.toString());
-    } else {
-      dummyTagList.push('TG0' + i.toString());
-    }
-  }
+interface TagListsProps {
+  id: string;
+  onClose: () => void;
+}
+
+const TagLists = ({ id, onClose }: TagListsProps) => {
+  const { data, status } = useQuery<Device[]>(['deviceLists'], deviceLists);
+
   const itemsPerPage = 28; // 페이지당 표시할 항목의 개수
   const [currentPage, setCurrentPage] = useState(1);
   // 현재 페이지에 해당하는 데이터를 계산하는 함수
   const getCurrentPageData = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return dummyTagList.slice(startIndex, endIndex);
+    if (data) {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      return data.slice(startIndex, endIndex);
+    }
+    return [];
   };
 
   // 페이지 변경 시 호출되는 함수
@@ -31,12 +36,19 @@ const TagLists = () => {
       </div>
       <div className="flex flex-wrap justify-around">
         {renderedData.map((item, idx) => {
-          return <TagButton key={idx} device_code={item} />;
+          return (
+            <TagButton
+              key={idx}
+              onClose={onClose}
+              id={id}
+              deviceCode={item.deviceCode}
+            />
+          );
         })}
       </div>
       <div className="flex justify-center text-xl">
         {Array.from(
-          { length: Math.ceil(dummyTagList.length / itemsPerPage) },
+          { length: Math.ceil((data?.length || 0) / itemsPerPage) },
           (_, index) => (
             <button
               className="mx-2"
@@ -53,13 +65,32 @@ const TagLists = () => {
 };
 
 interface TagButtonProps {
-  device_code: string;
+  deviceCode: string;
+  id: string;
+  onClose: () => void;
 }
 
-const TagButton = ({ device_code }: TagButtonProps) => {
+const TagButton = ({ id, deviceCode, onClose }: TagButtonProps) => {
+  const queryClient = useQueryClient();
+  const matchDeviceMutation = useMutation(() => matchDevice(id, deviceCode), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['memberLists']);
+      onClose();
+      console.log('성공');
+    },
+    onError: () => {
+      console.log('실패');
+    },
+  });
+  const handleMatchDevice = () => {
+    matchDeviceMutation.mutate();
+  };
   return (
-    <div className="w-[88px] h-[56px] my-2 flex justify-center items-center bg-[#DFDCDE] text-lg rounded-2xl">
-      <span>{device_code}</span>
+    <div
+      onClick={handleMatchDevice}
+      className="w-[88px] h-[56px] my-2 flex justify-center items-center bg-[#DFDCDE] text-lg rounded-2xl"
+    >
+      <span>{deviceCode}</span>
     </div>
   );
 };

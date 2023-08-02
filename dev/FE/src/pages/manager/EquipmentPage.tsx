@@ -6,100 +6,48 @@ import EquipmentListSection from '@/components/manager/equiment/EquipmentListSec
 import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
 import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import IssueSection from '@/components/manager/equiment/IssueSection';
-import EditSaveButton from '@/components/manager/equiment/editSaveButton';
+import EditSaveButton from '@/components/manager/equiment/EditSaveButton';
 import Modal from '@/components/common/Modal';
 import RegisterModalChildren from '@/components/manager/equiment/RegisterModalChildren';
 import ConfirmModal from '@/components/common/ConfirmModal';
+import { getReaders, putReaders } from '@/api/equipmentApi';
+import { useQuery, useMutation } from '@tanstack/react-query';
 
-const readerDummy = [
-  {
-    region: 'A',
-    reader: 'WW809',
-    name: '벤치프레스1',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW333',
-    name: '벤치프레스2',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW555',
-    name: '랫풀다운',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW129',
-    name: '레그프레스',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'A',
-    reader: 'WW166',
-    name: '스쿼트랙',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW999',
-    name: '덤벨',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW113',
-    name: '풀업바',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'B',
-    reader: 'WW134',
-    name: '런닝머신1',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'issue',
-    reader: 'WW837',
-    name: '런닝머신2',
-    gym_code: 'YS1',
-  },
-  {
-    region: 'issue',
-    reader: 'WW822',
-    name: '런닝머신3',
-    gym_code: 'YS1',
-  },
-  {
-    region: null,
-    reader: 'WW384',
-    name: null,
-    gym_code: 'YS1',
-  },
-  {
-    region: null,
-    reader: 'WW563',
-    name: null,
-    gym_code: 'YS1',
-  },
-];
-
-const zoneDummy = [
+const zoneDefault = [
   { name: 'A', isSelected: true },
   { name: 'B', isSelected: false },
   { name: 'C', isSelected: false },
+  { name: 'D', isSelected: false },
+  { name: 'E', isSelected: false },
+  { name: 'F', isSelected: false },
+  { name: 'G', isSelected: false },
+  { name: 'H', isSelected: false },
 ];
 
 const EquipmentPage = () => {
   const [isOnEdit, setIsOnEdit] = useState<boolean>(false);
-  const [wholeData, setWholeData] = useState<Reader[]>(readerDummy);
+  const [wholeData, setWholeData] = useState<Reader[]>([]);
   const [selectedZoneData, setSelectedZoneData] = useState<Reader[]>([]);
-  const [zoneList, setZoneList] = useState<Zone[]>(zoneDummy);
+  const [zoneList, setZoneList] = useState<Zone[]>(zoneDefault);
   const [issueZoneData, setIssueZoneData] = useState<Reader[]>([]);
   const [isRegisterModalOn, setIsRegisterModalOn] = useState<boolean>(false);
   const [isSaveModalOn, setIsSaveModalOn] = useState<boolean>(false);
+
+  const { data, isLoading } = useQuery<Reader[]>(['readers'], getReaders);
+  const mutatation = useMutation(() => putReaders(wholeData), {
+    onSuccess: () => {
+      console.log('readers PUT 성공');
+    },
+    onError: (err) => {
+      console.log('readers PUT 실패: ', err);
+    },
+  });
+
+  useEffect(() => {
+    if (!isLoading) {
+      setWholeData(data ?? []);
+    }
+  }, [data, isLoading]);
 
   useEffect(() => {
     const currentZone = zoneList.filter((cur) => cur.isSelected)[0].name;
@@ -124,15 +72,6 @@ const EquipmentPage = () => {
       }
     });
     setZoneList(updatedZoneList);
-  };
-
-  const handleAddZoneClick = () => {
-    const lastAlphabet = zoneList[zoneList.length - 1].name;
-    if (lastAlphabet === 'H') alert('더 이상 추가할 수 없습니다.');
-    else {
-      const nextAlphabet = String.fromCharCode(lastAlphabet.charCodeAt(0) + 1);
-      setZoneList([...zoneList, { name: nextAlphabet, isSelected: false }]);
-    }
   };
 
   const handleEquipmentDrop = (
@@ -183,23 +122,34 @@ const EquipmentPage = () => {
     setWholeData(editedwholeData);
   };
 
-  const handleSaveClick = () => alert('저장');
+  const handleSaveClick = () => {
+    mutatation.mutate();
+    setIsSaveModalOn(false);
+    setIsOnEdit(false);
+  };
+
+  const handleRefreshClick = () => {
+    setWholeData(data ?? []);
+  };
 
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
         <div className="flex justify-between">
-          <ZoneChoice
-            zoneList={zoneList}
-            isOnEdit={isOnEdit}
-            onZoneClick={handleZoneClick}
-            onAddZoneClick={handleAddZoneClick}
-          />
+          <ZoneChoice zoneList={zoneList} onZoneClick={handleZoneClick} />
           {isOnEdit ? (
-            <EditSaveButton
-              title="저장"
-              onClick={() => setIsSaveModalOn(true)}
-            />
+            <div className="flex">
+              <img
+                className="mr-3 hover:cursor-pointer"
+                onClick={handleRefreshClick}
+                src="/img/equipments/refresh.svg"
+                alt="초기화"
+              />
+              <EditSaveButton
+                title="저장"
+                onClick={() => setIsSaveModalOn(true)}
+              />
+            </div>
           ) : null}
         </div>
         <div className="flex justify-between">

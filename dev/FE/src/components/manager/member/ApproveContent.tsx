@@ -1,4 +1,10 @@
-const ApproveContent = () => {
+import { UnAuthorizedUser } from '@/types/member.type';
+
+const ApproveContent = ({
+  unAuthorizedUsers,
+}: {
+  unAuthorizedUsers: UnAuthorizedUser[];
+}) => {
   return (
     <div className="bg-white rounded-lg w-[440px] h-[480px] px-4">
       <div className="flex justify-evenly items-center h-12 basis-32 text-center border-b-2 border-black">
@@ -8,15 +14,9 @@ const ApproveContent = () => {
         <span className="basis-1/4">승인 / 거절</span>
       </div>
       <div className="border-white border-b-2 h-0"></div>
-      <div className="flex justify-evenly items-center h-12 basis-32 text-center">
-        <span className="basis-1/4">김승우</span>
-        <span className="basis-1/4">0944632</span>
-        <span className="basis-1/4">2023.07.17</span>
-        <span className="basis-1/4 flex justify-around">
-          <ApproveButton name="승인" />
-          <ApproveButton name="거절" />
-        </span>
-      </div>
+      {unAuthorizedUsers.map((item) => {
+        return <ApproveItem key={item.userid} {...item} />;
+      })}
     </div>
   );
 };
@@ -24,6 +24,20 @@ const ApproveContent = () => {
 interface ApproveButtonProps {
   name: string;
 }
+
+const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
+  return (
+    <div className="flex justify-evenly items-center h-12 basis-32 text-center">
+      <span className="basis-1/4">{item.name}</span>
+      <span className="basis-1/4">{item.userid}</span>
+      <span className="basis-1/4">{item.access_user}</span>
+      <span className="basis-1/4 flex justify-around">
+        <ApproveButton name="승인" />
+        <ApproveButton name="거절" />
+      </span>
+    </div>
+  );
+};
 
 const ApproveButton = ({ name }: ApproveButtonProps) => {
   const approveColor = name === '승인' ? 'bg-green-600' : 'bg-red-600';

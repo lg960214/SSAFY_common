@@ -13,9 +13,8 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @DynamicInsert
-@Table(name="tag_info")
+@Table(name = "tag_info")
 public class TagInfoVo {
-
 
     @Id
     @Column(name = "tag_info_pk")
@@ -25,10 +24,8 @@ public class TagInfoVo {
     @Column(name = "tag_date")
     private LocalDate tagDate;
 
-
     @Column(name = "user_id")
     private Integer userId;
-
 
     @Column
     private String reader;
@@ -38,10 +35,4 @@ public class TagInfoVo {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
-
-//    @ManyToOne
-//    @JoinColumn(name="reader")
-//    private ReaderVo readerVo;
-
-
 }

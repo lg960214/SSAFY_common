@@ -12,7 +12,7 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
     <>
       {currentItems &&
         currentItems.map((item) => {
-          return <MemberItem key={item.userid} {...item} />;
+          return <MemberItem key={item.userId} {...item} />;
         })}
     </>
   );
@@ -37,7 +37,7 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
     );
     setDummyItems(filterItems);
     setItemOffset(0);
-  }, [checkText]);
+  }, [checkText, memberInfoLists]);
 
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
@@ -72,7 +72,6 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
           previousLabel="<"
           previousLinkClassName="text-white hover:text-red-600"
           renderOnZeroPageCount={null}
-          forcePage={pageIndex}
         />
       </div>
     </div>

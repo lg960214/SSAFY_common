@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @ComponentScan(basePackages = "com.example.a104.project")
 public class A104Application {
-
+    
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(A104Application.class, args);
         UserRepository userRepository = context.getBean(UserRepository.class);

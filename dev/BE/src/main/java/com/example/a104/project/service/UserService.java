@@ -18,6 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
+
     public List<TagInfoVo> getUserDate(String date, int userId){
         List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
         System.out.println(userRecords);
@@ -42,40 +43,42 @@ public class UserService {
     public UserVo getUser(String deviceCode){
         return userRepository.findByDeviceCode(deviceCode);
     }
-    public void MatchDevice(String deviceCode,String id){
-        userRepository.MatchDevice(deviceCode,id);
+
+    public void MatchDevice(String deviceCode, String id) {
+        userRepository.MatchDevice(deviceCode, id);
     }
 
-    public void DeleteDevice(String id){
+    public void DeleteDevice(String id) {
         userRepository.DeleteDevice(id);
     }
 
-
-    public void DeleteUser(String id){
+    public void DeleteUser(String id) {
         userRepository.Delete(id);
     }
 
-    public int UpdateGymCode(int code, String id){
-        int count = userRepository.UpdateGymCode(code,id);
+    public int UpdateGymCode(int code, String id) {
+        int count = userRepository.UpdateGymCode(code, id);
         return count;
     }
 
     public UserVo getUserInfo(String id){
         return userRepository.findById(id).get(0);
     }
-
     public boolean checkId(String id){
+
         List<UserVo> userid = userRepository.findById(id);
-        if(userid.size()==1){
+        if (userid.size() == 1) {
             return true;
         }
         return false;
     }
-    public List<UserVo> login(String id){
+
+    public List<UserVo> login(String id) {
         List<UserVo> user = userRepository.findById(id);
         return user;
     }
-    public UserVo createUser(UserVo user){
+
+    public UserVo createUser(UserVo user) {
         UserVo savedUser = userRepository.save(user);
         return savedUser;
     }

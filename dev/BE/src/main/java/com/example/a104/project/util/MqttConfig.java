@@ -4,12 +4,23 @@ import com.example.a104.project.entity.ReservationVo;
 import com.example.a104.project.repository.ReaderStateRepository;
 import com.example.a104.project.repository.ReservationRepository;
 import com.example.a104.project.repository.UserRepository;
+import com.example.a104.project.service.ReaderService;
+import com.example.a104.project.service.UserService;
+
+import lombok.RequiredArgsConstructor;
+
+import org.apache.tomcat.jni.User;
 import org.eclipse.paho.client.mqttv3.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 
 @Component
@@ -17,7 +28,6 @@ import java.util.List;
 public class MqttConfig implements MqttCallback {
     private MqttClient mqttClient;
     private MqttConnectOptions mqttOptions;
-
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
@@ -107,8 +117,7 @@ public class MqttConfig implements MqttCallback {
             String reader = reservationRepository.findByUserId(userId).getReader();
             reservationRepository.deleteByUserId(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
-            List<ReservationVo> list =
-                    reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
+            List<ReservationVo> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
 
             // 다음 예약자가 있는 경우
             if (list.size() != 0) {

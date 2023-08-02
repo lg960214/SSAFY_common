@@ -20,7 +20,6 @@ import WaitInfoPage from './pages/user/WaitInfoPage';
 import LoginPage from './pages/user/LoginPage';
 import SignUpPage from './pages/user/SignUpPage';
 import UserNavBar from './components/common/UserNavBar';
-
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -44,7 +43,7 @@ const App: React.FC = () => {
             <Route path="/user" element={<UserLayout />}>
               <Route path="record" element={<RecordPage />} />
               <Route path="record/:month" element={<MonthRecordPage />} />
-              <Route path="infomation" element={<WaitInfoPage />} />
+              <Route path="information" element={<WaitInfoPage />} />
             </Route>
             <Route path="/user" element={<NoNavbarUserLayout />}>
               <Route path="login" element={<LoginPage />} />
@@ -77,7 +76,9 @@ function NoNavbarLayout() {
 function UserLayout() {
   return (
     <div>
-      <Outlet />
+      <div className="mx-auto w-[360px]">
+        <Outlet />
+      </div>
       <UserNavBar />
     </div>
   );
@@ -85,7 +86,7 @@ function UserLayout() {
 
 function NoNavbarUserLayout() {
   return (
-    <div>
+    <div className="w-[360px] mx-auto">
       <Outlet />
     </div>
   );
