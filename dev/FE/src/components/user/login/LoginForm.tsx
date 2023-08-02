@@ -1,14 +1,20 @@
+import { userLogin } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
   const [id, setId] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    console.log(`id: ${id}, Password: ${password}`);
+    userLogin({ id: id, password: password }).then(() =>
+      navigate('/user/information'),
+    );
   };
 
   const handleIdChange = (event: ChangeEvent<HTMLInputElement>) => {
