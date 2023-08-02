@@ -30,3 +30,8 @@ export const userSignUp = async (signupData: SignUpData) => {
     throw Error('회원가입 실패');
   }
 };
+
+export const checkUserId = async (id: string) => {
+  const res = await axios.get(BASEURL + 'user/check?id=' + id);
+  return res.data.msg;
+};

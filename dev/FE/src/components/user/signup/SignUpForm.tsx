@@ -1,4 +1,4 @@
-import { userSignUp } from '@/api/userAccountApi';
+import { checkUserId, userSignUp } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
@@ -13,6 +13,7 @@ const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [gender, setGender] = useState<string>('');
 
+  const [idCheckResponse, setIdResponse] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const navigate = useNavigate();
@@ -108,6 +109,14 @@ const SignUpForm = () => {
     setErrorMessage('');
   }, [name, id, password, passwordCheck, phoneNumber, email, gender]);
 
+  useEffect(() => {
+    if (id) {
+      checkUserId(id).then((res) => setIdResponse(res));
+    } else {
+      setIdResponse('');
+    }
+  }, [id]);
+
   return (
     <form className="flex flex-col items-center" onSubmit={handleSubmit}>
       <FormInput
@@ -122,6 +131,7 @@ const SignUpForm = () => {
         onChange={handleIdChange}
         placeholder="아이디"
       />
+      <div className="text-red-500">{idCheckResponse}</div>
       <FormInput
         type="password"
         value={password}
