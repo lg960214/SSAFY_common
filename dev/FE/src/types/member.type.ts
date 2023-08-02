@@ -1,8 +1,27 @@
 export interface MemberInfo {
+  deviceCode: string | null;
+  email: string;
+  gymCode: number;
+  id: string;
+  name: string;
+  password: string;
+  phoneNumber: string;
+  regist: number;
+  sex: string;
+  userId: number;
+}
+
+export interface UnAuthorizedUser {
   name: string;
   userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
+  access_user: string | null;
+}
+
+export interface aboutDevice {
+  deviceCode: string;
+  id: string;
+}
+
+export interface Device {
+  deviceCode: string;
 }

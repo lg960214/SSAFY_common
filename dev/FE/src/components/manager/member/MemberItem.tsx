@@ -2,17 +2,11 @@ import { useState } from 'react';
 import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
+import { MemberInfo } from '@/types/member.type';
+import { deleteDevice } from '@/api/memberPageApi';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-interface MemberitemProps {
-  name: string;
-  userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
-}
-
-export const MemberItem = (item: MemberitemProps) => {
+export const MemberItem = (item: MemberInfo) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick: React.MouseEventHandler<HTMLElement> = () => {
@@ -33,12 +27,12 @@ export const MemberItem = (item: MemberitemProps) => {
       className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer"
     >
       <span className="w-24">{item.name}</span>
-      <span className="w-20">{item.userid}</span>
-      <span className="w-28">{item.number}</span>
+      <span className="w-20">{item.userId}</span>
+      <span className="w-28">{item.phoneNumber}</span>
       <span className="w-16">{item.sex}</span>
-      <span className="w-28">{item.date}</span>
+      <span className="w-28">{item.regist}</span>
       <span className="w-44" onClick={handleRegiClick}>
-        {createTagRegi(item.tag)}
+        {createTagRegi(item.id, item.deviceCode)}
       </span>
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
@@ -48,7 +42,18 @@ export const MemberItem = (item: MemberitemProps) => {
   );
 };
 
-const createTagRegi = (tagStatus: string | null) => {
+const createTagRegi = (id: string, deviceCode: string | null) => {
+  const queryClient = useQueryClient();
+  const deleteDeviceMutation = useMutation(() => deleteDevice(id, deviceCode), {
+    onSuccess: () => {
+      console.log('성공');
+      queryClient.invalidateQueries(['memberLists']);
+    },
+    onError: () => {
+      console.log('실패');
+    },
+  });
+
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const handleIsTagListClick = () => {
     setIsTagListOpen(true);
@@ -56,10 +61,12 @@ const createTagRegi = (tagStatus: string | null) => {
   const handleIstagListClose = () => {
     setIsTagListOpen(false);
   };
+
   const dummyClose = () => {
-    console.log('해제하는 기능 들어가는곳');
+    deleteDeviceMutation.mutate();
   };
-  if (tagStatus === null) {
+
+  if (deviceCode === null) {
     return (
       <>
         <TagRegiButton
@@ -68,14 +75,14 @@ const createTagRegi = (tagStatus: string | null) => {
           color=""
         />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
-          <TagLists />
+          <TagLists onClose={handleIstagListClose} id={id} />
         </Modal>
       </>
     );
   } else {
     return (
       <div className="flex justify-evenly">
-        <span className="font-bold">{tagStatus}</span>
+        <span className="font-bold">{deviceCode}</span>
         <TagRegiButton handleEvent={dummyClose} name="해제" color="indigo" />
       </div>
     );

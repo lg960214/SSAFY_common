@@ -12,7 +12,7 @@ const Items: React.FC<ItemsProps> = ({ currentItems }) => {
     <>
       {currentItems &&
         currentItems.map((item) => {
-          return <TagItem key={item.userid} {...item} />;
+          return <TagItem key={item.id} {...item} />;
         })}
     </>
   );
