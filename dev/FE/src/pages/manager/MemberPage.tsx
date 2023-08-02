@@ -7,9 +7,6 @@ import { getUserLists, getUnAuthorizedUsers } from '@/api/memberPageApi';
 import { useQuery } from '@tanstack/react-query';
 import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
 
-// 더미 데이터
-// import dummy from '@/components/manager/member/dummy.json';
-
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
