@@ -1,5 +1,5 @@
 import { BASEURL } from '@/constants/url';
-import { LoginData } from '@/types/account.type';
+import { LoginData, SignUpData } from '@/types/account.type';
 import { setStorage } from '@/utils/storage';
 import axios from 'axios';
 
@@ -12,9 +12,21 @@ export const userLogin = async (loginData: LoginData) => {
       subject: res.data.data.subject,
     };
     setStorage('userToken', setStorageValue);
-
+    console.log(res);
     return res.data.data;
   } catch (err) {
     console.log('userLogin err: ', err);
+  }
+};
+
+export const userSignUp = async (signupData: SignUpData) => {
+  try {
+    const res = await axios.post(BASEURL + 'user/signup', signupData);
+    console.log(res);
+    return res.data;
+  } catch (err) {
+    console.log('userSignUp err: ', err);
+    alert('다시 시도해주세요.');
+    throw Error('회원가입 실패');
   }
 };

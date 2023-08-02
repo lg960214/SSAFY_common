@@ -1,6 +1,8 @@
+import { userSignUp } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
   const [name, setName] = useState<string>('');
@@ -13,11 +15,21 @@ const SignUpForm = () => {
 
   const [errorMessage, setErrorMessage] = useState<string>('');
 
+  const navigate = useNavigate();
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (!errorMessage) {
       // TODO: 회원 가입 처리
-      console.log('가입 가능');
+      const signUpParam = {
+        id: id,
+        password: password,
+        name: name,
+        email: email,
+        number: phoneNumber,
+        sex: gender,
+      };
+      userSignUp(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
     }
