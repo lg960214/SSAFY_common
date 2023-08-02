@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
 import 'react-calendar/dist/Calendar.css'; // css import
@@ -26,7 +26,7 @@ const RecordCalendar = ({
     setPickDate(formattedDate);
   };
   const [pickMonth, setPickMonth] = useState<Date | null>(null);
-  const { data } = useQuery<Exercise[]>(['records', pickMonth], async () => {
+  useQuery<Exercise[]>(['records', pickMonth], async () => {
     // pickMonth가 null인 경우에 대한 예외 처리
     let month = '';
     if (!pickMonth) {
@@ -39,7 +39,6 @@ const RecordCalendar = ({
     return response;
   });
 
-  useEffect(() => {}, [exerciseList]);
   return (
     <>
       <div className="pt-[10px]">

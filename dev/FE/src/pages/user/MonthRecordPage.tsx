@@ -27,7 +27,7 @@ const MonthRecordPage = () => {
   };
 
   const [exerciseList1, setExerciseList11] = useState<Exercise[]>([]);
-  const { data } = useQuery<Exercise[]>(['records', searchMonth], async () => {
+  useQuery<Exercise[]>(['records', searchMonth], async () => {
     // month가 null인 경우에 대한 예외 처리
 
     const response = await recordApi({ date: searchMonth });
