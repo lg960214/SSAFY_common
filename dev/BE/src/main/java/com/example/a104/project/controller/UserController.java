@@ -1,5 +1,6 @@
 package com.example.a104.project.controller;
 
+import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.*;
 import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/user")
 @RestController
@@ -24,16 +26,18 @@ public class UserController {
     private final UserService userService;
     private final UserDateService userDateService;
 
-    // @GetMapping("records")
-    // public List<TagInfoVo> userDate(@RequestHeader(value = "Authorization")
-    // String token, @RequestParam String date){
-    // Claims claims = JwtTokenProvider.parseJwtToken(token);
-    // String id = (String) claims.get("sub");
-    // int userId = userDateService.createUserId(id);
-    // System.out.println(userId);
-    // System.out.println(date);
-    // return userService.getUserDate(date,userId);
-    // }
+    @GetMapping("records")
+    public List<TagInfoDto> userDate(@RequestHeader(value = "Authorization") String token, @RequestParam String date){
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        String id = (String) claims.get("sub");
+        int userId = userDateService.createUserId(id);
+        List<TagInfoVo> list = userService.getUserDate(date,userId);
+        userService.getTagInfo(list);
+
+        System.out.println(userId);
+        System.out.println(date);
+        return  userService.getTagInfo(list);
+    }
     // 헬스장 등록
     @Transactional
     @PutMapping("regist-gym")

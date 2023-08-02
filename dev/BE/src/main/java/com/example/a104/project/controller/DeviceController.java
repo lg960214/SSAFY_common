@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/devices")
 @RestController
@@ -22,7 +23,7 @@ public class DeviceController {
     private final UserService userService;
 
     @GetMapping
-    public List<DeviceVo> DeviceList(@RequestHeader(value = "Authorization") String token){
+    public List<DeviceVo> DeviceList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         List<DeviceVo> list = deviceService.DeviceList(gymCode);
@@ -30,7 +31,7 @@ public class DeviceController {
     }
 
     @GetMapping("offer-present")
-    public List<UserVo> UserDevice(@RequestHeader(value = "Authorization") String token){
+    public List<UserVo> UserDevice(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         return deviceService.UserDevice(gymCode);
@@ -39,25 +40,21 @@ public class DeviceController {
 
     // 디바이스 삭제
     @PutMapping
-    public void DeleteDeviceCode(@RequestBody Map<String,String> map){
+    public void DeleteDeviceCode(@RequestBody Map<String, String> map) {
         String deviceCode = map.get("device_code");
         String id = map.get("id");
         deviceService.DeleteDevice(deviceCode);
         userService.DeleteDevice(id);
 
-
-
     }
 
     // 디바이스 매칭
     @PutMapping("match")
-    public void MatchDevice(@RequestBody Map<String,String> map){
+    public void MatchDevice(@RequestBody Map<String, String> map) {
         String deviceCode = map.get("device_code");
         String id = map.get("id");
         deviceService.MatchDevice(deviceCode);
-        userService.MatchDevice(deviceCode,id);
+        userService.MatchDevice(deviceCode, id);
     }
-
-
 
 }

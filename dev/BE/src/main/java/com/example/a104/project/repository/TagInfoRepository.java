@@ -18,6 +18,9 @@ public interface TagInfoRepository extends JpaRepository<TagInfoVo, TagInfoVoId>
     // :userId")
     // List<TagInfoVo> getRecord(String tagDate, int userId);
 
+    @Query("select t from TagInfoVo t  where function('date_format', t.tagDate, '%Y-%m') = :tagDate and t.userId = :userId")
+    List<TagInfoVo> getRecord(String tagDate, int userId);
+
     @Query("select  t from TagInfoVo t  where t.tagDate = :tagDate and t.userId = :userId and t.reader = :reader order by t.startTime desc ")
     List<TagInfoVo> getStartDate(LocalDate tagDate, int userId, String reader);
 
