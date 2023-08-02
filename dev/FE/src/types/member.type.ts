@@ -13,7 +13,8 @@ export interface MemberInfo {
 
 export interface UnAuthorizedUser {
   name: string;
-  userid: string;
+  userId: string;
+  id: string;
   access_user: string | null;
 }
 

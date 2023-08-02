@@ -79,7 +79,7 @@ const deviceLists = async (): Promise<Device[]> => {
   return response.data;
 };
 
-// 회원승인, 해제 api
+// 회원해제 api
 const changeUserGym = async ({ id, check }: { id: string; check: boolean }) => {
   const url = check ? 'users/' : 'approval/';
   const response = await axios.put(BASEURL + 'admin/' + url, {
@@ -94,6 +94,23 @@ const changeUserGym = async ({ id, check }: { id: string; check: boolean }) => {
   return response.data;
 };
 
+// 회원 승인 api
+const approveUserGym = async (id: string) => {
+  const response = await axios.put(
+    BASEURL + 'admin/approval/',
+    {
+      id: id,
+    },
+    {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    },
+  );
+
+  return response.data;
+};
+
 export {
   getUserLists,
   getUnAuthorizedUsers,
@@ -101,4 +118,5 @@ export {
   matchDevice,
   deviceLists,
   changeUserGym,
+  approveUserGym,
 };

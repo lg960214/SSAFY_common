@@ -1,4 +1,6 @@
+import { approveUserGym } from '@/api/memberPageApi';
 import { UnAuthorizedUser } from '@/types/member.type';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const ApproveContent = ({
   unAuthorizedUsers,
@@ -15,34 +17,59 @@ const ApproveContent = ({
       </div>
       <div className="border-white border-b-2 h-0"></div>
       {unAuthorizedUsers.map((item) => {
-        return <ApproveItem key={item.userid} {...item} />;
+        return <ApproveItem key={item.userId} {...item} />;
       })}
     </div>
   );
 };
 
-interface ApproveButtonProps {
-  name: string;
-}
-
 const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
   return (
     <div className="flex justify-evenly items-center h-12 basis-32 text-center">
       <span className="basis-1/4">{item.name}</span>
-      <span className="basis-1/4">{item.userid}</span>
+      <span className="basis-1/4">{item.userId}</span>
       <span className="basis-1/4">{item.access_user}</span>
       <span className="basis-1/4 flex justify-around">
-        <ApproveButton name="승인" />
+        <ApproveButton id={item.id} name="승인" />
         <ApproveButton name="거절" />
       </span>
     </div>
   );
 };
 
-const ApproveButton = ({ name }: ApproveButtonProps) => {
+interface ApproveButtonProps {
+  name: string;
+  id?: string;
+}
+
+const ApproveButton = ({ name, id }: ApproveButtonProps) => {
+  const queryClient = useQueryClient();
+  const approveUserMutation = useMutation((id: string) => approveUserGym(id), {
+    onSuccess: () => {
+      console.log('회원 승인');
+      queryClient.invalidateQueries(['memberLists']);
+    },
+    onError: (err) => {
+      console.log(err, '문제가 생겼어요');
+    },
+  });
   const approveColor = name === '승인' ? 'bg-green-600' : 'bg-red-600';
   const approveButtonClass = `w-12 h-8 p-0 text-white font-bold ${approveColor}`;
-  return <button className={approveButtonClass}>{name}</button>;
+  return (
+    <button
+      onClick={() => {
+        console.log(id);
+        if (id) {
+          approveUserMutation.mutate(id);
+        } else {
+          console.error('Userid is undefined');
+        }
+      }}
+      className={approveButtonClass}
+    >
+      {name}
+    </button>
+  );
 };
 
 export default ApproveContent;
