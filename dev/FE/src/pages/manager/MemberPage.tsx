@@ -1,15 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { TagTableList } from '@/components/manager/member/TagTableList';
 import { MemberTableList } from '@/components/manager/member/MemberTableList';
 import Modal from '@/components/common/Modal';
 import ApproveContent from '@/components/manager/member/ApproveContent';
-
-// 더미 데이터
-import dummy from '@/components/manager/member/dummy.json';
+import { getUserLists, getUnAuthorizedUsers } from '@/api/memberPageApi';
+import { useQuery } from '@tanstack/react-query';
+import { MemberInfo, UnAuthorizedUser } from '@/types/member.type';
 
 const MemberPage = () => {
   const [isApproveModalOpen, setIsApproveModal] = useState(false);
   const [isSearchText, setIsSearchText] = useState('');
+  const [userListsData, setUserListsData] = useState<MemberInfo[]>([]);
 
   const handleInputSearchText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setIsSearchText(e.target.value);
@@ -23,6 +24,24 @@ const MemberPage = () => {
       setIsApproveModal(false);
     }
   };
+
+  // 회원리스트 불러오기
+  const { data, status } = useQuery<MemberInfo[]>(
+    ['memberLists'],
+    getUserLists,
+  );
+  // 회원리스트 추적
+  useEffect(() => {
+    if (status == 'success' && data) {
+      setUserListsData(data);
+    }
+  }, [data, status]);
+
+  // 미승인 회원정보 불러오기
+  const { data: unAuthorizedUsers, status: unAuthorizedUsersStatus } = useQuery<
+    UnAuthorizedUser[]
+  >(['unAuthorizedUsers'], getUnAuthorizedUsers);
+
   return (
     <div
       onClick={closeModal}
@@ -31,7 +50,7 @@ const MemberPage = () => {
     >
       <div className="w-[404px]">
         <TableMenu name="태그 현황" />
-        <TagTableList memberInfoLists={dummy.data} />
+        <TagTableList memberInfoLists={userListsData} />
       </div>
       <div className="w-[908px]">
         <div className="flex justify-between">
@@ -48,12 +67,12 @@ const MemberPage = () => {
         </div>
 
         <MemberTableList
-          memberInfoLists={dummy.data}
+          memberInfoLists={userListsData}
           checkText={isSearchText}
         />
         <div>
           <Modal onClose={closeModal} isOpen={isApproveModalOpen}>
-            <ApproveContent />
+            <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
           </Modal>
           <button
             className="mt-2 bg-CustomOrange text-white text-lg float-right"

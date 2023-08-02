@@ -1,13 +1,8 @@
-interface MemberInfomationProps {
-  name: string;
-  userid: string;
-  number: string;
-  sex: string;
-  date: number;
-  tag: string | null;
-}
+import { changeUserGym } from '@/api/memberPageApi';
+import { MemberInfo } from '@/types/member.type';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-export const MemberInfomation = (item: MemberInfomationProps) => {
+export const MemberInfomation = (item: MemberInfo) => {
   const infoTitle = [
     '이름',
     '전화번호',
@@ -18,6 +13,20 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
     '최근 방문일',
     '가입일',
   ];
+  const queryClient = useQueryClient();
+  const deleteUserMutation = useMutation(
+    ({ id, check }: { id: string; check: boolean }) =>
+      changeUserGym({ id, check }),
+    {
+      onSuccess: () => {
+        queryClient.invalidateQueries(['memberLists']);
+        console.log('성공');
+      },
+      onError: () => {
+        console.log('실패');
+      },
+    },
+  );
   return (
     <div className="text-black pt-2 px-6 w-[460px] h-[580px] border-2 bg-white border-black rounded-2xl">
       <div className="w-50 h-16 border-b-2 border-black text-xl font-bold flex justify-center items-center">
@@ -39,30 +48,35 @@ export const MemberInfomation = (item: MemberInfomationProps) => {
             <span className="">{item.name}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.number}</span>
+            <span className="">{item.phoneNumber}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">아이디 받는 api가 없어요</span>
+            <span className="">{item.id}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.userid}</span>
+            <span className="">{item.userId}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">이메일 받는 api가 없어요</span>
+            <span className="">{item.email}</span>
           </p>
           <p className="h-12 flex items-center">
             <span className="">{item.sex}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">{item.date}</span>
+            <span className="">{item.regist}</span>
           </p>
           <p className="h-12 flex items-center">
-            <span className="">가입일 받는 api가 없어요</span>
+            <span className="">{item.regist}</span>
           </p>
         </div>
       </div>
       <div className="">
-        <button className="bg-black float-right text-white w-24 h-12 text-center p-0">
+        <button
+          onClick={() =>
+            deleteUserMutation.mutate({ id: item.id, check: true })
+          }
+          className="bg-black float-right text-white w-24 h-12 text-center p-0"
+        >
           회원 해제
         </button>
       </div>
