@@ -1,7 +1,7 @@
 import { useDraggable } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
 import { useEffect, useState } from 'react';
-import EditSaveButton from './editSaveButton';
+import EditSaveButton from './EditSaveButton';
 
 interface EquipmentListSectionProps {
   isOnEdit: boolean;

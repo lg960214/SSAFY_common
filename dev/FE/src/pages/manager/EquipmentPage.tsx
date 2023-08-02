@@ -6,7 +6,7 @@ import EquipmentListSection from '@/components/manager/equiment/EquipmentListSec
 import EquipmentMatchingSection from '@/components/manager/equiment/EquipmentMatchingSection';
 import ZoneChoice from '@/components/manager/equiment/ZoneChoice';
 import IssueSection from '@/components/manager/equiment/IssueSection';
-import EditSaveButton from '@/components/manager/equiment/editSaveButton';
+import EditSaveButton from '@/components/manager/equiment/EditSaveButton';
 import Modal from '@/components/common/Modal';
 import RegisterModalChildren from '@/components/manager/equiment/RegisterModalChildren';
 import ConfirmModal from '@/components/common/ConfirmModal';
