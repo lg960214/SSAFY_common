@@ -14,7 +14,7 @@ import MainPage from './pages/manager/MainPage';
 import NavBar from './components/common/NavBar';
 import UsagePage from './pages/manager/UsagePage';
 import AuthProvider from './components/common/AuthProvider';
-import RecordPage from './pages/user/RecordPage';
+import { RecordPage } from './pages/user/RecordPage';
 import MonthRecordPage from './pages/user/MonthRecordPage';
 import WaitInfoPage from './pages/user/WaitInfoPage';
 import LoginPage from './pages/user/LoginPage';
