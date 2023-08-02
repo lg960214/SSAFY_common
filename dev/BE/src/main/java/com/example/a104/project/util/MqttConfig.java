@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -28,6 +29,7 @@ import javax.persistence.PersistenceContext;
 public class MqttConfig implements MqttCallback {
     private MqttClient mqttClient;
     private MqttConnectOptions mqttOptions;
+    
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
@@ -117,7 +119,8 @@ public class MqttConfig implements MqttCallback {
             String reader = reservationRepository.findByUserId(userId).getReader();
             reservationRepository.deleteByUserId(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
-            List<ReservationVo> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
+            List<ReservationVo> list =
+            reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
 
             // 다음 예약자가 있는 경우
             if (list.size() != 0) {
@@ -132,8 +135,31 @@ public class MqttConfig implements MqttCallback {
             }
         } else {
             System.out.println("종료를 안찍음");
-            send("esp32/led", "notag");
+            send(arr[0], "notag");
+            /*
+            //arr[0] = 노태그한 사람의 deviceCode , arr[1] = 노태그한 사람이 예약한 reader
 
+            int userId = userRepository.findByDeviceCode(arr[0]).getUserId(); // 노태그한 사람의 userId
+
+            // 1. 노태그한 사람의 예약 취소
+            String reader = reservationRepository.findByUserId(userId).getReader();
+            reservationRepository.deleteByUserId(userId);
+            // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
+            List<ReservationVo> list =
+            reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
+
+            // 다음 예약자가 있는 경우
+            if (list.size() != 0) {
+                int next = list.get(0).getUserId();
+                String deviceCode = userRepository.findByUserId(next).getDeviceCode();
+                // 3. 해당 deviceCode(Topic)으로 메세지 전송
+                send(deviceCode, "your turn");
+            }
+            //다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
+            else{
+                readerStateRepository.nExistReservation(reader);
+            }
+            */
         }
 
         // 노쇼 -> 2분 지나고 메세지가 오게 되면
@@ -150,10 +176,10 @@ public class MqttConfig implements MqttCallback {
                 // topic과 Qos를 전달
                 // Qos는 메세지가 도착하기 위한 품질에 값을 설정 - 서비스 품질
                 // 0,1,2를 설정할 수 있음
-
+                
                 mqttClient.subscribe(topic, 0);
                 System.out.println(topic);
-                System.out.println("HI");
+	
 
             }
         } catch (MqttException e) {
