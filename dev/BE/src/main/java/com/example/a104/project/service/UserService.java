@@ -18,10 +18,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
-    // public List<TagInfoVo> getUserDate(String date, int userId){
-    // List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
-    // return userRecords;
-    // };
+
     public List<TagInfoVo> getUserDate(String date, int userId){
         List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
         System.out.println(userRecords);
@@ -32,18 +29,18 @@ public class UserService {
         List<TagInfoDto> tagInfoDtoList = new ArrayList<>();
         for(TagInfoVo tag: list){
             TagInfoDto tagInfoDto = new TagInfoDto();
-            tagInfoDto.setTag_data(tag.getTagDate());
+            tagInfoDto.setTagData(tag.getTagDate());
             tagInfoDto.setEndTime(tag.getEndTime());
-            tagInfoDto.setUser_id(tag.getUserId());
+            tagInfoDto.setUserId(tag.getUserId());
             tagInfoDto.setReader(tag.getReader());
-            tagInfoDto.setStart_time(tag.getStartTime());
+            tagInfoDto.setStartTime(tag.getStartTime());
             tagInfoDto.setName(readerRepository.findByReader(tag.getReader()).getName());
             tagInfoDtoList.add(tagInfoDto);
         }
         return tagInfoDtoList;
     }
-    
-    public UserVo getUser(String deviceCode) {
+
+    public UserVo getUser(String deviceCode){
         return userRepository.findByDeviceCode(deviceCode);
     }
 
@@ -64,7 +61,11 @@ public class UserService {
         return count;
     }
 
-    public boolean checkId(String id) {
+    public UserVo getUserInfo(String id){
+        return userRepository.findById(id).get(0);
+    }
+    public boolean checkId(String id){
+
         List<UserVo> userid = userRepository.findById(id);
         if (userid.size() == 1) {
             return true;

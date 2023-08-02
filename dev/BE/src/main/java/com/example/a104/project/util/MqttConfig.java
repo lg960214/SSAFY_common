@@ -19,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
-
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
@@ -29,7 +28,6 @@ import javax.persistence.PersistenceContext;
 public class MqttConfig implements MqttCallback {
     private MqttClient mqttClient;
     private MqttConnectOptions mqttOptions;
-    
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
@@ -119,8 +117,7 @@ public class MqttConfig implements MqttCallback {
             String reader = reservationRepository.findByUserId(userId).getReader();
             reservationRepository.deleteByUserId(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
-            List<ReservationVo> list =
-            reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
+            List<ReservationVo> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
 
             // 다음 예약자가 있는 경우
             if (list.size() != 0) {
@@ -153,10 +150,10 @@ public class MqttConfig implements MqttCallback {
                 // topic과 Qos를 전달
                 // Qos는 메세지가 도착하기 위한 품질에 값을 설정 - 서비스 품질
                 // 0,1,2를 설정할 수 있음
-                
+
                 mqttClient.subscribe(topic, 0);
                 System.out.println(topic);
-		System.out.println("HI");
+                System.out.println("HI");
 
             }
         } catch (MqttException e) {

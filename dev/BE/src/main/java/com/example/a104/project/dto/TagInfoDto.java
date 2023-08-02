@@ -10,8 +10,8 @@ public class TagInfoDto {
 
     private String reader;
     private String name;
-    private int user_id;
-    private LocalDateTime start_time;
+    private int userId;
+    private LocalDateTime startTime;
     private LocalDateTime endTime;
-    private LocalDate tag_data;
+    private LocalDate tagData;
 }
