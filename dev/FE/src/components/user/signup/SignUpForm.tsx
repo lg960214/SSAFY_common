@@ -161,7 +161,7 @@ const SignUpForm = () => {
         onFemaleClick={handleFemaleClick}
         gender={gender}
       />
-      <div className="my-5">
+      <div className="mt-5">
         <SubmitButton
           title="회 원 가 입"
           color="CustomNavy"
