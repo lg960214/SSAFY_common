@@ -2,12 +2,29 @@ import Modal from '@/components/common/Modal';
 import TimeInput from '@/components/user/waitinfo/TimeInput';
 import WaitEquitmentList from '@/components/user/waitinfo/WaitEquitmentList';
 import WaitTitle from '@/components/user/waitinfo/WaitTitle';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
+// import { getUsingGymUsers } from '@/api/waitInfoApi';
+import FormInput from '@/components/common/FormInput';
+import { registGym } from '@/api/waitInfoApi';
 
 const WaitInfoPage = () => {
+  // const { data: usingGymUsers, status } = useQuery(
+  //   ['getUsingGymUsers'],
+  //   getUsingGymUsers,
+  // );
+  const registGymMutation = useMutation(() => registGym(regiGymCode), {
+    onSuccess: () => {
+      console.log('등록 성공');
+    },
+    onError: () => {
+      console.log('등록 실패');
+    },
+  });
   const [checkGymApprove, setCheckGymApprove] = useState(false);
   const handleGymApproveButton = () => {
-    setCheckGymApprove(true);
+    // setCheckGymApprove(true);
+    registGymMutation.mutate();
   };
 
   const [isModal, setIsModal] = useState(false);
@@ -16,6 +33,12 @@ const WaitInfoPage = () => {
   };
   const handleCloseModal = () => {
     setIsModal(false);
+  };
+
+  const [regiGymCode, setRegiGymCode] = useState<string>('');
+  const handleChangeGymCode = (event: ChangeEvent<HTMLInputElement>) => {
+    setRegiGymCode(event.target.value);
+    console.log(regiGymCode);
   };
 
   const [pickEquipment, setPickEquipment] = useState('');
@@ -40,7 +63,7 @@ const WaitInfoPage = () => {
         <div>
           <div className="m-2 text-black">
             <div className="float-left font-bold text-lg">나의 헬스장</div>
-            <div className="float-right">현재 20명 이용중</div>
+            {/* <div className="float-right">현재 {usingGymUsers}명 이용중</div> */}
           </div>
           <WaitTitle text="킹콩 피트니스" />
           <div className="flex justify-evenly items-center my-4">
@@ -88,12 +111,19 @@ const WaitInfoPage = () => {
         <div>
           <WaitTitle text="헬스장을 등록하세요!" />
           <div className="p-8">
-            <button
+            <FormInput
+              type="text"
+              value={regiGymCode}
+              placeholder="헬스장 번호"
+              onChange={handleChangeGymCode}
+            />
+            <button onClick={handleGymApproveButton}>등록</button>
+            {/* <button
               onClick={handleGymApproveButton}
               className="w-10 h-10 rounded-full mx-auto border-2 flex justify-center items-center border-white"
             >
               <span className="text-2xl">+</span>
-            </button>
+            </button> */}
           </div>
         </div>
       )}
