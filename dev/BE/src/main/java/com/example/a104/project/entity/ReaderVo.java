@@ -3,9 +3,10 @@ package com.example.a104.project.entity;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)

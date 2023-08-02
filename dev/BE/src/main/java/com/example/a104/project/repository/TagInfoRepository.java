@@ -12,10 +12,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface TagInfoRepository extends JpaRepository<TagInfoVo, Integer> {
-    // @Query("select t from TagInfoVo t join t.readerVo r where
-    // function('date_format', t.tagDate, '%Y-%m') = :tagDate and t.userId =
-    // :userId")
-    // List<TagInfoVo> getRecord(String tagDate, int userId);
 
     @Query("select t from TagInfoVo t  where function('date_format', t.tagDate, '%Y-%m') = :tagDate and t.userId = :userId")
     List<TagInfoVo> getRecord(String tagDate, int userId);

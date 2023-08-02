@@ -26,6 +26,13 @@ public class UserController {
     private final UserService userService;
     private final UserDateService userDateService;
 
+    @GetMapping("regist")
+    public UserVo userInfo(@RequestHeader(value = "Authorization") String token){
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        String id = (String) claims.get("sub");
+        return userService.getUserInfo(id);
+    }
+
     @GetMapping("records")
     public List<TagInfoDto> userDate(@RequestHeader(value = "Authorization") String token, @RequestParam String date){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -36,6 +43,7 @@ public class UserController {
 
         System.out.println(userId);
         System.out.println(date);
+
         return  userService.getTagInfo(list);
     }
     // 헬스장 등록
