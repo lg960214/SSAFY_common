@@ -35,5 +35,4 @@ public class TagInfoVo {
 
     @Column(name = "end_time")
     private LocalDateTime endTime;
-
 }

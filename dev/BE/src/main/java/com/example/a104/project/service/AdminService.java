@@ -1,12 +1,12 @@
 package com.example.a104.project.service;
 
-import com.example.a104.project.entity.AdminVo;
-import com.example.a104.project.repository.AdminRepository;
-import com.example.a104.project.entity.UserVo;
-import com.example.a104.project.repository.UserRepository;
+import com.example.a104.project.dto.RealTimeDto;
+import com.example.a104.project.entity.*;
+import com.example.a104.project.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -14,6 +14,47 @@ import java.util.List;
 public class AdminService {
     private final AdminRepository adminRepository;
     private final UserRepository userRepository;
+    private final ReaderRepository readerRepository;
+    private final ReaderStateRepository readerStateRepository;
+    private final ReservationRepository reservationRepository;
+    // 실시간 대기, 사용 현황
+    public List<RealTimeDto> realTimeDtoList(String region, int gymCode){
+        List<ReaderVo> readerVoList =readerRepository.findByGymCodeAndRegion(gymCode,region); // 헬스장 구역 별 리더기 리스트
+        List<RealTimeDto> realTimeDtoList = new ArrayList<>();
+        for(ReaderVo readerVo: readerVoList){
+            //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
+            RealTimeDto realTimeDto = new RealTimeDto();
+            realTimeDto.setName(readerVo.getName());
+            realTimeDto.setReader(readerVo.getReader());
+            realTimeDto.setGymCode(readerVo.getGymCode());
+            realTimeDto.setRegion(readerVo.getRegion());
+
+
+            try{
+                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
+            }
+            catch (NullPointerException e){
+                realTimeDto.setUserId(null);
+            }
+
+            List<ReservationVo> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
+            List<Integer> userList = new ArrayList<>();
+            int cnt = reservationVoList.size();
+            int i = 0;
+            for(ReservationVo reservationVo: reservationVoList){
+                userList.add(reservationVo.getUserId());
+                i++;
+                if(i== 6) break;
+            }
+
+            realTimeDto.setWaitingList(userList); // 대기중인 사람들 리스트
+            realTimeDto.setWaitingCount(cnt);
+            realTimeDtoList.add(realTimeDto);
+        }
+        return realTimeDtoList;
+
+    }
+
 
     // 회원 검색
     public List<UserVo> search(String keyword,int gymCode){

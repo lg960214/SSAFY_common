@@ -1,6 +1,8 @@
+import { checkUserId, userSignUp } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const SignUpForm = () => {
   const [name, setName] = useState<string>('');
@@ -11,13 +13,24 @@ const SignUpForm = () => {
   const [email, setEmail] = useState<string>('');
   const [gender, setGender] = useState<string>('');
 
+  const [idCheckResponse, setIdResponse] = useState<string>('');
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     if (!errorMessage) {
       // TODO: 회원 가입 처리
-      console.log('가입 가능');
+      const signUpParam = {
+        id: id,
+        password: password,
+        name: name,
+        email: email,
+        number: phoneNumber,
+        sex: gender,
+      };
+      userSignUp(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
     }
@@ -96,6 +109,14 @@ const SignUpForm = () => {
     setErrorMessage('');
   }, [name, id, password, passwordCheck, phoneNumber, email, gender]);
 
+  useEffect(() => {
+    if (id) {
+      checkUserId(id).then((res) => setIdResponse(res));
+    } else {
+      setIdResponse('');
+    }
+  }, [id]);
+
   return (
     <form className="flex flex-col items-center" onSubmit={handleSubmit}>
       <FormInput
@@ -110,6 +131,7 @@ const SignUpForm = () => {
         onChange={handleIdChange}
         placeholder="아이디"
       />
+      <div className="text-red-500">{idCheckResponse}</div>
       <FormInput
         type="password"
         value={password}
@@ -139,7 +161,7 @@ const SignUpForm = () => {
         onFemaleClick={handleFemaleClick}
         gender={gender}
       />
-      <div className="my-5">
+      <div className="mt-5">
         <SubmitButton
           title="회 원 가 입"
           color="CustomNavy"
