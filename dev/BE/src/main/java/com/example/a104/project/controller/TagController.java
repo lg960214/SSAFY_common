@@ -30,7 +30,7 @@ public class TagController {
     private List<SseEmitter> emitters = new ArrayList<>();
     @GetMapping(value = "sse",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token, @RequestParam String region) throws IOException {
-        SseEmitter emitter = new SseEmitter(600000l);
+        SseEmitter emitter = new SseEmitter(1800000l);
         emitters.add(emitter);
 
 //        emitter.onCompletion(()-> );
@@ -39,6 +39,7 @@ public class TagController {
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
 
         List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+
         emitter.send(list,MediaType.APPLICATION_JSON);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .body(emitter);
