@@ -29,15 +29,18 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   checkText,
   memberInfoLists,
 }) => {
-  const [items, setDummyItems] = useState(memberInfoLists);
+  // const [items, setDummyItems] = useState(memberInfoLists);
 
-  useEffect(() => {
-    const filterItems = memberInfoLists.filter((item) =>
-      item.name.includes(checkText),
-    );
-    setDummyItems(filterItems);
-    setItemOffset(0);
-  }, [checkText]);
+  // useEffect(() => {
+  //   if (checkText !== '') {
+  //     const filterItems = memberInfoLists.filter((item) =>
+  //       item.name.includes(checkText),
+  //     );
+  //     setDummyItems(filterItems);
+  //     setItemOffset(0);
+  //   }
+  // }, [checkText]);
+  const items = memberInfoLists;
 
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;

@@ -1,13 +1,14 @@
 import { useState } from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { matchDevice, deviceLists } from '@/api/memberPageApi';
 import { Device } from '@/types/member.type';
 
 interface TagListsProps {
   id: string;
+  onClose: () => void;
 }
 
-const TagLists = ({ id }: TagListsProps) => {
+const TagLists = ({ id, onClose }: TagListsProps) => {
   const { data, status } = useQuery<Device[]>(['deviceLists'], deviceLists);
 
   const itemsPerPage = 28; // 페이지당 표시할 항목의 개수
@@ -35,7 +36,14 @@ const TagLists = ({ id }: TagListsProps) => {
       </div>
       <div className="flex flex-wrap justify-around">
         {renderedData.map((item, idx) => {
-          return <TagButton key={idx} id={id} deviceCode={item.deviceCode} />;
+          return (
+            <TagButton
+              key={idx}
+              onClose={onClose}
+              id={id}
+              deviceCode={item.deviceCode}
+            />
+          );
         })}
       </div>
       <div className="flex justify-center text-xl">
@@ -59,11 +67,15 @@ const TagLists = ({ id }: TagListsProps) => {
 interface TagButtonProps {
   deviceCode: string;
   id: string;
+  onClose: () => void;
 }
 
-const TagButton = ({ id, deviceCode }: TagButtonProps) => {
+const TagButton = ({ id, deviceCode, onClose }: TagButtonProps) => {
+  const queryClient = useQueryClient();
   const matchDeviceMutation = useMutation(() => matchDevice(id, deviceCode), {
     onSuccess: () => {
+      queryClient.invalidateQueries(['memberLists']);
+      onClose();
       console.log('성공');
     },
     onError: () => {

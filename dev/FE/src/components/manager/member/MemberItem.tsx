@@ -4,7 +4,7 @@ import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
 import { deleteDevice } from '@/api/memberPageApi';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const MemberItem = (item: MemberInfo) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,9 +43,11 @@ export const MemberItem = (item: MemberInfo) => {
 };
 
 const createTagRegi = (id: string, deviceCode: string | null) => {
+  const queryClient = useQueryClient();
   const deleteDeviceMutation = useMutation(() => deleteDevice(id, deviceCode), {
     onSuccess: () => {
       console.log('성공');
+      queryClient.invalidateQueries(['memberLists']);
     },
     onError: () => {
       console.log('실패');
@@ -57,6 +59,7 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
     setIsTagListOpen(true);
   };
   const handleIstagListClose = () => {
+    console.log('확인');
     setIsTagListOpen(false);
   };
 
@@ -73,7 +76,7 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
           color=""
         />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
-          <TagLists id={id} />
+          <TagLists onClose={handleIstagListClose} id={id} />
         </Modal>
       </>
     );
