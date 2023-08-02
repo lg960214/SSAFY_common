@@ -23,8 +23,10 @@ public class TagService {
     private final TagInfoRepository tagInfoRepository;
     private final UserRepository userRepository;
     private final UserService userService;
+
     public void Tagging(String deviceCode, String reader) {
-        // MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+        // MqttConfig mqtt = new
+        // MqttConfig(userRepository,reservationRepository,readerStateRepository);
         // mqtt.init("tcp://13.124.11.62:1883", "backend2");
         // mqtt.init("tcp://localhost:1883","backend");
         // mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32/status");
@@ -64,7 +66,8 @@ public class TagService {
                                 List<ReservationVo> reservationList = reservationRepository
                                         .findByReaderOrderByReservationAsc(readers.getReader());
                                 if (reservationList.size() != 0) {
-                                    MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+                                    MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository,
+                                            readerStateRepository);
                                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                     readerStateRepository.ExistReservation(readers.getReader());
                                     int userId = reservationList.get(0).getUserId();
@@ -165,12 +168,9 @@ public class TagService {
                     List<ReservationVo> reservationList = reservationRepository
                             .findByReaderOrderByReservationAsc(readers.getReader());
                     if (reservationList.size() != 0) {
-                        MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
-<<<<<<< dev/BE/src/main/java/com/example/a104/project/service/TagService.java
+                        MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
+
                         mqtt.init("tcp://13.124.11.62:1883", deviceCode);
-=======
-                                    mqtt.init("tcp://13.124.11.62:1883", deviceCode);
->>>>>>> dev/BE/src/main/java/com/example/a104/project/service/TagService.java
                         readerStateRepository.ExistReservation(readers.getReader());
                         int userId = reservationList.get(0).getUserId();
                         String topic = userRepository.findByUserId(userId).getDeviceCode();
@@ -183,7 +183,7 @@ public class TagService {
                         // 위의 토픽으로 다음 순번 사람에게 송신
                         //
                     }
-                    // 취소 되는 기구의 다음 예약자가 없는ㄱ ㅕㅇ우 => 기존 기구 상태 1로 변경, 회원번호 null로 변경
+                    // 취소 되는 기구의 다음 예약자가 없는 경_우 => 기존 기구 상태 1로 변경, 회원번호 null로 변경
                     else {
                         readerStateRepository.nExistReservation(readers.getReader());
                     }
@@ -220,7 +220,7 @@ public class TagService {
 
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경
                 if (reservation.size() != 0) {
-                    MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+                    MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                     readerStateRepository.ExistReservation(reader);
                     // 다음 사람에게 알람 주는 로직 (MQTT) => 먼저 예약 테이블에서 해당 기구의 예약자 중 최신 사람을 찾아야함
