@@ -1,7 +1,6 @@
 package com.example.a104.project.repository;
 
 import com.example.a104.project.entity.TagInfoVo;
-import com.example.a104.project.entity.TagInfoVoId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -12,7 +11,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public interface TagInfoRepository extends JpaRepository<TagInfoVo, TagInfoVoId> {
+public interface TagInfoRepository extends JpaRepository<TagInfoVo, Integer> {
     // @Query("select t from TagInfoVo t join t.readerVo r where
     // function('date_format', t.tagDate, '%Y-%m') = :tagDate and t.userId =
     // :userId")
