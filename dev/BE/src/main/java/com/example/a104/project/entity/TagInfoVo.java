@@ -39,9 +39,9 @@ public class TagInfoVo {
     @Column(name = "end_time")
     private LocalDateTime endTime;
 
-    @ManyToOne
-    @JoinColumn(name="name")
-    private ReaderVo readerVo;
+//    @ManyToOne
+//    @JoinColumn(name="reader")
+//    private ReaderVo readerVo;
 
 
 }
