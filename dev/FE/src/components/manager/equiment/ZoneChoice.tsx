@@ -1,18 +1,11 @@
 import { Zone } from '@/types/reader.type';
 
 interface ZoneChoiceProps {
-  isOnEdit: boolean;
   zoneList: Zone[];
   onZoneClick: (event?: React.MouseEvent<HTMLButtonElement>) => void;
-  onAddZoneClick: () => void;
 }
 
-const ZoneChoice = ({
-  isOnEdit,
-  zoneList,
-  onZoneClick,
-  onAddZoneClick,
-}: ZoneChoiceProps) => {
+const ZoneChoice = ({ zoneList, onZoneClick }: ZoneChoiceProps) => {
   return (
     <div className="m-4">
       {zoneList.map((zone) => {
@@ -25,7 +18,6 @@ const ZoneChoice = ({
           />
         );
       })}
-      {isOnEdit ? <ZoneButton name={'+'} onClick={onAddZoneClick} /> : null}
     </div>
   );
 };

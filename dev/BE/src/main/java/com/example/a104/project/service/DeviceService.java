@@ -1,6 +1,5 @@
 package com.example.a104.project.service;
 
-
 import com.example.a104.project.entity.DeviceVo;
 import com.example.a104.project.entity.UserVo;
 import com.example.a104.project.repository.DeviceRepository;
@@ -15,16 +14,20 @@ import java.util.List;
 public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final UserRepository userRepository;
-    public List<DeviceVo> DeviceList(int gymCode){
+
+    public List<DeviceVo> DeviceList(int gymCode) {
         return deviceRepository.findByGymCodeAndUseIsNull(gymCode);
     }
-    public List<UserVo> UserDevice(int gymCode){
+
+    public List<UserVo> UserDevice(int gymCode) {
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode);
     }
-    public void DeleteDevice(String deviceCode){
+
+    public void DeleteDevice(String deviceCode) {
         deviceRepository.DeleteDevice(deviceCode);
     }
-    public void MatchDevice(String deviceCode){
+
+    public void MatchDevice(String deviceCode) {
         deviceRepository.MatchDevice(deviceCode);
     }
 
