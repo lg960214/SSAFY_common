@@ -1,9 +1,9 @@
 import axios from 'axios';
 import { MemberInfo, UnAuthorizedUser, Device } from '@/types/member.type';
+import { getToken } from '@/utils/storage';
 
 // 로그인 기능 개발후 토큰자리
-const token =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjkwODYwMTg2LCJleHAiOjE2OTA5NDY1ODYsInN1YiI6InNzYWZ5MSJ9.6DVipd0vMIk70u_eAtqWi_LFJ5_OrFdf1agQoCvCbBA';
+const token = getToken('managerToken');
 
 // BASEURL 자리
 const BASEURL = 'http://i9a104.p.ssafy.io:8081/';

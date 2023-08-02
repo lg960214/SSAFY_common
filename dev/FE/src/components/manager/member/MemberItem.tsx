@@ -59,7 +59,6 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
     setIsTagListOpen(true);
   };
   const handleIstagListClose = () => {
-    console.log('확인');
     setIsTagListOpen(false);
   };
 
