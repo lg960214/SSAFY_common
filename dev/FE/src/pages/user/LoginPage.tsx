@@ -1,15 +1,16 @@
 import LoginForm from '@/components/user/login/LoginForm';
 import OnboardingContainer from '@/components/common/OnboardingContainer';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   return (
-    <OnboardingContainer height="450px">
+    <OnboardingContainer>
       <LoginForm />
       <div>
         <span className="mr-4">계정이 없으신가요?</span>
-        <span className="italic text-CustomOrange hover:underline">
-          회원가입
-        </span>
+        <Link to={'/user/signup'}>
+          <span className="italic text-CustomOrange underline">회원가입</span>
+        </Link>
       </div>
     </OnboardingContainer>
   );
