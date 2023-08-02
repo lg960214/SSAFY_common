@@ -29,16 +29,16 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
 
-    // 실시간 대기, 사용 현황
-    @GetMapping("waiting")
-    public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
+    // 실시간 대기, 사용 현황 (사용안함)
+    // @GetMapping("waiting")
+    // public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
 
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
+    //     Claims claims = JwtTokenProvider.parseJwtToken(token);
+    //     int gymCode = adminService.getGymCode((String) claims.get("sub"));
 
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-        return list;
-    }
+    //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+    //     return list;
+    // }
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")
