@@ -80,25 +80,11 @@ const deviceLists = async (): Promise<Device[]> => {
 };
 
 // 회원승인, 해제 api
-const changeUserGym = async ({
-  userid,
-  check,
-}: {
-  userid: number;
-  check: boolean;
-}) => {
+const changeUserGym = async ({ id, check }: { id: string; check: boolean }) => {
   const url = check ? 'users/' : 'approval/';
-  const response = await axios.put(
-    BASEURL + 'admin/' + url,
-    {
-      userid: userid,
-    },
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    },
-  );
+  const response = await axios.put(BASEURL + 'admin/' + url, {
+    id: id,
+  });
   console.log(url);
   if (url === 'approval/') {
     console.log('회원 승인', response);

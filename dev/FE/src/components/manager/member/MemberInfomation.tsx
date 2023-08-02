@@ -1,6 +1,6 @@
 import { changeUserGym } from '@/api/memberPageApi';
 import { MemberInfo } from '@/types/member.type';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const MemberInfomation = (item: MemberInfo) => {
   const infoTitle = [
@@ -13,11 +13,13 @@ export const MemberInfomation = (item: MemberInfo) => {
     '최근 방문일',
     '가입일',
   ];
+  const queryClient = useQueryClient();
   const deleteUserMutation = useMutation(
-    ({ userid, check }: { userid: number; check: boolean }) =>
-      changeUserGym({ userid, check }),
+    ({ id, check }: { id: string; check: boolean }) =>
+      changeUserGym({ id, check }),
     {
       onSuccess: () => {
+        queryClient.invalidateQueries(['memberLists']);
         console.log('성공');
       },
       onError: () => {
@@ -71,7 +73,7 @@ export const MemberInfomation = (item: MemberInfo) => {
       <div className="">
         <button
           onClick={() =>
-            deleteUserMutation.mutate({ userid: item.userId, check: true })
+            deleteUserMutation.mutate({ id: item.id, check: true })
           }
           className="bg-black float-right text-white w-24 h-12 text-center p-0"
         >
