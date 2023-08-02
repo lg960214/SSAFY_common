@@ -46,19 +46,15 @@ const ApproveButton = ({ name, id }: ApproveButtonProps) => {
   const queryClient = useQueryClient();
   const approveUserMutation = useMutation((id: string) => approveUserGym(id), {
     onSuccess: () => {
-      console.log('회원 승인');
       queryClient.invalidateQueries(['memberLists']);
     },
-    onError: (err) => {
-      console.log(err, '문제가 생겼어요');
-    },
+    onError: () => {},
   });
   const approveColor = name === '승인' ? 'bg-green-600' : 'bg-red-600';
   const approveButtonClass = `w-12 h-8 p-0 text-white font-bold ${approveColor}`;
   return (
     <button
       onClick={() => {
-        console.log(id);
         if (id) {
           approveUserMutation.mutate(id);
         } else {

@@ -76,11 +76,8 @@ const TagButton = ({ id, deviceCode, onClose }: TagButtonProps) => {
     onSuccess: () => {
       queryClient.invalidateQueries(['memberLists']);
       onClose();
-      console.log('성공');
     },
-    onError: () => {
-      console.log('실패');
-    },
+    onError: () => {},
   });
   const handleMatchDevice = () => {
     matchDeviceMutation.mutate();

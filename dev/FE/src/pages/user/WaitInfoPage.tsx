@@ -14,12 +14,8 @@ const WaitInfoPage = () => {
   //   getUsingGymUsers,
   // );
   const registGymMutation = useMutation(() => registGym(regiGymCode), {
-    onSuccess: () => {
-      console.log('등록 성공');
-    },
-    onError: () => {
-      console.log('등록 실패');
-    },
+    onSuccess: () => {},
+    onError: () => {},
   });
   const [checkGymApprove, setCheckGymApprove] = useState(false);
   const handleGymApproveButton = () => {
@@ -38,7 +34,6 @@ const WaitInfoPage = () => {
   const [regiGymCode, setRegiGymCode] = useState<string>('');
   const handleChangeGymCode = (event: ChangeEvent<HTMLInputElement>) => {
     setRegiGymCode(event.target.value);
-    console.log(regiGymCode);
   };
 
   const [pickEquipment, setPickEquipment] = useState('');
