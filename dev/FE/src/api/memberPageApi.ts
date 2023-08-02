@@ -15,7 +15,6 @@ const getUserLists = async (): Promise<MemberInfo[]> => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('회원정보리스트 불러오기', response.data);
   return response.data;
 };
 
@@ -29,7 +28,6 @@ const getUnAuthorizedUsers = async (): Promise<UnAuthorizedUser[]> => {
       },
     },
   );
-  console.log('미승인 회원 리스트 불러오기', response.data);
   return response.data;
 };
 
@@ -47,7 +45,6 @@ const deleteDevice = async (id: string, device_code: string | null) => {
       },
     },
   );
-  console.log('디바이스 매칭 제거', response);
   return response.data;
 };
 
@@ -75,22 +72,35 @@ const deviceLists = async (): Promise<Device[]> => {
       Authorization: `Bearer ${token}`,
     },
   });
-  console.log('디바이스 불러오기', response.data);
   return response.data;
 };
 
-// 회원승인, 해제 api
+// 회원해제 api
 const changeUserGym = async ({ id, check }: { id: string; check: boolean }) => {
   const url = check ? 'users/' : 'approval/';
   const response = await axios.put(BASEURL + 'admin/' + url, {
     id: id,
   });
-  console.log(url);
   if (url === 'approval/') {
-    console.log('회원 승인', response);
   } else {
-    console.log('회원 삭제', response);
   }
+  return response.data;
+};
+
+// 회원 승인 api
+const approveUserGym = async (id: string) => {
+  const response = await axios.put(
+    BASEURL + 'admin/approval/',
+    {
+      id: id,
+    },
+    {
+      headers: {
+        Authorization: `bearer ${token}`,
+      },
+    },
+  );
+
   return response.data;
 };
 
@@ -101,4 +111,5 @@ export {
   matchDevice,
   deviceLists,
   changeUserGym,
+  approveUserGym,
 };
