@@ -1,9 +1,8 @@
 import axios from 'axios';
 import { getToken } from '@/utils/storage';
 
-// const token = getToken('userToken');
-const token =
-  'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJ0ZXN0IiwiaWF0IjoxNjkwOTQ4ODIwLCJleHAiOjE2OTEwMzUyMjAsInN1YiI6InRlc3QyIn0.Sb7GKSJqm93RtbOpoe3tZAJ45sfy3HZkA7L-zb3_sbE';
+const token = getToken('userToken');
+
 const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 
 // 헬스장 이용객 수 알아오는 api
