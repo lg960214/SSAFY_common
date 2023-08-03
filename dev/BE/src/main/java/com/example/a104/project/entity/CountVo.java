@@ -5,7 +5,7 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -13,19 +13,19 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @DynamicInsert
-@IdClass(ReservationVoId.class)
-@Table(name="reservation")
-public class ReservationVo {
+@IdClass(CountVoId.class)
+@Table(name="count")
+public class CountVo {
 
     @Id
-    @Column
-    private String reader;
+    private LocalDate search;
 
     @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    private String name;
 
     @Column
-    private LocalDateTime reservation;
+    private int count;
 
+    @Column(name = "gym_code2")
+    private int gymCode;
 }

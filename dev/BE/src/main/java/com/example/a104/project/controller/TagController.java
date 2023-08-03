@@ -53,6 +53,7 @@ public class TagController {
         ReaderVo readerVo = readerRepository.findByReader(reader);
         String region = readerVo.getRegion();
         int gymCode = readerVo.getGymCode();
+
         List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
         for(SseEmitter emitter: emitters){
             try{
