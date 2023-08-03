@@ -171,17 +171,32 @@ public class TagService {
                         reservationRepository.save(new ReservationVo(reader, user.getUserId(), LocalDateTime.now()));
                     }
                 }
-                // 내가 예약이 없는 경우
+                // 내가 예약이 없는 경우 (#001_5)
                 else if (reservationRepository.findByUserId(user.getUserId()) == null) {
                     ReservationVo reservationVo = new ReservationVo(reader, user.getUserId(), LocalDateTime.now());
                     reservationRepository.save(reservationVo);
                 }
             }
-            // 해당 기구 예약자가 없는 경우
+            // 해당 기구 예약자가 없는 경우(#002)
             else {
-                // 내가 사용중인 상태
+                // 내가 사용중인 상태(#002_1)
                 if (readerStateRepository.findByUserId(user.getUserId()) != null) {
                     // 기존 사용 종료 후 새로 사용 시작
+
+                    ///////// 시작하면 off 메시지를 보냄///////////////////////////
+                    MqttConfig mqtt2 = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+                    mqtt2.init("tcp://13.124.11.62:1883", deviceCode);
+                    //readerStateRepository.ExistReservation(readers.getReader());
+                    //int userId = reservationList.get(0).getUserId();
+                    //String topic = userRepository.findByUserId(userId).getDeviceCode();
+                    // =============TOPIC 전송 ========================
+                    System.out.println("starting");
+                    //mqtt.send(topic, "your turn");
+                    mqtt2.send(deviceCode, "off");
+                    mqtt2.close();
+                    //System.out.println("다음 사람에게 MQTT 전송!!");
+                    //////////////////////////////////////////////////
+
                     LocalDateTime startTime = tagInfoRepository
                             .getStartDate(LocalDate.now(), user.getUserId(),
                                     readerStateRepository.findByUserId(user.getUserId()).getReader())
@@ -214,11 +229,27 @@ public class TagService {
                         readerStateRepository.nExistReservation(readers.getReader());
                     }
                 }
-                // 아무것도 사용중이지 않은 상태
+                // 아무것도 사용중이지 않은 상태 (#002_2)
                 else {
                     // 기구 사용 시작
                     ReaderStateVo readerStateVo = new ReaderStateVo(reader, 0, user.getUserId());
                     readerStateRepository.save(readerStateVo);
+
+                    ///////// 시작하면 off 메시지를 보냄///////////////////////////
+                    MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+                    mqtt.init("tcp://13.124.11.62:1883", deviceCode);
+                    //readerStateRepository.ExistReservation(readers.getReader());
+                    //int userId = reservationList.get(0).getUserId();
+                    //String topic = userRepository.findByUserId(userId).getDeviceCode();
+                    // =============TOPIC 전송 ========================
+                    System.out.println("starting");
+                    //mqtt.send(topic, "your turn");
+                    mqtt.send(deviceCode, "off");
+                    mqtt.close();
+                    //System.out.println("다음 사람에게 MQTT 전송!!");
+                    //////////////////////////////////////////////////
+
+
                     // 새로운 기구 사용 시작 시간 설정
                     TagInfoVo tagInfoVo = TagInfoVo.builder()
                             .primaryKey(null)
@@ -237,14 +268,14 @@ public class TagService {
 
         // 1. 해당 기구 사용중 상태
         else {
-            // 내가 사용중인 경우 (= 종료)
+            // 내가 사용중인 경우 (= 종료) (#003)
             if (readerState.getUserId() == user.getUserId()) {
                 // 태깅 정보 테이블에 종료 시간 추가 해줘야한다.
                 LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(), user.getUserId(), reader)
                         .get(0).getStartTime();
                 tagInfoRepository.setEndTime(LocalDateTime.now(), startTime);
 
-                // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경
+                // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
                     MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
@@ -266,27 +297,27 @@ public class TagService {
                     //
                     System.out.println("다음 사람에게 MQTT 전송!!");
                 }
-                // 해당 기구 예약이 없는경우 미사용(대기X)상태로 변경
+                // 해당 기구 예약이 없는경우 미사용(대기X)상태로 변경 (#003_2)
                 else {
                     readerStateRepository.nExistReservation(reader);
                     // 기존 예약을 취소한 디바이스코드 (=topic) 에도 종료라는 신호 송신 MQTT
                     //
                 }
             }
-            // 내가 사용중이 아닌 경우
+            // 내가 사용중이 아닌 경우 (#004)
             else {
                 // 내가 예약이 있는 경우
                 if (reservationRepository.findByUserId(user.getUserId()) != null) {
-                    // 다른 기구를 예약중이면 기존 예약 취소 후 새로 예약
+                    // 다른 기구를 예약중이면 기존 예약 취소 후 새로 예약 (#004_1)
                     if (!reservationRepository.findByUserId(user.getUserId()).getReader().equals(reader)) {
                         reservationRepository.deleteByUserId(user.getUserId());
                         ReservationVo reservationVo = new ReservationVo(reader, user.getUserId(), LocalDateTime.now());
                         reservationRepository.save(reservationVo);
                     }
-                    // 아닌 경우는 무시
+                    // 아닌 경우는 무시 (#004_2)
 
                 }
-                // 내가 예약이 없는경우 예약하기
+                // 내가 예약이 없는경우 예약하기 (#004_3)
                 else {
                     ReservationVo reservationVo = new ReservationVo(reader, user.getUserId(), LocalDateTime.now());
                     reservationRepository.save(reservationVo);

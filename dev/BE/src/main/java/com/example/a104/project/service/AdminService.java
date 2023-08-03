@@ -29,13 +29,15 @@ public class AdminService {
             realTimeDto.setGymCode(readerVo.getGymCode());
             realTimeDto.setRegion(readerVo.getRegion());
 
-
             try{
-                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
+
+                 realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
+                
             }
             catch (NullPointerException e){
                 realTimeDto.setUserId(null);
             }
+
 
             List<ReservationVo> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
             List<Integer> userList = new ArrayList<>();

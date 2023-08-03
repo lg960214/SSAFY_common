@@ -10,7 +10,7 @@ public class RealTimeDto {
     private String reader;
     private String name;
     private Integer gymCode;
-    private Integer userId;
+    private Integer userId = null;
     private List<Integer> waitingList;
     private Integer waitingCount;
 }
