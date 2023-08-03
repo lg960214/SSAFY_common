@@ -9,5 +9,6 @@ import java.util.List;
 @Repository
 public interface AdminRepository extends JpaRepository<AdminVo, Integer> {
     List<AdminVo> findById(String id);
+    AdminVo findByGymCode (int gymCode);
 
 }
