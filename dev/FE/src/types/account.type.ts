@@ -8,6 +8,6 @@ export interface SignUpData {
   password: string;
   name: string;
   email: string;
-  number: string;
+  phone_number: string;
   sex: string;
 }

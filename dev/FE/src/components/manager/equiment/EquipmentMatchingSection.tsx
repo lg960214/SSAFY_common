@@ -7,6 +7,7 @@ interface EquipmentMatchingSectionProps {
   isOnEdit: boolean;
   readers: Reader[];
   onReaderAddClick: () => void;
+  deleteReader: (reader: Reader) => void;
   onEquipmentDrop: (readerData: Reader, droppedItem: { id: string }) => void;
   onIssueDrop: (droppedItem: { id: string }) => void;
 }
@@ -15,6 +16,7 @@ const EquipmentMatchingSection = ({
   isOnEdit,
   readers,
   onReaderAddClick,
+  deleteReader,
   onEquipmentDrop,
   onIssueDrop,
 }: EquipmentMatchingSectionProps) => {
@@ -35,6 +37,7 @@ const EquipmentMatchingSection = ({
           isOnEdit={isOnEdit}
           onEquipmentDrop={onEquipmentDrop}
           data={reader}
+          deleteReader={deleteReader}
         />
       ))}
       {isOnEdit ? <ReaderAddButton onClick={onReaderAddClick} /> : null}

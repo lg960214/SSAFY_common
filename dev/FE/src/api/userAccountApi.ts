@@ -4,19 +4,15 @@ import { setStorage } from '@/utils/storage';
 import axios from 'axios';
 
 export const userLogin = async (loginData: LoginData) => {
-  try {
-    const res = await axios.post(BASEURL + 'user/login', loginData);
-    const setStorageValue = {
-      token: res.data.data.token,
-      name: res.data.data.name,
-      subject: res.data.data.subject,
-    };
-    setStorage('userToken', setStorageValue);
-    console.log(res);
-    return res.data.data;
-  } catch (err) {
-    console.log('userLogin err: ', err);
-  }
+  const res = await axios.post(BASEURL + 'user/login', loginData);
+  const setStorageValue = {
+    token: res.data.data.token,
+    name: res.data.data.name,
+    subject: res.data.data.subject,
+  };
+  setStorage('userToken', setStorageValue);
+  if (res.data.data === 'FAIL') throw Error('Login Failed');
+  return res.data.data;
 };
 
 export const userSignUp = async (signupData: SignUpData) => {
