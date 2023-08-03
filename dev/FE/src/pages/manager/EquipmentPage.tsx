@@ -80,6 +80,10 @@ const EquipmentPage = () => {
   ) => {
     // drop이 발생 했을 때 처리할 이벤트 함수
     // readerData는 drag된 대상을 받은 리더기 정보, droppedItem.id은 drop된 기구 명
+    if (readerData.name) {
+      alert('이미 매칭된 기구가 있습니다.');
+      return;
+    }
     const alreadyExistCount = wholeData.filter((cur) =>
       cur.name?.includes(droppedItem.id),
     ).length;
