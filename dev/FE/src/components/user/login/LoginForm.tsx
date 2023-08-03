@@ -12,9 +12,9 @@ const LoginForm = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    userLogin({ id: id, password: password }).then(() =>
-      navigate('/user/information'),
-    );
+    userLogin({ id: id, password: password })
+      .then(() => navigate('/user/information'))
+      .catch((err) => alert('아이디와 비밀번호를 확인해주세요.'));
   };
 
   const handleIdChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -30,12 +30,14 @@ const LoginForm = () => {
         type="text"
         value={id}
         onChange={handleIdChange}
+        setValueEmpty={() => setId('')}
         placeholder="아이디"
       />
       <FormInput
         type="password"
         value={password}
         onChange={handlePasswordChange}
+        setValueEmpty={() => setPassword('')}
         placeholder="비밀번호"
       />
       <div className="my-10">
