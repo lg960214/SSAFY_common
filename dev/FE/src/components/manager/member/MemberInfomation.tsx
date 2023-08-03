@@ -15,15 +15,13 @@ export const MemberInfomation = (item: MemberInfo) => {
   ];
   const queryClient = useQueryClient();
   const deleteUserMutation = useMutation(
-    ({ id, check }: { id: string; check: boolean }) =>
-      changeUserGym({ id, check }),
+    (id:string) =>
+      changeUserGym(id),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['memberLists']);
-        console.log('성공');
       },
       onError: () => {
-        console.log('실패');
       },
     },
   );
@@ -73,7 +71,7 @@ export const MemberInfomation = (item: MemberInfo) => {
       <div className="">
         <button
           onClick={() =>
-            deleteUserMutation.mutate({ id: item.id, check: true })
+            deleteUserMutation.mutate(item.id)
           }
           className="bg-black float-right text-white w-24 h-12 text-center p-0"
         >

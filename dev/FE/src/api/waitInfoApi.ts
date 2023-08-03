@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { getToken } from '@/utils/storage';
 
-const token = getToken('userToken');
 
 const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 
@@ -25,6 +24,9 @@ const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 
 // 헬스장 등록 api
 const registGym = async (gymCode: string) => {
+  const token = getToken('userToken');
+
+  console.log(token, '토큰확인')
   const response = await axios.put(
     BASEURL + 'user/regist-gym/',
     {
