@@ -22,6 +22,7 @@ public class WaitVo {
     private LocalDateTime waitTime;
 
     @Id
+    @Column
     private String reader;
 
     @Column
