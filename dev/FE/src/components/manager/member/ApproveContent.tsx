@@ -31,7 +31,7 @@ const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
       <span className="basis-1/4">{item.access_user}</span>
       <span className="basis-1/4 flex justify-around">
         <ApproveButton id={item.id} name="승인" />
-        <ApproveButton id={item.id}  name="거절" />
+        <ApproveButton id={item.id} name="거절" />
       </span>
     </div>
   );
@@ -51,23 +51,18 @@ const ApproveButton = ({ name, id }: ApproveButtonProps) => {
     },
     onError: () => {},
   });
-  const deleteUserMutation = useMutation(
-    (id:string) =>
-      changeUserGym(id),
-    {
-      onSuccess: () => {
-        queryClient.invalidateQueries(['unAuthorizedUsers']);
-      },
-      onError: () => {
-      },
+  const deleteUserMutation = useMutation((id: string) => changeUserGym(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['unAuthorizedUsers']);
     },
-  );
+    onError: () => {},
+  });
   const approveColor = name === '승인' ? 'bg-green-600' : 'bg-red-600';
   const approveButtonClass = `w-12 h-8 p-0 text-white font-bold ${approveColor}`;
   return (
     <button
       onClick={() => {
-        if (name==='승인') {
+        if (name === '승인') {
           approveUserMutation.mutate(id);
         } else {
           deleteUserMutation.mutate(id);

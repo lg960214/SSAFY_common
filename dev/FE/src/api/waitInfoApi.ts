@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { getToken } from '@/utils/storage';
 
-
 const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 
 // 헬스장 이용객 수 알아오는 api
 // const getUsingGymUsers = async (): Promise<number[]> => {
+// const token = getToken('userToken');
 //   const response = await axios
 //     .get<number[]>(BASEURL + 'users/using-gym/', {
 //       headers: {
@@ -25,8 +25,6 @@ const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 // 헬스장 등록 api
 const registGym = async (gymCode: string) => {
   const token = getToken('userToken');
-
-  console.log(token, '토큰확인')
   const response = await axios.put(
     BASEURL + 'user/regist-gym/',
     {

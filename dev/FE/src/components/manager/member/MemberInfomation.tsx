@@ -1,4 +1,4 @@
-import { changeUserGym } from '@/api/memberPageApi';
+import { changeUserGym, deleteDevice } from '@/api/memberPageApi';
 import { MemberInfo } from '@/types/member.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -14,17 +14,21 @@ export const MemberInfomation = (item: MemberInfo) => {
     '가입일',
   ];
   const queryClient = useQueryClient();
-  const deleteUserMutation = useMutation(
-    (id:string) =>
-      changeUserGym(id),
+  const deleteDeviceMutation = useMutation(
+    () => deleteDevice(item.id, item.deviceCode),
     {
       onSuccess: () => {
         queryClient.invalidateQueries(['memberLists']);
       },
-      onError: () => {
-      },
+      onError: () => {},
     },
   );
+  const deleteUserMutation = useMutation((id: string) => changeUserGym(id), {
+    onSuccess: () => {
+      deleteDeviceMutation.mutate();
+    },
+    onError: () => {},
+  });
   return (
     <div className="text-black pt-2 px-6 w-[460px] h-[580px] border-2 bg-white border-black rounded-2xl">
       <div className="w-50 h-16 border-b-2 border-black text-xl font-bold flex justify-center items-center">
@@ -70,9 +74,7 @@ export const MemberInfomation = (item: MemberInfo) => {
       </div>
       <div className="">
         <button
-          onClick={() =>
-            deleteUserMutation.mutate(item.id)
-          }
+          onClick={() => deleteUserMutation.mutate(item.id)}
           className="bg-black float-right text-white w-24 h-12 text-center p-0"
         >
           회원 해제

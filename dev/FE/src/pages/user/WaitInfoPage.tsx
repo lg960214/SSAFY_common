@@ -13,12 +13,13 @@ const WaitInfoPage = () => {
   //   ['getUsingGymUsers'],
   //   getUsingGymUsers,
   // );
-  const registGymMutation = useMutation((regiGymCode: string) => registGym(regiGymCode), {
-    onSuccess: () => {
+  const registGymMutation = useMutation(
+    (regiGymCode: string) => registGym(regiGymCode),
+    {
+      onSuccess: () => {},
+      onError: () => {},
     },
-    onError: () => {
-    },
-  });
+  );
   const [checkGymApprove, setCheckGymApprove] = useState(false);
 
   const [isModal, setIsModal] = useState(false);
@@ -110,7 +111,9 @@ const WaitInfoPage = () => {
               placeholder="헬스장 번호"
               onChange={handleChangeGymCode}
             />
-            <button onClick={() => registGymMutation.mutate(regiGymCode)}>등록</button>
+            <button onClick={() => registGymMutation.mutate(regiGymCode)}>
+              등록
+            </button>
           </div>
         </div>
       )}
