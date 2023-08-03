@@ -29,7 +29,7 @@ public class TagController {
 
     private List<SseEmitter> emitters = new ArrayList<>();
     @GetMapping(value = "sse",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token, @RequestParam String region) throws IOException {
+    public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token) throws IOException {
         SseEmitter emitter = new SseEmitter(1800000l);
         emitters.add(emitter);
 
@@ -38,7 +38,7 @@ public class TagController {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
 
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
 
         emitter.send(list,MediaType.APPLICATION_JSON);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -54,7 +54,7 @@ public class TagController {
         String region = readerVo.getRegion();
         int gymCode = readerVo.getGymCode();
 
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
         for(SseEmitter emitter: emitters){
             try{
                 emitter.send(list,MediaType.APPLICATION_JSON);

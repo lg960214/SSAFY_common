@@ -18,8 +18,8 @@ public class AdminService {
     private final ReaderStateRepository readerStateRepository;
     private final ReservationRepository reservationRepository;
     // 실시간 대기, 사용 현황
-    public List<RealTimeDto> realTimeDtoList(String region, int gymCode){
-        List<ReaderVo> readerVoList =readerRepository.findByGymCodeAndRegion(gymCode,region); // 헬스장 구역 별 리더기 리스트
+    public List<RealTimeDto> realTimeDtoList(int gymCode){
+        List<ReaderVo> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
         List<RealTimeDto> realTimeDtoList = new ArrayList<>();
         for(ReaderVo readerVo: readerVoList){
             //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
