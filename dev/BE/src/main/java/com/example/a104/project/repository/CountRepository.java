@@ -17,4 +17,6 @@ public interface CountRepository extends JpaRepository<CountVo, CountVoId> {
     void Count(LocalDate date, String name);
 
     List<CountVo> findBySearchAndName(LocalDate date, String name);
+
+
 }

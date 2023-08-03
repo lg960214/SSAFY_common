@@ -23,4 +23,6 @@ public interface TagInfoRepository extends JpaRepository<TagInfoVo, Integer> {
     @Transactional
     @Query("update TagInfoVo t set t.endTime = :endTime where t.startTime = :startTime")
     void setEndTime(@Param("endTime") LocalDateTime endTime, @Param("startTime") LocalDateTime startTime);
+
+    List<TagInfoVo> findByReaderAndTagDate(String reader,LocalDate date);
 }
