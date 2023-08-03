@@ -11,3 +11,10 @@ export interface GymEquipments {
   name: string;
   gymCode: number;
 }
+
+export interface SearchingData {
+  now: number | null;
+  weak: number | null;
+  weak2: number | null;
+  weak3: number | null;
+}
