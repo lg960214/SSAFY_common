@@ -27,9 +27,10 @@ const SignUpForm = () => {
         password: password,
         name: name,
         email: email,
-        number: phoneNumber,
+        phone_number: phoneNumber,
         sex: gender,
       };
+      console.log(signUpParam);
       userSignUp(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
@@ -123,12 +124,14 @@ const SignUpForm = () => {
         type="text"
         value={name}
         onChange={handleNameChange}
+        setValueEmpty={() => setName('')}
         placeholder="이 름"
       />
       <FormInput
         type="text"
         value={id}
         onChange={handleIdChange}
+        setValueEmpty={() => setId('')}
         placeholder="아이디"
       />
       <div className="text-red-500">{idCheckResponse}</div>
@@ -136,24 +139,28 @@ const SignUpForm = () => {
         type="password"
         value={password}
         onChange={handlePasswordChange}
+        setValueEmpty={() => setPassword('')}
         placeholder="비밀번호"
       />
       <FormInput
         type="password"
         value={passwordCheck}
         onChange={handlePasswordCheckChange}
+        setValueEmpty={() => setPasswordCheck('')}
         placeholder="비밀번호 확인"
       />
       <FormInput
         type="text"
         value={phoneNumber}
         onChange={handlePhoneNumberChange}
+        setValueEmpty={() => setPhoneNumber('')}
         placeholder="전화번호"
       />
       <FormInput
         type="email"
         value={email}
         onChange={handleEmailChange}
+        setValueEmpty={() => setEmail('')}
         placeholder="이메일"
       />
       <GenderSelectButton

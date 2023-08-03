@@ -80,6 +80,10 @@ const EquipmentPage = () => {
   ) => {
     // drop이 발생 했을 때 처리할 이벤트 함수
     // readerData는 drag된 대상을 받은 리더기 정보, droppedItem.id은 drop된 기구 명
+    if (readerData.name) {
+      alert('이미 매칭된 기구가 있습니다.');
+      return;
+    }
     const alreadyExistCount = wholeData.filter((cur) =>
       cur.name?.includes(droppedItem.id),
     ).length;
@@ -132,6 +136,20 @@ const EquipmentPage = () => {
     setWholeData(data ?? []);
   };
 
+  const deleteReader = (reader: Reader) => {
+    const deletedWholeData = wholeData.map((cur) => {
+      if (cur.reader === reader.reader) {
+        return {
+          ...cur,
+          region: null,
+          name: null,
+        };
+      }
+      return cur;
+    });
+    setWholeData(deletedWholeData);
+  };
+
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
@@ -159,6 +177,7 @@ const EquipmentPage = () => {
             isOnEdit={isOnEdit}
             onReaderAddClick={handleReaderAddClick}
             onIssueDrop={handleIssueToMatchingSection}
+            deleteReader={deleteReader}
           />
           <div>
             <EquipmentListSection
