@@ -1,10 +1,9 @@
 package com.example.a104.project.controller;
 
-import com.example.a104.project.entity.AdminVo;
-import com.example.a104.project.entity.TokenDataResponse;
-import com.example.a104.project.entity.TokenResponse;
-import com.example.a104.project.entity.UserVo;
+import com.example.a104.project.dto.DayInfoDto;
+import com.example.a104.project.entity.*;
 import com.example.a104.project.service.AdminService;
+import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
 import com.example.a104.project.util.JwtTokenProvider;
@@ -16,6 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +29,7 @@ public class AdminController {
     private final AdminService adminService;
     private final UserDateService userDateService;
     private final UserService userService;
+    private final ReaderService readerService;
 
     // 실시간 대기, 사용 현황 (사용안함)
     // @GetMapping("waiting")
@@ -38,6 +41,26 @@ public class AdminController {
     //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
     //     return list;
     // }
+
+    // 일변 운동기구별 검색량과 이용량
+    @GetMapping("day-info")
+    public List<DayInfoDto> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
+        List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        int gymCode = adminService.getGymCode((String) claims.get("sub"));
+        List<ReaderVo> readerVoList = readerService.getMatchReaders(gymCode);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate localDate = LocalDate.parse(date, formatter);
+        for(ReaderVo readerVo: readerVoList){
+            DayInfoDto dayInfoDto = new DayInfoDto();
+            dayInfoDto.setName(readerVo.getName());
+            dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
+            dayInfoDto.setUsingCount(adminService.getDayUsing(readerVo,localDate));
+            dayInfoDtoList.add(dayInfoDto);
+        }
+        return dayInfoDtoList;
+    }
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")

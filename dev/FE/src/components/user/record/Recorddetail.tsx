@@ -1,10 +1,11 @@
-import exerciseList from './RecordData';
+import { Exercise } from '@/pages/user/RecordPage';
 interface RecordDetailProps {
   selectedDate: string;
+  exerciseList: Exercise[];
 }
-const RecordDetail = ({ selectedDate }: RecordDetailProps) => {
+const RecordDetail = ({ selectedDate, exerciseList }: RecordDetailProps) => {
   const filteredExercises = exerciseList.filter(
-    (listItem) => listItem.tagDate === selectedDate,
+    (listItem) => listItem.tagData === selectedDate,
   );
 
   return (
@@ -17,10 +18,15 @@ const RecordDetail = ({ selectedDate }: RecordDetailProps) => {
         </div>
         {filteredExercises.map((item) => (
           <li className="w-[300px] h-[30px]  my-[15px]  flex justify-between mx-auto bg-white rounded-[8px] fontJeju">
-            <p className="ms-[10px] my-auto">{item.reader}</p>
-            <p className="me-[50px]">
-              {item.startTime.slice(11, 16)} ~ {item.endTime.slice(11, 16)}
-            </p>
+            <p className="ms-[10px] my-auto">{item.name}</p>
+            {item.endTime != null ? (
+              <p className="flex">
+                <p>{item.startTime.slice(11, 16)} ~</p>
+                <p className="me-[50px]">{item.endTime.slice(11, 16)}</p>
+              </p>
+            ) : (
+              <p className="me-[80px]">진행중</p> // 종료 시간이 없는 경우 '진행중' 표시
+            )}
           </li>
         ))}
       </ul>

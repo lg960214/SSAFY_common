@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/tags")
 @RestController
@@ -28,19 +29,20 @@ public class TagController {
     private final ReaderRepository readerRepository;
 
     private List<SseEmitter> emitters = new ArrayList<>();
-    @GetMapping(value = "sse",produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token, @RequestParam String region) throws IOException {
+
+    @GetMapping(value = "sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token) throws IOException {
         SseEmitter emitter = new SseEmitter(1800000l);
         emitters.add(emitter);
 
-//        emitter.onCompletion(()-> );
-//        emitter.onTimeout(() -> );
+        // emitter.onCompletion(()-> );
+        // emitter.onTimeout(() -> );
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
 
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
 
-        emitter.send(list,MediaType.APPLICATION_JSON);
+        emitter.send(list, MediaType.APPLICATION_JSON);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .body(emitter);
     }
@@ -53,12 +55,12 @@ public class TagController {
         ReaderVo readerVo = readerRepository.findByReader(reader);
         String region = readerVo.getRegion();
         int gymCode = readerVo.getGymCode();
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-        for(SseEmitter emitter: emitters){
-            try{
-                emitter.send(list,MediaType.APPLICATION_JSON);
-            }
-            catch (Exception e){
+
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(list, MediaType.APPLICATION_JSON);
+            } catch (Exception e) {
 
             }
         }
