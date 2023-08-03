@@ -5,10 +5,13 @@ import axios from 'axios';
 
 export const userLogin = async (loginData: LoginData) => {
   const res = await axios.post(BASEURL + 'user/login', loginData);
+  console.log(res);
   const setStorageValue = {
     token: res.data.data.token,
     name: res.data.data.name,
     subject: res.data.data.subject,
+    gymName: res.data.data.gymName,
+    regist: res.data.data.regist,
   };
   setStorage('userToken', setStorageValue);
   if (res.data.data === 'FAIL') throw Error('Login Failed');
