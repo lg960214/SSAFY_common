@@ -2,10 +2,9 @@ import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 import { EquipList } from '@/components/manager/waitlist/WaitListDetail';
 const waitListApi = (
-  region: string | undefined,
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
 ) => {
-  const url = `http://i9a104.p.ssafy.io:8080/tags/sse?region=${region}`;
+  const url = `http://i9a104.p.ssafy.io:8081/tags/sse`;
 
   const eventSource = new EventSourcePolyfill(url, {
     headers: {

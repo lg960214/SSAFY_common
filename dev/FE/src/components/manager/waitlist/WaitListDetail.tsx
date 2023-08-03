@@ -16,8 +16,12 @@ const WaitListDetail = () => {
   const [waitEquipList, setWaitEquipList] = useState<EquipList[]>([]);
   const { sectionName } = useParams();
   const handleWait = () => {
-    waitListApi(sectionName, setWaitEquipList);
+    waitListApi(setWaitEquipList);
   };
+  const filterwaitEquipList = waitEquipList.filter(
+    (listitem) => listitem.region === sectionName,
+  );
+
   return (
     <>
       <div>
@@ -25,7 +29,7 @@ const WaitListDetail = () => {
           눌러
         </button>
         <div className="listlinebox flex flex-col flex-wrap mt-[25px] fontJeju">
-          {waitEquipList.map((item) => (
+          {filterwaitEquipList.map((item) => (
             <div
               className="w-[685px] h-[186px] bg-white mx-[70px] my-[35px] rounded-[15px]"
               key={item.reader}

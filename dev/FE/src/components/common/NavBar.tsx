@@ -5,10 +5,7 @@ import AuthProvider from './AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext, FormEvent, ChangeEvent } from 'react';
 import FormInput from './FormInput';
-<<<<<<< HEAD
-import { useMutation } from '@tanstack/react-query';
-=======
->>>>>>> c2c46cf14f8d399168e2a95a189977e598623f5f
+
 import managerLoginApi from '@/api/managerLoginApi';
 export default function Root() {
   // 로그인 여부 확인용
