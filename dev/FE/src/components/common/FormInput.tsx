@@ -4,7 +4,7 @@ interface FormInputProps {
   type: string;
   value: string;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
-  setValueEmpty: () => void;
+  setValueEmpty?: () => void;
   placeholder?: string;
 }
 

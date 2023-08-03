@@ -11,7 +11,6 @@ export const userLogin = async (loginData: LoginData) => {
     subject: res.data.data.subject,
   };
   setStorage('userToken', setStorageValue);
-  console.log(res);
   if (res.data.data === 'FAIL') throw Error('Login Failed');
   return res.data.data;
 };
