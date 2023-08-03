@@ -14,19 +14,29 @@ import { registGym } from '@/api/waitInfoApi';
 import { GymEquipments, SearchingData } from '@/types/user.type';
 
 const WaitInfoPage = () => {
+  const token = JSON.parse(localStorage.getItem('userToken'));
+  const getGymName = token.gymName;
   const { data: usingGymUsers, status } = useQuery(
     ['getUsingGymUsers'],
     getUsingGymUsers,
+    { enabled: !!getGymName },
   );
 
   const registGymMutation = useMutation(
     (regiGymCode: string) => registGym(regiGymCode),
     {
       onSuccess: () => {},
-      onError: () => {},
+      onError: () => {
+        alert('헬스장 번호를 입력해 주세요!');
+      },
     },
   );
-  const [checkGymApprove, setCheckGymApprove] = useState(true);
+  const [checkGymApprove, setCheckGymApprove] = useState(false);
+  useEffect(() => {
+    if (token?.regist === 1) {
+      setCheckGymApprove(true);
+    }
+  }, []);
 
   const [isModal, setIsModal] = useState(false);
   const handleOpenModal = () => {
@@ -40,6 +50,7 @@ const WaitInfoPage = () => {
   const { data, status: getGymEquipmentsStatus } = useQuery(
     ['getGymEquipments'],
     getGymEquipments,
+    { enabled: !!getGymName },
   );
 
   const [searchingData, setSearchingData] = useState<SearchingData>();
@@ -91,7 +102,7 @@ const WaitInfoPage = () => {
             <div className="float-left font-bold text-lg">나의 헬스장</div>
             <div className="float-right">현재 {usingGymUsers}명 이용중</div>
           </div>
-          <WaitTitle text="킹콩 피트니스" />
+          <WaitTitle text={getGymName} />
           <div className="flex justify-evenly items-center my-4">
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
