@@ -4,16 +4,21 @@ import WaitEquitmentList from '@/components/user/waitinfo/WaitEquitmentList';
 import WaitTitle from '@/components/user/waitinfo/WaitTitle';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import { getGymEquipments, getUsingGymUsers } from '@/api/waitInfoApi';
+import {
+  getGymEquipments,
+  getGymSearch,
+  getUsingGymUsers,
+} from '@/api/waitInfoApi';
 import FormInput from '@/components/common/FormInput';
 import { registGym } from '@/api/waitInfoApi';
-import { GymEquipments } from '@/types/user.type';
+import { GymEquipments, SearchingData } from '@/types/user.type';
 
 const WaitInfoPage = () => {
   const { data: usingGymUsers, status } = useQuery(
     ['getUsingGymUsers'],
     getUsingGymUsers,
   );
+
   const registGymMutation = useMutation(
     (regiGymCode: string) => registGym(regiGymCode),
     {
@@ -36,12 +41,24 @@ const WaitInfoPage = () => {
     ['getGymEquipments'],
     getGymEquipments,
   );
-  if (getGymEquipmentsStatus === 'error') {
-    console.log(data);
-  }
-  if (getGymEquipmentsStatus === 'success') {
-    console.log(data);
-  }
+
+  const [searchingData, setSearchingData] = useState<SearchingData>();
+  // 헬스장 기구 검색
+  const gymSearchMutation = useMutation(
+    () =>
+      getGymSearch({
+        date: `${hour.length == 1 ? '0' + hour : hour}:${
+          minute.length == 1 ? '0' + minute : minute
+        }`,
+        reader: pickEquipment === null ? '' : pickEquipment.reader,
+      }),
+    {
+      onSuccess: (data) => {
+        setSearchingData(data);
+      },
+      onError: () => {},
+    },
+  );
 
   const [regiGymCode, setRegiGymCode] = useState<string>('');
   const handleChangeGymCode = (event: ChangeEvent<HTMLInputElement>) => {
@@ -56,14 +73,14 @@ const WaitInfoPage = () => {
   };
   useEffect(handleCloseModal, [pickEquipment]);
 
-  const [hour, setHour] = useState<number>(0);
-  const [minute, setMinute] = useState<number>(0);
+  const [hour, setHour] = useState<string>('00');
+  const [minute, setMinute] = useState<string>('00');
 
   useEffect(() => {
     const date = new Date();
     const roundedMinute = Math.ceil(date.getMinutes() / 10) * 10;
-    setHour(date.getHours());
-    setMinute(roundedMinute);
+    setHour(String(date.getHours()));
+    setMinute(String(roundedMinute));
   }, []);
 
   return (
@@ -102,18 +119,39 @@ const WaitInfoPage = () => {
                 setMinute={setMinute}
               />
             </div>
-            <button className="w-25 h-11 bg-CustomOrange">조회</button>
+            <button
+              onClick={() => gymSearchMutation.mutate()}
+              className="w-25 h-11 bg-CustomOrange"
+            >
+              조회
+            </button>
           </div>
 
           <div className="w-[360px] h-[200px] flex justify-evenly py-2 bg-CustomGray rounded-lg mx-auto">
             <div className="w-[120px] text-black border-r-2 border-black">
               <span className="font-bold text-center">실시간</span>
-              <p>6명</p>
+              <p>{searchingData?.now}명</p>
             </div>
             <div className="flex flex-col justify-evenly">
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저번주:
+                {searchingData?.weak === undefined ? '0' : searchingData?.weak}
+                명
+              </div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저저번주:
+                {searchingData?.weak2 === undefined
+                  ? '0'
+                  : searchingData?.weak2}
+                명
+              </div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저저저번주:
+                {searchingData?.weak3 === undefined
+                  ? '0'
+                  : searchingData?.weak3}
+                명
+              </div>
             </div>
           </div>
         </div>

@@ -1,8 +1,8 @@
 interface TimeInputProps {
-  hour: number;
-  minute: number;
-  setHour: (num: number) => void;
-  setMinute: (num: number) => void;
+  hour: string;
+  minute: string;
+  setHour: (num: string) => void;
+  setMinute: (num: string) => void;
 }
 
 const TimeInput: React.FC<TimeInputProps> = ({
@@ -18,7 +18,9 @@ const TimeInput: React.FC<TimeInputProps> = ({
       <select
         className="h-11 w-16 rounded-xl p-2"
         value={hour}
-        onChange={(e) => setHour(Number(e.target.value))}
+        onChange={(e) => {
+          setHour(e.target.value);
+        }}
       >
         {Array.from({ length: 24 }, (_, i) => i).map((_, i) => (
           <option key={i} value={i}>
@@ -30,7 +32,7 @@ const TimeInput: React.FC<TimeInputProps> = ({
       <select
         className="h-11 w-16 rounded-xl p-2"
         value={minute}
-        onChange={(e) => setMinute(Number(e.target.value))}
+        onChange={(e) => setMinute(e.target.value)}
       >
         {minutes.map((minute) => (
           <option key={minute} value={minute}>

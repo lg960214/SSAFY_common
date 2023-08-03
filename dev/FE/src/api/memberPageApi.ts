@@ -2,7 +2,6 @@ import axios from 'axios';
 import { MemberInfo, UnAuthorizedUser, Device } from '@/types/member.type';
 import { getToken } from '@/utils/storage';
 
-
 // BASEURL 자리
 const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
 
@@ -27,7 +26,7 @@ const getUnAuthorizedUsers = async (): Promise<UnAuthorizedUser[]> => {
         Authorization: `Bearer ${token}`,
       },
     },
-  )
+  );
   return response.data;
 };
 
@@ -71,7 +70,6 @@ const matchDevice = async (id: string, device_code: string | null) => {
 const deviceLists = async (): Promise<Device[]> => {
   const token = getToken('managerToken');
   const response = await axios.get<Device[]>(BASEURL + 'devices/', {
-    
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -80,7 +78,7 @@ const deviceLists = async (): Promise<Device[]> => {
 };
 
 // 회원해제 api
-const changeUserGym = async (id : string) => {
+const changeUserGym = async (id: string) => {
   const response = await axios.put(BASEURL + 'admin/users/', {
     id: id,
   });

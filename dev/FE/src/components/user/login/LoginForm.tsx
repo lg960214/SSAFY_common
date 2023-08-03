@@ -13,7 +13,10 @@ const LoginForm = () => {
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     userLogin({ id: id, password: password })
-      .then(() => navigate('/user/information'))
+      .then((res) => {
+        console.log(res);
+        navigate('/user/information');
+      })
       .catch((err) => alert('아이디와 비밀번호를 확인해주세요.'));
   };
 
