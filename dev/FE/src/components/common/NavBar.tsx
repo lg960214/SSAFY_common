@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext, FormEvent, ChangeEvent } from 'react';
 import FormInput from './FormInput';
 import { useMutation } from '@tanstack/react-query';
-import managerLoginApi from '@/api/ManagerLoginAPI';
+import managerLoginApi from '@/api/managerLoginApi';
 export default function Root() {
   // 로그인 여부 확인용
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
