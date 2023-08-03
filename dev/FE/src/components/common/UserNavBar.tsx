@@ -1,9 +1,17 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import './userNavbar.css';
 
 const UserNavBar = () => {
+  const navigate = useNavigate();
+  const logOut = () => {
+    localStorage.removeItem('userToken');
+    navigate('/user/login');
+  };
   return (
     <nav className="h-[60px] bg-CustomNavy text-white userNavbar flex justify-evenly items-center text-center">
+      <div onClick={logOut} className="bg-red-500 py-3 px-1">
+        out
+      </div>
       <NavLink className="w-[100px]" to="record/">
         내 운동기록
       </NavLink>

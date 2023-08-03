@@ -3,25 +3,28 @@ import { LoginData, SignUpData } from '@/types/account.type';
 import { setStorage } from '@/utils/storage';
 import axios from 'axios';
 
-export const userLogin = async (loginData: LoginData) => {
+export const loginUser = async (loginData: LoginData) => {
   const res = await axios.post(BASEURL + 'user/login', loginData);
+  console.log(res);
   const setStorageValue = {
     token: res.data.data.token,
     name: res.data.data.name,
     subject: res.data.data.subject,
+    gymName: res.data.data.gymName,
+    regist: res.data.data.regist,
   };
   setStorage('userToken', setStorageValue);
   if (res.data.data === 'FAIL') throw Error('Login Failed');
   return res.data.data;
 };
 
-export const userSignUp = async (signupData: SignUpData) => {
+export const signUpUser = async (signupData: SignUpData) => {
   try {
     const res = await axios.post(BASEURL + 'user/signup', signupData);
     console.log(res);
     return res.data;
   } catch (err) {
-    console.log('userSignUp err: ', err);
+    console.log('signUp err: ', err);
     alert('다시 시도해주세요.');
     throw Error('회원가입 실패');
   }
