@@ -1,6 +1,5 @@
 package com.example.a104.project.controller;
 
-import com.example.a104.project.dto.RealTimeDto;
 import com.example.a104.project.entity.AdminVo;
 import com.example.a104.project.entity.TokenDataResponse;
 import com.example.a104.project.entity.TokenResponse;
@@ -108,7 +107,7 @@ public class AdminController {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
-                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),
+                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),null,admin.get(0).getName(),
                         claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 

@@ -10,7 +10,10 @@ import lombok.Data;
         private String token;
         private String subject;
         private String name;
+        private Integer regist;
+        private String  gymName;
         private String issued_time;
         private String expired_time;
+
     }
 
