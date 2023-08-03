@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext, FormEvent, ChangeEvent } from 'react';
 import FormInput from './FormInput';
 import { useMutation } from '@tanstack/react-query';
-import managerLoginApi from '@/api/ManagerLoginAPI';
+import managerLoginApi from '@/api/managerLoginApi';
 export default function Root() {
   // 로그인 여부 확인용
   const { isLoggedIn, setLoggedIn } = useContext(AuthContext);
@@ -148,14 +148,14 @@ export default function Root() {
                 type="text"
                 value={managerId}
                 onChange={handleManagerIdChange}
-                placeholder=""
+                placeholder=" "
               />
               <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
               <FormInput
                 type="password"
                 value={managerPassword}
                 onChange={handleManagerPasswordChange}
-                placeholder=""
+                placeholder=" "
               />
               <button
                 className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
