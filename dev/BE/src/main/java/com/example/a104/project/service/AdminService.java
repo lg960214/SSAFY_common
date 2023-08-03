@@ -6,6 +6,7 @@ import com.example.a104.project.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,30 @@ public class AdminService {
     private final ReaderRepository readerRepository;
     private final ReaderStateRepository readerStateRepository;
     private final ReservationRepository reservationRepository;
+    private final TagInfoRepository tagInfoRepository;
+    private final CountRepository countRepository;
+    public int getDayUsing(ReaderVo readerVo,LocalDate date){
+        int cnt = 0;
+        try{
+            cnt = tagInfoRepository.findByReaderAndTagDate(readerVo.getReader(),date).size();
+        }
+        catch (Exception e){
+
+        }
+        return cnt;
+    }
+
+    public int getDaySearch(ReaderVo readerVo, LocalDate date){
+        int cnt = 0;
+        try{
+            cnt = countRepository.findBySearchAndName(date,readerVo.getName()).get(0).getCount();
+        }
+        catch (Exception e){
+
+        }
+        return cnt;
+
+    }
     // 실시간 대기, 사용 현황
     public List<RealTimeDto> realTimeDtoList(int gymCode){
         List<ReaderVo> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
