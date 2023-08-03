@@ -30,12 +30,14 @@ const LoginForm = () => {
         type="text"
         value={id}
         onChange={handleIdChange}
+        setValueEmpty={() => setId('')}
         placeholder="아이디"
       />
       <FormInput
         type="password"
         value={password}
         onChange={handlePasswordChange}
+        setValueEmpty={() => setPassword('')}
         placeholder="비밀번호"
       />
       <div className="my-10">
