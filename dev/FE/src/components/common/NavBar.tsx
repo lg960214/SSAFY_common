@@ -75,8 +75,8 @@ export default function Root() {
     localStorage.removeItem('managerToken');
     setLoggedIn(false);
     navigate('/');
-    setManagerId(' ');
-    setManagerPassword(' ');
+    setManagerId('');
+    setManagerPassword('');
   };
 
   return (
@@ -132,7 +132,7 @@ export default function Root() {
                 className="mx-3 text-[24px] bg-CustomNavy"
                 onClick={handleManagerLogout}
               >
-                <p>로그 아웃</p>
+                <p className="fontBungee">logout</p>
               </button>
             </ul>
           </div>
@@ -154,7 +154,7 @@ export default function Root() {
                 placeholder=""
               />
               <button
-                className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
+                className="ms-1 h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
                 onClick={handleManagerLogIn}
               >
                 Login
