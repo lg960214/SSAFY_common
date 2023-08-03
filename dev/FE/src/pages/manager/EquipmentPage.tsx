@@ -136,6 +136,20 @@ const EquipmentPage = () => {
     setWholeData(data ?? []);
   };
 
+  const deleteReader = (reader: Reader) => {
+    const deletedWholeData = wholeData.map((cur) => {
+      if (cur.reader === reader.reader) {
+        return {
+          ...cur,
+          region: null,
+          name: null,
+        };
+      }
+      return cur;
+    });
+    setWholeData(deletedWholeData);
+  };
+
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
@@ -163,6 +177,7 @@ const EquipmentPage = () => {
             isOnEdit={isOnEdit}
             onReaderAddClick={handleReaderAddClick}
             onIssueDrop={handleIssueToMatchingSection}
+            deleteReader={deleteReader}
           />
           <div>
             <EquipmentListSection
