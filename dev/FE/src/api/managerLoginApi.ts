@@ -3,17 +3,10 @@ import { LoginData } from '@/types/account.type';
 import axios from 'axios';
 
 const managerLoginApi = async (loginData: LoginData) => {
-  try {
-    const url = BASEURL + 'admin/login';
-    const response = await axios.post(url, loginData);
-
-    return response.data;
-  } catch (error: any) {
-    console.log(error);
-    throw new Error(
-      error.response?.data?.message || 'An error occurred during login.',
-    );
-  }
+  const url = BASEURL + 'admin/login';
+  const response = await axios.post(url, loginData);
+  if (response.data.data === 'FAIL') throw Error('Login Failed');
+  return response.data;
 };
 
 export default managerLoginApi;
