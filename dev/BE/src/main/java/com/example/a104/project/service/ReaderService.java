@@ -16,7 +16,9 @@ public class ReaderService {
     public List<ReaderVo> getReaderList(int gymCode){
         return readerRepository.findByGymCode(gymCode);
     }
-
+    public List<ReaderVo> getMatchReaders(int gymCode){
+        return readerRepository.findByGymCodeAndNameIsNotNull(gymCode);
+    }
     public void updateReader(List<ReaderVo> readers){
         for(ReaderVo reader: readers){
             readerRepository.save(reader);

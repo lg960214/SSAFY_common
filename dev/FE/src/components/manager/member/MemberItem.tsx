@@ -46,12 +46,9 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
   const queryClient = useQueryClient();
   const deleteDeviceMutation = useMutation(() => deleteDevice(id, deviceCode), {
     onSuccess: () => {
-      console.log('성공');
       queryClient.invalidateQueries(['memberLists']);
     },
-    onError: () => {
-      console.log('실패');
-    },
+    onError: () => {},
   });
 
   const [isTagListOpen, setIsTagListOpen] = useState(false);

@@ -5,7 +5,10 @@ import AuthProvider from './AuthProvider';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect, useContext, FormEvent, ChangeEvent } from 'react';
 import FormInput from './FormInput';
+<<<<<<< HEAD
 import { useMutation } from '@tanstack/react-query';
+=======
+>>>>>>> c2c46cf14f8d399168e2a95a189977e598623f5f
 import managerLoginApi from '@/api/managerLoginApi';
 export default function Root() {
   // 로그인 여부 확인용
@@ -40,28 +43,25 @@ export default function Root() {
     setClickedLinks(currentPage);
   }, []);
 
-  const LoginMutation = useMutation(managerLoginApi, {
-    onSuccess: (data) => {
-      // 로그인 성공 시 처리할 로직
-      const managerToken = {
-        token: data.data.token,
-        subject: data.data.subject,
-        name: data.data.name,
-      };
-      localStorage.setItem('managerToken', JSON.stringify(managerToken));
-      setLoggedIn(true);
-      setPlaceName(data.data.name);
-      navigate('/member');
-      setClickedLinks(0);
-    },
-    onError: () => {
-      // 로그인 실패 시 처리할 로직
-      alert('아이디 또는 비밀번호를 확인하세요!');
-    },
-  });
   const handleManagerLogIn = (event: FormEvent) => {
     event.preventDefault();
-    LoginMutation.mutate({ id: managerId, password: managerPassword });
+    managerLoginApi({ id: managerId, password: managerPassword })
+      .then((response) => {
+        const managerToken = {
+          token: response.data.token,
+          subject: response.data.subject,
+          name: response.data.name,
+        };
+        localStorage.setItem('managerToken', JSON.stringify(managerToken));
+        setPlaceName(response.data.name);
+        setClickedLinks(0);
+        setLoggedIn(true);
+        navigate('/member');
+      })
+      .catch((error) => {
+        console.log(error);
+        alert('아이디 또는 비밀번호를 확인하세요!');
+      });
   };
 
   const handleManagerIdChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -79,8 +79,8 @@ export default function Root() {
     localStorage.removeItem('managerToken');
     setLoggedIn(false);
     navigate('/');
-    setManagerId(' ');
-    setManagerPassword(' ');
+    setManagerId('');
+    setManagerPassword('');
   };
 
   return (
@@ -136,7 +136,7 @@ export default function Root() {
                 className="mx-3 text-[24px] bg-CustomNavy"
                 onClick={handleManagerLogout}
               >
-                <p>로그 아웃</p>
+                <p className="fontBungee">logout</p>
               </button>
             </ul>
           </div>
@@ -158,7 +158,7 @@ export default function Root() {
                 placeholder=" "
               />
               <button
-                className="h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
+                className="ms-1 h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
                 onClick={handleManagerLogIn}
               >
                 Login

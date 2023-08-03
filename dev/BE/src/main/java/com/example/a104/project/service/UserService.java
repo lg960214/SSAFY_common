@@ -19,11 +19,16 @@ public class UserService {
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
 
+    public int countUsers(int gymCode){
+        return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode).size();
+    }
+
     public List<TagInfoVo> getUserDate(String date, int userId){
         List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
         System.out.println(userRecords);
         return userRecords;
     };
+
 
     public List<TagInfoDto> getTagInfo(List<TagInfoVo> list){
         List<TagInfoDto> tagInfoDtoList = new ArrayList<>();

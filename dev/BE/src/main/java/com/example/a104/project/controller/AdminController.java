@@ -1,6 +1,5 @@
 package com.example.a104.project.controller;
 
-import com.example.a104.project.dto.RealTimeDto;
 import com.example.a104.project.entity.AdminVo;
 import com.example.a104.project.entity.TokenDataResponse;
 import com.example.a104.project.entity.TokenResponse;
@@ -29,16 +28,16 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
 
-    // 실시간 대기, 사용 현황
-    @GetMapping("waiting")
-    public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
+    // 실시간 대기, 사용 현황 (사용안함)
+    // @GetMapping("waiting")
+    // public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
 
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
+    //     Claims claims = JwtTokenProvider.parseJwtToken(token);
+    //     int gymCode = adminService.getGymCode((String) claims.get("sub"));
 
-        List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-        return list;
-    }
+    //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
+    //     return list;
+    // }
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")
@@ -108,7 +107,7 @@ public class AdminController {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
                 Claims claims = JwtTokenProvider.parseJwtToken("Bearer " + token); // 토큰 검증
-                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),
+                tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),null,admin.get(0).getName(),
                         claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
 

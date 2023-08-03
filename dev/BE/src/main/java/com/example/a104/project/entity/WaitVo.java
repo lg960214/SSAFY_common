@@ -13,19 +13,20 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @DynamicInsert
-@IdClass(ReservationVoId.class)
-@Table(name="reservation")
-public class ReservationVo {
+@IdClass(WaitVoId.class)
+@Table(name="wait")
+public class WaitVo {
 
     @Id
-    @Column
+    @Column(name = "wait_time")
+    private LocalDateTime waitTime;
+
+    @Id
     private String reader;
 
-    @Id
-    @Column(name = "user_id")
-    private Integer userId;
+    @Column
+    private Integer count;
 
     @Column
-    private LocalDateTime reservation;
-
+    private String name;
 }
