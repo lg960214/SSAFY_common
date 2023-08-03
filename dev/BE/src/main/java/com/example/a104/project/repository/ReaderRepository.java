@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface ReaderRepository extends JpaRepository<ReaderVo,String> {
     List<ReaderVo> findByGymCode(int gymCode);
+    List<ReaderVo> findByGymCodeAndNameIsNotNull(int gymCode);
     ReaderVo findByReader(String reader);
     List<ReaderVo> findByGymCodeAndRegion(int gymCode, String region);
 }
