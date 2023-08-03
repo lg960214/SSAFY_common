@@ -27,9 +27,10 @@ const SignUpForm = () => {
         password: password,
         name: name,
         email: email,
-        number: phoneNumber,
+        phone_number: phoneNumber,
         sex: gender,
       };
+      console.log(signUpParam)
       userSignUp(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
