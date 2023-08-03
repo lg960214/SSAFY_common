@@ -1,4 +1,4 @@
-import { checkUserId, userSignUp } from '@/api/userAccountApi';
+import { checkUserId, signUpUser } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent, useEffect } from 'react';
@@ -31,7 +31,7 @@ const SignUpForm = () => {
         sex: gender,
       };
       console.log(signUpParam);
-      userSignUp(signUpParam).then(() => navigate('/user/login'));
+      signUpUser(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
     }
