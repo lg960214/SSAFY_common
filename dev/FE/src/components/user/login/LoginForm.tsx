@@ -1,4 +1,4 @@
-import { userLogin } from '@/api/userAccountApi';
+import { loginUser } from '@/api/userAccountApi';
 import FormInput from '@/components/common/FormInput';
 import SubmitButton from '@/components/common/SubmitButton';
 import { useState, FormEvent, ChangeEvent } from 'react';
@@ -12,7 +12,7 @@ const LoginForm = () => {
 
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
-    userLogin({ id: id, password: password })
+    loginUser({ id: id, password: password })
       .then(() => navigate('/user/information'))
       .catch((err) => alert('아이디와 비밀번호를 확인해주세요.'));
   };
