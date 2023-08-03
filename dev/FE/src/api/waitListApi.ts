@@ -33,6 +33,7 @@ const waitListApi = (
 
     if (e.error) {
       console.log('error 발생');
+      alert('에러 발생하여 접속이 끊겼습니다. 다시 연결해주세요!');
       // 에러 발생 시 할 일
     }
 
