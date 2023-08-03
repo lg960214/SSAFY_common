@@ -4,15 +4,16 @@ import WaitEquitmentList from '@/components/user/waitinfo/WaitEquitmentList';
 import WaitTitle from '@/components/user/waitinfo/WaitTitle';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-// import { getUsingGymUsers } from '@/api/waitInfoApi';
+import { getGymEquipments, getUsingGymUsers } from '@/api/waitInfoApi';
 import FormInput from '@/components/common/FormInput';
 import { registGym } from '@/api/waitInfoApi';
+import { GymEquipments } from '@/types/user.type';
 
 const WaitInfoPage = () => {
-  // const { data: usingGymUsers, status } = useQuery(
-  //   ['getUsingGymUsers'],
-  //   getUsingGymUsers,
-  // );
+  const { data: usingGymUsers, status } = useQuery(
+    ['getUsingGymUsers'],
+    getUsingGymUsers,
+  );
   const registGymMutation = useMutation(
     (regiGymCode: string) => registGym(regiGymCode),
     {
@@ -20,7 +21,7 @@ const WaitInfoPage = () => {
       onError: () => {},
     },
   );
-  const [checkGymApprove, setCheckGymApprove] = useState(false);
+  const [checkGymApprove, setCheckGymApprove] = useState(true);
 
   const [isModal, setIsModal] = useState(false);
   const handleOpenModal = () => {
@@ -30,13 +31,27 @@ const WaitInfoPage = () => {
     setIsModal(false);
   };
 
+  // 헬스장 기구정보
+  const { data, status: getGymEquipmentsStatus } = useQuery(
+    ['getGymEquipments'],
+    getGymEquipments,
+  );
+  if (getGymEquipmentsStatus === 'error') {
+    console.log(data);
+  }
+  if (getGymEquipmentsStatus === 'success') {
+    console.log(data);
+  }
+
   const [regiGymCode, setRegiGymCode] = useState<string>('');
   const handleChangeGymCode = (event: ChangeEvent<HTMLInputElement>) => {
     setRegiGymCode(event.target.value);
   };
 
-  const [pickEquipment, setPickEquipment] = useState('');
-  const handleSetPickEquipment = (equipment: string) => {
+  const [pickEquipment, setPickEquipment] = useState<GymEquipments | null>(
+    null,
+  );
+  const handleSetPickEquipment = (equipment: GymEquipments) => {
     setPickEquipment(equipment);
   };
   useEffect(handleCloseModal, [pickEquipment]);
@@ -57,13 +72,14 @@ const WaitInfoPage = () => {
         <div>
           <div className="m-2 text-black">
             <div className="float-left font-bold text-lg">나의 헬스장</div>
-            {/* <div className="float-right">현재 {usingGymUsers}명 이용중</div> */}
+            <div className="float-right">현재 {usingGymUsers}명 이용중</div>
           </div>
           <WaitTitle text="킹콩 피트니스" />
           <div className="flex justify-evenly items-center my-4">
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
                 <WaitEquitmentList
+                  equipmentLists={data}
                   equipment={pickEquipment}
                   handlePickEquipment={handleSetPickEquipment}
                 />
@@ -104,14 +120,17 @@ const WaitInfoPage = () => {
       ) : (
         <div>
           <WaitTitle text="헬스장을 등록하세요!" />
-          <div className="p-8">
+          <div className="p-0 h-16 flex justify-evenly items-center">
             <FormInput
               type="text"
               value={regiGymCode}
               placeholder="헬스장 번호"
               onChange={handleChangeGymCode}
             />
-            <button onClick={() => registGymMutation.mutate(regiGymCode)}>
+            <button
+              className="py-0 h-10 w-[80px] border-2 border-black"
+              onClick={() => registGymMutation.mutate(regiGymCode)}
+            >
               등록
             </button>
           </div>
@@ -122,20 +141,22 @@ const WaitInfoPage = () => {
 };
 
 interface EquipmentCircleProps {
-  equipment: string;
+  equipment: GymEquipments | null;
 }
 
 const EquipmentCircle = ({ equipment }: EquipmentCircleProps) => {
+  const name =
+    equipment === null
+      ? ''
+      : isNaN(parseInt(equipment.name[equipment.name.length - 1]))
+      ? equipment.name
+      : equipment.name.slice(0, equipment.name.length - 1);
   return (
     <div className="bg-white w-[84px] h-[84px] m-3 rounded-full flex justify-center items-center">
-      {equipment === '' ? (
+      {equipment === null ? (
         <span className="text-2xl text-black">?</span>
       ) : (
-        <img
-          src={`/img/equipments/${equipment}.png`}
-          alt={equipment}
-          width={52}
-        />
+        <img src={`/img/equipments/${name}.png`} alt={name} width={52} />
       )}
     </div>
   );
