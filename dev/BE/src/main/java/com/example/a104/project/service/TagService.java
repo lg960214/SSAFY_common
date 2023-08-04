@@ -68,6 +68,8 @@ public class TagService {
                                 if (reservationList.size() != 0) {
                                     MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository,
                                             readerStateRepository);
+
+                                    //mqtt.init("tcp://localhost:1883", deviceCode);
                                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                     readerStateRepository.ExistReservation(readers.getReader());
                                     int userId = reservationList.get(0).getUserId();
@@ -105,6 +107,7 @@ public class TagService {
 
                                 // =============메시지 off 전송====================
                                 MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
+                                //mqtt.init("tcp://localhost:1883", deviceCode);
                                 mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                 readerStateRepository.ExistReservation(readers.getReader());
                                 //int userId = reservationList.get(0).getUserId();
@@ -139,6 +142,7 @@ public class TagService {
 
                                 // =============메시지 off 전송====================
                                 MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
+                                //mqtt.init("tcp://localhost:1883", deviceCode);
                                 mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                 //readerStateRepository.ExistReservation(readers.getReader());
                                 //int userId = reservationList.get(0).getUserId();
@@ -199,7 +203,7 @@ public class TagService {
                             .findByReaderOrderByReservationAsc(readers.getReader());
                     if (reservationList.size() != 0) {
                         MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
-
+                        //mqtt.init("tcp://localhost:1883", deviceCode);
                         mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                         readerStateRepository.ExistReservation(readers.getReader());
                         int userId = reservationList.get(0).getUserId();
@@ -225,6 +229,7 @@ public class TagService {
 
                     // =============메시지 off 전송====================
                     MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
+                    //mqtt.init("tcp://localhost:1883", deviceCode);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                     //readerStateRepository.ExistReservation(readers.getReader());
                     //int userId = reservationList.get(0).getUserId();
@@ -266,8 +271,11 @@ public class TagService {
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
                     MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository);
+                    //mqtt.init("tcp://localhost:1883", deviceCode);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
-                    readerStateRepository.ExistReservation(reader);
+                    //readerStateRepository.ExistReservation(reader);
+                    ReaderStateVo readerStateVo = new ReaderStateVo(reader, 2, null);
+                    readerStateRepository.save(readerStateVo);
                     // 다음 사람에게 알람 주는 로직 (MQTT) => 먼저 예약 테이블에서 해당 기구의 예약자 중 최신 사람을 찾아야함
                     // 예약자 중 최신 사람 찾기
                     ReservationVo next = reservation.get(0);
@@ -287,7 +295,9 @@ public class TagService {
                 }
                 // 해당 기구 예약이 없는경우 미사용(대기X)상태로 변경 (#003_2)
                 else {
-                    readerStateRepository.nExistReservation(reader);
+                    //readerStateRepository.nExistReservation(reader);
+                    ReaderStateVo readerStateVo = new ReaderStateVo(reader, 1, null);
+                    readerStateRepository.save(readerStateVo);
                     // 기존 예약을 취소한 디바이스코드 (=topic) 에도 종료라는 신호 송신 MQTT
                     //
                 }
