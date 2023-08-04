@@ -8,13 +8,15 @@ export const WaitListDetailPage = () => {
   const { sectionName } = useParams(); // params에서 'item' 값을 받아옴
   return (
     <>
-      <FullScreen className="full-screen" handle={handle}>
-        <div>
+      <FullScreen className="bg-[#f2f2f2]" handle={handle}>
+        <div className="flex justify-between">
           <SectionHeader section={sectionName} />
-          <WaitListDetail section={sectionName ?? 'A'} />
+          <div>
+            <button onClick={handle.enter}>전체화면 전환</button>
+            <button onClick={handle.exit}>전체화면 해제</button>
+          </div>
         </div>
-        <button onClick={handle.enter}>전체화면 전환</button>
-        <button onClick={handle.exit}>전체화면 해제</button>
+        <WaitListDetail section={sectionName ?? 'A'} />
       </FullScreen>
     </>
   );

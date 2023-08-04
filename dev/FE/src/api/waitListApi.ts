@@ -1,6 +1,6 @@
+import { EquipList } from '@/types/wait.type';
 import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { EquipList } from '@/components/manager/waitlist/WaitListDetail';
 const waitListApi = (
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
 ) => {
