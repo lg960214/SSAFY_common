@@ -15,7 +15,6 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
     { title: '회원 번호', className: 'w-20' },
     { title: '전화 번호', className: 'w-28' },
     { title: '성별', className: 'w-16' },
-    { title: '최근 방문', className: 'w-28' },
     { title: '태그 번호', className: 'w-44' },
   ];
   return (

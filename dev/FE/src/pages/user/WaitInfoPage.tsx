@@ -25,7 +25,9 @@ const WaitInfoPage = () => {
   const registGymMutation = useMutation(
     (regiGymCode: string) => registGym(regiGymCode),
     {
-      onSuccess: () => {},
+      onSuccess: () => {
+        alert('등록이 완료되었습니다! 헬스장 승인 후에 다시 로그인해주세요.');
+      },
       onError: () => {
         alert('헬스장 번호를 입력해 주세요!');
       },
@@ -53,7 +55,9 @@ const WaitInfoPage = () => {
     { enabled: !!getGymName },
   );
 
-  const [searchingData, setSearchingData] = useState<SearchingData>();
+  const [searchingData, setSearchingData] = useState<SearchingData | null>(
+    null,
+  );
   // 헬스장 기구 검색
   const gymSearchMutation = useMutation(
     () =>
@@ -143,26 +147,41 @@ const WaitInfoPage = () => {
           <div className="w-[360px] h-[200px] flex justify-evenly py-2 bg-CustomGray rounded-lg mx-auto">
             <div className="w-[120px] text-black border-r-2 border-black">
               <span className="font-bold text-center">실시간</span>
-              <p>{searchingData?.now}명</p>
+              <p>
+                {!searchingData
+                  ? 0
+                  : !searchingData.now
+                  ? 0
+                  : searchingData.now}
+                명
+              </p>
             </div>
             <div className="flex flex-col justify-evenly">
               <div className="w-[176px] h-[40px] bg-white rounded">
                 저번주:
-                {searchingData?.weak === undefined ? '0' : searchingData?.weak}
+                {!searchingData
+                  ? 0
+                  : !searchingData.week
+                  ? 0
+                  : searchingData.week}
                 명
               </div>
               <div className="w-[176px] h-[40px] bg-white rounded">
                 저저번주:
-                {searchingData?.weak2 === undefined
-                  ? '0'
-                  : searchingData?.weak2}
+                {!searchingData
+                  ? 0
+                  : !searchingData.week2
+                  ? 0
+                  : searchingData.week2}
                 명
               </div>
               <div className="w-[176px] h-[40px] bg-white rounded">
                 저저저번주:
-                {searchingData?.weak3 === undefined
-                  ? '0'
-                  : searchingData?.weak3}
+                {!searchingData
+                  ? 0
+                  : !searchingData.week3
+                  ? 0
+                  : searchingData.week3}
                 명
               </div>
             </div>
@@ -185,6 +204,12 @@ const WaitInfoPage = () => {
               등록
             </button>
           </div>
+          {getGymName && (
+            <div>
+              <p>{getGymName} 등록 대기중입니다.</p>
+              <p>다른 헬스장을 등록하고 싶으시다면 새로 등록을 해주세요</p>
+            </div>
+          )}
         </div>
       )}
     </div>
