@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { getToken } from '@/utils/storage';
-
-const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
+import { BASEURL } from '@/constants/url';
 
 // 헬스장 이용객 수 알아오는 api
 const getUsingGymUsers = async (): Promise<number[]> => {
