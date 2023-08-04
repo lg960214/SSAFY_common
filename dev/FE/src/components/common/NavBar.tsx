@@ -16,6 +16,11 @@ export default function Root() {
   const pathList: string[] = ['/member', '/equipment', '/usage', '/waitlist'];
   const currentPath = useLocation().pathname;
   let currentPage: number = pathList.indexOf(currentPath);
+  useEffect(() => {
+    currentPage = pathList.indexOf(currentPath);
+    setClickedLinks(currentPage);
+  }, [currentPath]);
+
   if (currentPage === -1) {
     currentPage = 3;
   }
