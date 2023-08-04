@@ -7,3 +7,5 @@ export interface EquipList {
   waitingList: string[];
   waitingCount: number;
 }
+
+export type StateType = 'using' | 'waitnext' | 'empty';

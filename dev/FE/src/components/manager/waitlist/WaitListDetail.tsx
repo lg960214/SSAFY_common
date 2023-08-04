@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import waitListApi from '@/api/waitListApi';
-import { EquipList } from '@/types/wait.type';
+import { EquipList, StateType } from '@/types/wait.type';
 import WaitCard from './WaitCard';
 
 interface WaitListDetailProps {
@@ -9,18 +9,25 @@ interface WaitListDetailProps {
 
 const WaitListDetail = ({ section }: WaitListDetailProps) => {
   const [waitEquipList, setWaitEquipList] = useState<EquipList[]>([]);
+  const [filteredList, setFilteredList] = useState<EquipList[]>([]);
+  const [state, setState] = useState<StateType>('using');
+
   useEffect(() => {
-    waitListApi(setWaitEquipList);
+    waitListApi(setWaitEquipList, setState);
   }, []);
-  const filterwaitEquipList = waitEquipList.filter(
-    (listitem) => listitem.region === section,
-  );
+
+  useEffect(() => {
+    const filteredWaitEquipList = waitEquipList.filter(
+      (listitem) => listitem.region === section,
+    );
+    setFilteredList(filteredWaitEquipList);
+  }, [waitEquipList]);
 
   return (
     <>
       <div className="flex flex-wrap mt-[70px] ml-[150px] fontJeju">
-        {filterwaitEquipList.map((item) => (
-          <WaitCard key={item.reader} data={item} time={'00:00'} />
+        {filteredList.map((item) => (
+          <WaitCard key={item.reader} data={item} state={state} />
         ))}
       </div>
     </>

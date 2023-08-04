@@ -1,8 +1,9 @@
-import { EquipList } from '@/types/wait.type';
+import { EquipList, StateType } from '@/types/wait.type';
 import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
 const waitListApi = (
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
+  setState: React.Dispatch<React.SetStateAction<StateType>>,
 ) => {
   const url = `http://i9a104.p.ssafy.io:8081/tags/sse`;
 
@@ -23,6 +24,7 @@ const waitListApi = (
     const parsedData = JSON.parse(res);
     console.log(parsedData);
     setWaitEquipList(parsedData);
+    setState('empty');
     // 받아오는 data로 할 일
   };
 

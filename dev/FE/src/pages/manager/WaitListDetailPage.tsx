@@ -16,7 +16,7 @@ export const WaitListDetailPage = () => {
             <button onClick={handle.exit}>전체화면 해제</button>
           </div>
         </div>
-        <WaitListDetail section={sectionName ?? 'A'} />
+        <WaitListDetail section={sectionName ?? '?'} />
       </FullScreen>
     </>
   );
