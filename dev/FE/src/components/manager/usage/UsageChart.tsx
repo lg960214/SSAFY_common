@@ -1,6 +1,11 @@
 import { ResponsiveBar } from '@nivo/bar';
 import './usagechart.css';
-const UsagePage = () => {
+import { UsageData } from '@/types/usage';
+interface UsagePageProps {
+  dailyUsageData: UsageData[];
+}
+
+const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
   const handle = {
     barClick: (data: any) => {
       console.log(data);
@@ -13,28 +18,14 @@ const UsagePage = () => {
 
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-    <div className="chartbox">
+    <div className="chartbox fontBungee">
       <ResponsiveBar
         /**
          * chart에 사용될 데이터
          */
-        data={[
-          { equipment: '벤치프레스1', 이용량: 1200 },
-          { equipment: '벤치프레스2', 이용량: 2200 },
-          { equipment: '벤치프레스3', 이용량: 3200 },
-          { equipment: '벤치프레스4', 이용량: 2200 },
-          { equipment: '벤치프레스5', 이용량: 1200 },
-          { equipment: '벤치프레스6', 이용량: 2200 },
-          { equipment: '벤치프레스7', 이용량: 1200 },
-          { equipment: '벤치프레스8', 이용량: 3200 },
-          { equipment: '벤치프레스9', 이용량: 1200 },
-          { equipment: '벤치프레스10', 이용량: 2200 },
-          { equipment: '벤치프레스11', 이용량: 1200 },
-          { equipment: '벤치프레스12', 이용량: 3200 },
-          { equipment: '벤치프레스13', 이용량: 3200 },
-          { equipment: '벤치프레스14', 이용량: 3200 },
-          { equipment: '벤치프레스15', 이용량: 3200 },
-        ]}
+        data={dailyUsageData.map((data) => {
+          return { equipment: data.name, 이용량: data.usingCount };
+        })}
         /**
          * chart에 보여질 데이터 key (측정되는 값)
          */
@@ -54,7 +45,7 @@ const UsagePage = () => {
         /**
          * chart 색상
          */
-        colors={['olive', 'brown', 'orange']} // 커스터하여 사용할 때
+        colors={{ scheme: 'nivo' }} // 커스터하여 사용할 때
         // colors={{ scheme: 'nivo' }} // nivo에서 제공해주는 색상 조합 사용할 때
         /**
          * color 적용 방식
@@ -69,6 +60,7 @@ const UsagePage = () => {
             text: {
               fontSize: 14,
               fill: '#000000',
+              fontFamily: 'Bungee-Regular',
             },
           },
           /**
@@ -78,6 +70,7 @@ const UsagePage = () => {
             text: {
               fontSize: 22,
               fill: '#000000',
+              fontFamily: 'JejuGodic',
             },
           },
           axis: {
@@ -88,6 +81,7 @@ const UsagePage = () => {
               text: {
                 fontSize: 20,
                 fill: '#000000',
+                fontFamily: 'JejuGodic',
               },
             },
             /**
@@ -97,6 +91,7 @@ const UsagePage = () => {
               text: {
                 fontSize: 16,
                 fill: '#000000',
+                fontFamily: 'JejuGodic',
               },
             },
           },
@@ -108,7 +103,7 @@ const UsagePage = () => {
           tickSize: 5, // 값 설명하기 위해 튀어나오는 점 크기
           tickPadding: 15, // tick padding
           tickRotation: -45, // tick 기울기
-          legendPosition: 'top', // 글씨 위치
+          legendPosition: 'middle', // 글씨 위치
           legendOffset: 40, // 글씨와 chart간 간격
         }}
         /**
