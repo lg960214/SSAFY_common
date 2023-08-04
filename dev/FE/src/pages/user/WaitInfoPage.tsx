@@ -14,7 +14,7 @@ import { registGym } from '@/api/waitInfoApi';
 import { GymEquipments, SearchingData } from '@/types/user.type';
 
 const WaitInfoPage = () => {
-  const token = JSON.parse(localStorage.getItem('userToken'));
+  const token = JSON.parse(localStorage.getItem('userToken') as string);
   const getGymName = token.gymName;
   const { data: usingGymUsers, status } = useQuery(
     ['getUsingGymUsers'],
@@ -67,7 +67,9 @@ const WaitInfoPage = () => {
       onSuccess: (data) => {
         setSearchingData(data);
       },
-      onError: () => {},
+      onError: () => {
+        alert('기구를 선택해주세요!');
+      },
     },
   );
 
