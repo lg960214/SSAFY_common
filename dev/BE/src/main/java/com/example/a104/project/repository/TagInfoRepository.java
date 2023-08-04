@@ -25,4 +25,6 @@ public interface TagInfoRepository extends JpaRepository<TagInfoVo, Integer> {
     void setEndTime(@Param("endTime") LocalDateTime endTime, @Param("startTime") LocalDateTime startTime);
 
     List<TagInfoVo> findByReaderAndTagDate(String reader,LocalDate date);
+
+    List<TagInfoVo> findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(int userId,String reader);
 }

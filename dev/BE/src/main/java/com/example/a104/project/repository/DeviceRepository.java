@@ -11,7 +11,7 @@ import java.util.List;
 public interface DeviceRepository extends JpaRepository<DeviceVo,String> {
 
     List<DeviceVo> findByGymCodeAndUseIsNull(int gymCode);
-
+    DeviceVo findByDeviceCode(String deviceCode);
 
     // 디바이스 매칭
     @Modifying

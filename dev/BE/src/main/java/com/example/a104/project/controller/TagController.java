@@ -2,6 +2,7 @@ package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.RealTimeDto;
 import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.repository.DeviceRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.ReaderStateRepository;
 import com.example.a104.project.service.AdminService;
@@ -29,6 +30,8 @@ public class TagController {
     private final AdminService adminService;
     private final ReaderRepository readerRepository;
     private final ReaderStateRepository readerStateRepository;
+    private final DeviceRepository deviceRepository;
+
     private List<SseEmitter> emitters = new ArrayList<>();
 
     @GetMapping(value = "sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
@@ -46,6 +49,20 @@ public class TagController {
         emitter.send(list, MediaType.APPLICATION_JSON);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
                 .body(emitter);
+    }
+
+    @GetMapping
+    public void noShow(@RequestParam String deviceCode){
+        int gymCode = deviceRepository.findByDeviceCode(deviceCode).getGymCode();
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(list, MediaType.APPLICATION_JSON);
+            } catch (Exception e) {
+
+            }
+        }
+
     }
 
     @PostMapping

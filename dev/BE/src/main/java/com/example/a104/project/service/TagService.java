@@ -151,6 +151,8 @@ public class TagService {
                     ReservationVo reservationVo = new ReservationVo(reader, user.getUserId(), LocalDateTime.now());
                     reservationRepository.save(reservationVo);
                 }
+                ReaderStateVo readerStateVo = new ReaderStateVo(reader,0,user.getUserId());
+                readerStateRepository.save(readerStateVo);
             }
             // 해당 기구 예약자가 없는 경우 (#002)
             else {
@@ -188,6 +190,7 @@ public class TagService {
                     else {
                         readerStateRepository.nExistReservation(readers.getReader());
                     }
+
                 }
                 // 아무것도 사용중이지 않은 상태 (#002_2)
                 else {

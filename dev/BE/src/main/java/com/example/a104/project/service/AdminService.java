@@ -54,14 +54,23 @@ public class AdminService {
             realTimeDto.setReader(readerVo.getReader());
             realTimeDto.setGymCode(readerVo.getGymCode());
             realTimeDto.setRegion(readerVo.getRegion());
-            System.out.println(readerStateRepository.findByReader(readerVo.getReader())==null);
+            Integer userId;
             if(readerStateRepository.findByReader(readerVo.getReader())== null){
                 realTimeDto.setUserId(null);
+                userId = null;
             }
             else{
-                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId());
+                userId = readerStateRepository.findByReader(readerVo.getReader()).getUserId();
+                realTimeDto.setUserId(userId);
             }
-            System.out.println(realTimeDto.getUserId());
+            if(userId == null){
+                realTimeDto.setStartTime(null);
+            }
+            else{
+                TagInfoVo tagInfoVo = tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).get(0);
+                realTimeDto.setStartTime(tagInfoVo.getStartTime());
+            }
+
 
 //            try{
 //                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
