@@ -12,7 +12,11 @@ export interface EquipList {
   waitingCount: number;
 }
 
-const WaitListDetail = () => {
+interface WaitListDetailProps {
+  section: string;
+}
+
+const WaitListDetail = ({ section }: WaitListDetailProps) => {
   const [waitEquipList, setWaitEquipList] = useState<EquipList[]>([]);
   const { sectionName } = useParams();
   const handleWait = () => {
