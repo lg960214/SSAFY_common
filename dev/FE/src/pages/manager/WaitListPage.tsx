@@ -4,7 +4,7 @@ const WaitListPage = () => {
   const sectionData = ['A', 'B', 'C', 'D', 'E'];
   const handleOpenNewTab = (url: string) => {
     window.open(
-      `http://localhost:3002/waitlist/${url}`,
+      `http://localhost:3000/waitlist/${url}`,
       '_blank',
       'width=1920,height=1080',
     );
