@@ -130,10 +130,10 @@ export default function Root() {
             <ul className="my-auto text-right flex fontJeju text-[20px] text-white">
               <li className="my-auto">{placeName} 님 환영합니다!</li>
               <button
-                className="mx-3 text-[24px] bg-CustomNavy"
+                className="mx-3 text-[24px] bg-CustomNavy border-0 transition-colors duration-300 hover:text-CustomOrange"
                 onClick={handleManagerLogout}
               >
-                <p className="fontBungee">logout</p>
+                <p className="fontBungee ">logout</p>
               </button>
             </ul>
           </div>

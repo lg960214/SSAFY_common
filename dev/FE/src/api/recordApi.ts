@@ -12,10 +12,7 @@ export const recordApi = async (date: Object) => {
         Authorization: `Bearer ${token}`, // Token을 헤더에 추가
       },
     });
-    console.log(res.data);
     return res.data;
-  } catch (err) {
-    console.log('getRecords err: ', err);
-  }
+  } catch (err) {}
 };
 export default recordApi;
