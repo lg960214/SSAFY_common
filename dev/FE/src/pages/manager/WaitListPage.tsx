@@ -1,10 +1,11 @@
 // WaitListPage.tsx
+import ViewSectionButton from '@/components/manager/waitlist/ViewSectionButton';
 import './waitlistpage.css';
 const WaitListPage = () => {
   const sectionData = ['A', 'B', 'C', 'D', 'E'];
   const handleOpenNewTab = (url: string) => {
     window.open(
-      `http://localhost:3002/waitlist/${url}`,
+      `http://localhost:3001/waitlist/${url}`,
       '_blank',
       'width=1920,height=1080',
     );
@@ -19,17 +20,12 @@ const WaitListPage = () => {
       </div>
       <div>
         <ul className="flex selectbox mx-auto mt-20">
-          {sectionData.map((item) => (
-            <li key={item}>
-              <button
-                className="w-60 h-36 bg-CustomGray m-10 pt-3"
-                onClick={() => handleOpenNewTab(`${item}`)}
-              >
-                <span className="fontJeju text-4xl">
-                  <span className="fontBungee">{item}</span> 구역
-                </span>
-              </button>
-            </li>
+          {sectionData.map((sect) => (
+            <ViewSectionButton
+              key={sect}
+              section={sect}
+              onClick={() => handleOpenNewTab(sect)}
+            />
           ))}
         </ul>
       </div>
