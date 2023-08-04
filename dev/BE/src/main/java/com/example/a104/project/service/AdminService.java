@@ -46,6 +46,7 @@ public class AdminService {
     public List<RealTimeDto> realTimeDtoList(int gymCode){
         List<ReaderVo> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
         List<RealTimeDto> realTimeDtoList = new ArrayList<>();
+        System.out.println(realTimeDtoList);
         for(ReaderVo readerVo: readerVoList){
             //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
             RealTimeDto realTimeDto = new RealTimeDto();
@@ -53,14 +54,22 @@ public class AdminService {
             realTimeDto.setReader(readerVo.getReader());
             realTimeDto.setGymCode(readerVo.getGymCode());
             realTimeDto.setRegion(readerVo.getRegion());
-
-
-            try{
-                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
-            }
-            catch (NullPointerException e){
+            System.out.println(readerStateRepository.findByReader(readerVo.getReader())==null);
+            if(readerStateRepository.findByReader(readerVo.getReader())== null){
                 realTimeDto.setUserId(null);
             }
+            else{
+                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId());
+            }
+            System.out.println(realTimeDto.getUserId());
+
+//            try{
+//                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
+//
+//            }
+//            catch (NullPointerException e){
+//                realTimeDto.setUserId(null);
+//            }
 
             List<ReservationVo> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
             List<Integer> userList = new ArrayList<>();
@@ -74,8 +83,10 @@ public class AdminService {
 
             realTimeDto.setWaitingList(userList); // 대기중인 사람들 리스트
             realTimeDto.setWaitingCount(cnt);
+            System.out.println("확인 : "+ realTimeDto);
             realTimeDtoList.add(realTimeDto);
         }
+        System.out.println(realTimeDtoList);
         return realTimeDtoList;
 
     }

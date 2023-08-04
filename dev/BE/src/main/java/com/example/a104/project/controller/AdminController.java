@@ -1,7 +1,9 @@
 package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.DayInfoDto;
+import com.example.a104.project.dto.UserDto;
 import com.example.a104.project.entity.*;
+import com.example.a104.project.repository.UserDateRepository;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.UserDateService;
@@ -30,17 +32,8 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
     private final ReaderService readerService;
+    private final UserDateRepository userDateRepository;
 
-    // 실시간 대기, 사용 현황 (사용안함)
-    // @GetMapping("waiting")
-    // public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
-
-    //     Claims claims = JwtTokenProvider.parseJwtToken(token);
-    //     int gymCode = adminService.getGymCode((String) claims.get("sub"));
-
-    //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-    //     return list;
-    // }
 
     // 일변 운동기구별 검색량과 이용량
     @GetMapping("day-info")
@@ -102,11 +95,20 @@ public class AdminController {
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
     @GetMapping("unauthorized-users")
-    public List<UserVo> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
+    public List<UserDto> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         List<UserVo> users = adminService.unauthorizedUser(gymCode);
-        return users;
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(UserVo userVo: users){
+            UserDto userDto = new UserDto();
+            userDto.setDate(userDateRepository.getUserDAte(userVo.getUserId()));
+            userDto.setUserId(userVo.getUserId());
+            userDto.setName(userVo.getName());
+            userDto.setId(userVo.getId());
+            userDtoList.add(userDto);
+        }
+        return userDtoList;
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
@@ -140,17 +142,9 @@ public class AdminController {
 
         }
 
-        tokenResponse = new TokenResponse("200", "FAIL", "FAIL");
+        tokenResponse = new TokenResponse("202", "FAIL", "FAIL");
         return tokenResponse;
     }
-    // if(admin.size()!=0 && admin.get(0).getPassword().equals(map.get("password"))
-    // ){
-    // returnMsg.put("msg","로그인 성공");
-    // }
-    // else{
-    // returnMsg.put("msg","로그인 실패");
-    // }
-    // return returnMsg;
 
     @PostMapping("create")
     public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map) {
