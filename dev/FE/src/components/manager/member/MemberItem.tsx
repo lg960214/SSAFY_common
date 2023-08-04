@@ -30,7 +30,6 @@ export const MemberItem = (item: MemberInfo) => {
       <span className="w-20">{item.userId}</span>
       <span className="w-28">{item.phoneNumber}</span>
       <span className="w-16">{item.sex}</span>
-      <span className="w-28">{item.regist}</span>
       <span className="w-44" onClick={handleRegiClick}>
         {createTagRegi(item.id, item.deviceCode)}
       </span>

@@ -15,7 +15,7 @@ export interface UnAuthorizedUser {
   name: string;
   userId: string;
   id: string;
-  access_user: string | null;
+  date: string | null;
 }
 
 export interface aboutDevice {

@@ -10,8 +10,6 @@ export const MemberInfomation = (item: MemberInfo) => {
     '회원번호',
     '이메일',
     '성별',
-    '최근 방문일',
-    '가입일',
   ];
   const queryClient = useQueryClient();
   const deleteDeviceMutation = useMutation(
@@ -30,9 +28,9 @@ export const MemberInfomation = (item: MemberInfo) => {
     onError: () => {},
   });
   return (
-    <div className="text-black pt-2 px-6 w-[460px] h-[580px] border-2 bg-white border-black rounded-2xl">
+    <div className="text-black pt-2 px-6 w-[400px] h-[440px] border-2 bg-white border-black rounded-2xl">
       <div className="w-50 h-16 border-b-2 border-black text-xl font-bold flex justify-center items-center">
-        <span>회원 상세 정보</span>
+        <span className="">회원 상세 정보</span>
       </div>
       <div className="border-white border-b-2 h-0"></div>
       <div className="flex align-middle text-center">
@@ -63,12 +61,6 @@ export const MemberInfomation = (item: MemberInfo) => {
           </p>
           <p className="h-12 flex items-center">
             <span className="">{item.sex}</span>
-          </p>
-          <p className="h-12 flex items-center">
-            <span className="">{item.regist}</span>
-          </p>
-          <p className="h-12 flex items-center">
-            <span className="">{item.regist}</span>
           </p>
         </div>
       </div>
