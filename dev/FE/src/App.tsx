@@ -37,8 +37,7 @@ const App: React.FC = () => {
               <Route
                 path="waitlist/:sectionName"
                 element={<WaitListDetailPage />}
-              />{' '}
-              {/* other routes that do not require Navbar */}
+              />
             </Route>
             <Route path="/user" element={<UserLayout />}>
               <Route path="record" element={<RecordPage />} />
