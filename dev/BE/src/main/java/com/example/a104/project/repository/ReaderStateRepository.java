@@ -17,13 +17,13 @@ public interface ReaderStateRepository extends JpaRepository<ReaderStateVo,Strin
     //대기없는 상태로 변경(미사용)
     @Modifying
     @Transactional
-    @Query("update ReaderStateVo r set r.state = 1,r.userId=null where r.reader = :reader")
+    @Query("update ReaderStateVo r set r.state = 1, r.userId=null where r.reader = :reader")
     void nExistReservation(String reader);
 
     //대기있는 상태로 변경(미사용)
     @Modifying
     @Transactional
-    @Query("update ReaderStateVo r set r.state = 2,r.userId=null where r.reader = :reader")
+    @Query("update ReaderStateVo r set r.state = 2, r.userId=null where r.reader = :reader")
     void ExistReservation(String reader);
 
     //사용중 상태로 변경

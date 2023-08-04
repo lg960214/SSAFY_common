@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface UserDateRepository extends JpaRepository<UserDateVo, Integer> {
+    @Query("select u.access_admin from UserDateVo u where u.userId=:userId")
+    LocalDate getUserDAte(int userId);
 
     @Modifying
     @Query("update UserDateVo u set u.dropout = :dateTime where u.userId = :userId")

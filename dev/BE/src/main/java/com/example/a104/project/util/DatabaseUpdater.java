@@ -35,7 +35,6 @@ public class DatabaseUpdater {
         for(ReservationVo reservationVo : list){
             set.add(reservationVo.getReader());
         }
-        System.out.println(list.get(3));
         for(String reader : set){
             WaitVo waitVo = WaitVo.builder()
                     .reader(reader)
