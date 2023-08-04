@@ -1,5 +1,5 @@
 interface WaitTitleProps {
-  text: string;
+  text: string | null;
 }
 
 const WaitTitle = ({ text }: WaitTitleProps) => {

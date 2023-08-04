@@ -1,35 +1,23 @@
+import { GymEquipments } from '@/types/user.type';
+
 interface WaitEquitmentListProps {
-  equipment: string;
-  handlePickEquipment: (equipment: string) => void;
+  equipmentLists: GymEquipments[];
+  equipment: GymEquipments | null;
+  handlePickEquipment: (equipment: GymEquipments) => void;
 }
 
 const WaitEquitmentList = ({
   equipment,
+  equipmentLists,
   handlePickEquipment,
 }: WaitEquitmentListProps) => {
-  const equipmentNames = [
-    '벤치프레스',
-    '데드리프트',
-    '스쿼트랙',
-    '덤벨',
-    '랫풀다운',
-    '런닝머신',
-    '레그익스텐션',
-    '레그프레스',
-    '사이클',
-    '천국의계단',
-    '케이블',
-    '케틀벨',
-    '풀업바',
-  ];
-  const filterEquipment = equipmentNames.filter((item) => item !== equipment);
   return (
     <div className="flex flex-wrap w-[320px]">
-      {filterEquipment.map((item) => {
+      {equipmentLists.map((item: GymEquipments) => {
         return (
           <EquipmentButton
-            key={item}
-            handlePickEquipment={handlePickEquipment}
+            key={item.reader}
+            handlePickEquipment={() => handlePickEquipment(item)}
             equipment={item}
           />
         );
@@ -39,27 +27,26 @@ const WaitEquitmentList = ({
 };
 
 interface EquipmentButtonProps {
-  equipment: string;
-  handlePickEquipment: (equipment: string) => void;
+  equipment: GymEquipments;
+  handlePickEquipment: (equipment: GymEquipments) => void;
 }
 
 const EquipmentButton = ({
   equipment,
   handlePickEquipment,
 }: EquipmentButtonProps) => {
+  const name = isNaN(parseInt(equipment.name[equipment.name.length - 1]))
+    ? equipment.name
+    : equipment.name.slice(0, equipment.name.length - 1);
   return (
     <div
       onClick={() => handlePickEquipment(equipment)}
       className="flex flex-col justify-center items-center"
     >
       <div className="bg-white w-[76px] h-[76px] m-3 rounded-full flex justify-center items-center">
-        <img
-          src={`/img/equipments/${equipment}.png`}
-          alt={equipment}
-          width={52}
-        />
+        <img src={`/img/equipments/${name}.png`} alt={name} width={52} />
       </div>
-      <span>{equipment}</span>
+      <span>{equipment.name}</span>
     </div>
   );
 };

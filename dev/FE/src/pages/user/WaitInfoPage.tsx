@@ -4,24 +4,39 @@ import WaitEquitmentList from '@/components/user/waitinfo/WaitEquitmentList';
 import WaitTitle from '@/components/user/waitinfo/WaitTitle';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-// import { getUsingGymUsers } from '@/api/waitInfoApi';
+import {
+  getGymEquipments,
+  getGymSearch,
+  getUsingGymUsers,
+} from '@/api/waitInfoApi';
 import FormInput from '@/components/common/FormInput';
 import { registGym } from '@/api/waitInfoApi';
+import { GymEquipments, SearchingData } from '@/types/user.type';
 
 const WaitInfoPage = () => {
-  // const { data: usingGymUsers, status } = useQuery(
-  //   ['getUsingGymUsers'],
-  //   getUsingGymUsers,
-  // );
-  const registGymMutation = useMutation(() => registGym(regiGymCode), {
-    onSuccess: () => {},
-    onError: () => {},
-  });
+  const token = JSON.parse(localStorage.getItem('userToken') as string);
+  const getGymName = token.gymName;
+  const { data: usingGymUsers, status } = useQuery(
+    ['getUsingGymUsers'],
+    getUsingGymUsers,
+    { enabled: !!getGymName },
+  );
+
+  const registGymMutation = useMutation(
+    (regiGymCode: string) => registGym(regiGymCode),
+    {
+      onSuccess: () => {},
+      onError: () => {
+        alert('헬스장 번호를 입력해 주세요!');
+      },
+    },
+  );
   const [checkGymApprove, setCheckGymApprove] = useState(false);
-  const handleGymApproveButton = () => {
-    // setCheckGymApprove(true);
-    registGymMutation.mutate();
-  };
+  useEffect(() => {
+    if (token?.regist === 1) {
+      setCheckGymApprove(true);
+    }
+  }, []);
 
   const [isModal, setIsModal] = useState(false);
   const handleOpenModal = () => {
@@ -31,25 +46,54 @@ const WaitInfoPage = () => {
     setIsModal(false);
   };
 
+  // 헬스장 기구정보
+  const { data, status: getGymEquipmentsStatus } = useQuery(
+    ['getGymEquipments'],
+    getGymEquipments,
+    { enabled: !!getGymName },
+  );
+
+  const [searchingData, setSearchingData] = useState<SearchingData>();
+  // 헬스장 기구 검색
+  const gymSearchMutation = useMutation(
+    () =>
+      getGymSearch({
+        date: `${hour.length == 1 ? '0' + hour : hour}:${
+          minute.length == 1 ? '0' + minute : minute
+        }`,
+        reader: pickEquipment === null ? '' : pickEquipment.reader,
+      }),
+    {
+      onSuccess: (data) => {
+        setSearchingData(data);
+      },
+      onError: () => {
+        alert('기구를 선택해주세요!');
+      },
+    },
+  );
+
   const [regiGymCode, setRegiGymCode] = useState<string>('');
   const handleChangeGymCode = (event: ChangeEvent<HTMLInputElement>) => {
     setRegiGymCode(event.target.value);
   };
 
-  const [pickEquipment, setPickEquipment] = useState('');
-  const handleSetPickEquipment = (equipment: string) => {
+  const [pickEquipment, setPickEquipment] = useState<GymEquipments | null>(
+    null,
+  );
+  const handleSetPickEquipment = (equipment: GymEquipments) => {
     setPickEquipment(equipment);
   };
   useEffect(handleCloseModal, [pickEquipment]);
 
-  const [hour, setHour] = useState<number>(0);
-  const [minute, setMinute] = useState<number>(0);
+  const [hour, setHour] = useState<string>('00');
+  const [minute, setMinute] = useState<string>('00');
 
   useEffect(() => {
     const date = new Date();
     const roundedMinute = Math.ceil(date.getMinutes() / 10) * 10;
-    setHour(date.getHours());
-    setMinute(roundedMinute);
+    setHour(String(date.getHours()));
+    setMinute(String(roundedMinute));
   }, []);
 
   return (
@@ -58,13 +102,14 @@ const WaitInfoPage = () => {
         <div>
           <div className="m-2 text-black">
             <div className="float-left font-bold text-lg">나의 헬스장</div>
-            {/* <div className="float-right">현재 {usingGymUsers}명 이용중</div> */}
+            <div className="float-right">현재 {usingGymUsers}명 이용중</div>
           </div>
-          <WaitTitle text="킹콩 피트니스" />
+          <WaitTitle text={getGymName} />
           <div className="flex justify-evenly items-center my-4">
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
                 <WaitEquitmentList
+                  equipmentLists={data}
                   equipment={pickEquipment}
                   handlePickEquipment={handleSetPickEquipment}
                 />
@@ -87,38 +132,58 @@ const WaitInfoPage = () => {
                 setMinute={setMinute}
               />
             </div>
-            <button className="w-25 h-11 bg-CustomOrange">조회</button>
+            <button
+              onClick={() => gymSearchMutation.mutate()}
+              className="w-25 h-11 bg-CustomOrange"
+            >
+              조회
+            </button>
           </div>
 
           <div className="w-[360px] h-[200px] flex justify-evenly py-2 bg-CustomGray rounded-lg mx-auto">
             <div className="w-[120px] text-black border-r-2 border-black">
               <span className="font-bold text-center">실시간</span>
-              <p>6명</p>
+              <p>{searchingData?.now}명</p>
             </div>
             <div className="flex flex-col justify-evenly">
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
-              <div className="w-[176px] h-[40px] bg-white rounded"></div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저번주:
+                {searchingData?.weak === undefined ? '0' : searchingData?.weak}
+                명
+              </div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저저번주:
+                {searchingData?.weak2 === undefined
+                  ? '0'
+                  : searchingData?.weak2}
+                명
+              </div>
+              <div className="w-[176px] h-[40px] bg-white rounded">
+                저저저번주:
+                {searchingData?.weak3 === undefined
+                  ? '0'
+                  : searchingData?.weak3}
+                명
+              </div>
             </div>
           </div>
         </div>
       ) : (
         <div>
           <WaitTitle text="헬스장을 등록하세요!" />
-          <div className="p-8">
+          <div className="p-0 h-16 flex justify-evenly items-center">
             <FormInput
               type="text"
               value={regiGymCode}
               placeholder="헬스장 번호"
               onChange={handleChangeGymCode}
             />
-            <button onClick={handleGymApproveButton}>등록</button>
-            {/* <button
-              onClick={handleGymApproveButton}
-              className="w-10 h-10 rounded-full mx-auto border-2 flex justify-center items-center border-white"
+            <button
+              className="py-0 h-10 w-[80px] border-2 border-black"
+              onClick={() => registGymMutation.mutate(regiGymCode)}
             >
-              <span className="text-2xl">+</span>
-            </button> */}
+              등록
+            </button>
           </div>
         </div>
       )}
@@ -127,20 +192,22 @@ const WaitInfoPage = () => {
 };
 
 interface EquipmentCircleProps {
-  equipment: string;
+  equipment: GymEquipments | null;
 }
 
 const EquipmentCircle = ({ equipment }: EquipmentCircleProps) => {
+  const name =
+    equipment === null
+      ? ''
+      : isNaN(parseInt(equipment.name[equipment.name.length - 1]))
+      ? equipment.name
+      : equipment.name.slice(0, equipment.name.length - 1);
   return (
     <div className="bg-white w-[84px] h-[84px] m-3 rounded-full flex justify-center items-center">
-      {equipment === '' ? (
+      {equipment === null ? (
         <span className="text-2xl text-black">?</span>
       ) : (
-        <img
-          src={`/img/equipments/${equipment}.png`}
-          alt={equipment}
-          width={52}
-        />
+        <img src={`/img/equipments/${name}.png`} alt={name} width={52} />
       )}
     </div>
   );

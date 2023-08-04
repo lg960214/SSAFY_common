@@ -1,4 +1,4 @@
-import { approveUserGym } from '@/api/memberPageApi';
+import { approveUserGym, changeUserGym } from '@/api/memberPageApi';
 import { UnAuthorizedUser } from '@/types/member.type';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
@@ -31,7 +31,7 @@ const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
       <span className="basis-1/4">{item.access_user}</span>
       <span className="basis-1/4 flex justify-around">
         <ApproveButton id={item.id} name="승인" />
-        <ApproveButton name="거절" />
+        <ApproveButton id={item.id} name="거절" />
       </span>
     </div>
   );
@@ -39,7 +39,7 @@ const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
 
 interface ApproveButtonProps {
   name: string;
-  id?: string;
+  id: string;
 }
 
 const ApproveButton = ({ name, id }: ApproveButtonProps) => {
@@ -47,6 +47,13 @@ const ApproveButton = ({ name, id }: ApproveButtonProps) => {
   const approveUserMutation = useMutation((id: string) => approveUserGym(id), {
     onSuccess: () => {
       queryClient.invalidateQueries(['memberLists']);
+      queryClient.invalidateQueries(['unAuthorizedUsers']);
+    },
+    onError: () => {},
+  });
+  const deleteUserMutation = useMutation((id: string) => changeUserGym(id), {
+    onSuccess: () => {
+      queryClient.invalidateQueries(['unAuthorizedUsers']);
     },
     onError: () => {},
   });
@@ -55,10 +62,10 @@ const ApproveButton = ({ name, id }: ApproveButtonProps) => {
   return (
     <button
       onClick={() => {
-        if (id) {
+        if (name === '승인') {
           approveUserMutation.mutate(id);
         } else {
-          console.error('Userid is undefined');
+          deleteUserMutation.mutate(id);
         }
       }}
       className={approveButtonClass}
