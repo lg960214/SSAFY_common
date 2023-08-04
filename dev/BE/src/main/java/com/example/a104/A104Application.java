@@ -25,8 +25,8 @@ public class A104Application {
         new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
         //MqttConfig mqtt = new MqttConfig(userService);
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
-        mqtt.init("tcp://localhost:1883","backend").subscriber("sub");
-        //mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
+        //mqtt.init("tcp://localhost:1883","backend").subscriber("sub");
+        mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
         System.out.println("구독 완료");
 
 
