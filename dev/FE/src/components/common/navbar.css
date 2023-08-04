@@ -17,6 +17,10 @@
   color: white;
 }
 
+.navmenu a:hover {
+  color: #ff8000;
+}
+
 .activeLink {
   color: #ff8000;
   padding-bottom: 5px;

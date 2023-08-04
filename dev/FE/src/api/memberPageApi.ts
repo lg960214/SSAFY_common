@@ -3,8 +3,6 @@ import { MemberInfo, UnAuthorizedUser, Device } from '@/types/member.type';
 import { getToken } from '@/utils/storage';
 import { BASEURL } from '@/constants/url';
 
-// BASEURL 자리
-
 // 회원정보 리스트 불러오는 api
 const getUserLists = async (): Promise<MemberInfo[]> => {
   const token = getToken('managerToken');
