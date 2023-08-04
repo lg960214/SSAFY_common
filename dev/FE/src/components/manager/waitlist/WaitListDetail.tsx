@@ -1,96 +1,35 @@
 import './waitlistdetail.css';
-
-interface EquipList {
+import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import waitListApi from '@/api/waitListApi';
+export interface EquipList {
   region: string;
   reader: string;
   name: string;
-  gym_code: string;
-  inUse: string;
+  gymCode: string;
+  userId: string;
   waitingList: string[];
   waitingCount: number;
 }
 
-const equipList: EquipList[] = [
-  {
-    region: 'A',
-    reader: 'WW809',
-    name: '벤치프레스1',
-    gym_code: 'YS1',
-    inUse: '1555',
-    waitingList: ['15', '17', '18', '123', '23423', '1111'],
-    waitingCount: 7,
-  },
-  {
-    region: 'A',
-    reader: 'WW333',
-    name: '벤치프레스2',
-    gym_code: 'YS1',
-    inUse: '152',
-    waitingList: ['125', '116', '517', '718', '5030'],
-    waitingCount: 5,
-  },
-  {
-    region: 'A',
-    reader: 'WW555',
-    name: '랫풀다운',
-    gym_code: 'YS1',
-    inUse: '15115',
-    waitingList: ['515', '116', '217'],
-    waitingCount: 3,
-  },
-  {
-    region: 'A',
-    reader: 'WW129',
-    name: '레그프레스',
-    gym_code: 'YS1',
-    inUse: '2555',
-    waitingList: ['1135', '1623', '1745', '1118', '1234'],
-    waitingCount: 5,
-  },
-  {
-    region: 'A',
-    reader: 'WW166',
-    name: '스쿼트랙',
-    gym_code: 'YS1',
-    inUse: '6755',
-    waitingList: ['1135', '126', '127', '128', '12312'],
-    waitingCount: 5,
-  },
-  {
-    region: 'B',
-    reader: 'WW999',
-    name: '덤벨',
-    gym_code: 'YS1',
-    inUse: '1785',
-    waitingList: ['1512', '1316', '6717', '1843', '123', '123123'],
-    waitingCount: 8,
-  },
-  {
-    region: 'B',
-    reader: 'WW113',
-    name: '풀업바',
-    gym_code: 'YS1',
-    inUse: '7555',
-    waitingList: ['1315', '1632'],
-    waitingCount: 2,
-  },
-  {
-    region: 'B',
-    reader: 'WW134',
-    name: '런닝머신',
-    gym_code: 'YS1',
-    inUse: '905',
-    waitingList: ['1235'],
-    waitingCount: 1,
-  },
-];
-
 const WaitListDetail = () => {
+  const [waitEquipList, setWaitEquipList] = useState<EquipList[]>([]);
+  const { sectionName } = useParams();
+  const handleWait = () => {
+    waitListApi(setWaitEquipList);
+  };
+  const filterwaitEquipList = waitEquipList.filter(
+    (listitem) => listitem.region === sectionName,
+  );
+
   return (
     <>
       <div>
+        <button className="h-2 w-2" onClick={() => handleWait()}>
+          눌러
+        </button>
         <div className="listlinebox flex flex-col flex-wrap mt-[25px] fontJeju">
-          {equipList.map((item) => (
+          {filterwaitEquipList.map((item) => (
             <div
               className="w-[685px] h-[186px] bg-white mx-[70px] my-[35px] rounded-[15px]"
               key={item.reader}
@@ -106,12 +45,12 @@ const WaitListDetail = () => {
                     </p>
                     <p>
                       <p className="text-[20px]">잔여시간</p>
-                      <p className="ps-[3px] pt-[6px] text-[32px]">24m 32s</p>
+                      <p className="ps-[3px] pt-[6px] text-[32px]"></p>
                     </p>
                   </li>
                   <li className="mx-12 text-center text-[20px] flex justify-between items-baseline">
                     현재 <br />
-                    <p className="text-[32px]">{item.inUse}</p> 회원님이
+                    <p className="text-[32px]">{item.userId}</p> 회원님이
                     이용중입니다.
                   </li>
                 </ul>
