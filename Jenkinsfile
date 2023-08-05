@@ -6,7 +6,6 @@ pipeline {
             steps {
                 dir('dev/BE') {
                     script {
-                        sh 'rm -R target'
                         sh 'mvn clean package'
                     }
                 }
