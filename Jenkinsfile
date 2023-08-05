@@ -2,6 +2,25 @@ pipeline {
     agent any
 
     stages {
+        stage('SpringBoot Build') {
+            steps {
+                dir('dev/BE') {
+                    script {
+                        sh 'rm -R target'
+                        sh 'mvn clean package'
+                    }
+                }
+            }
+        }
+
+        stage('SpringBoot Build Complete') {
+            steps {
+                script {
+                    echo 'BE Build Complete'
+                }
+            }
+        }
+
         stage('React Build') {
             steps {
                 dir('dev/FE') {
@@ -19,25 +38,6 @@ pipeline {
             steps {
                 script {
                     echo 'FE Build Complete'
-                }
-            }
-        }
-
-        stage('SpringBoot Build') {
-            steps {
-                dir('dev/BE') {
-                    script {
-                        sh 'rm -R target'
-                        sh 'mvn clean package'
-                    }
-                }
-            }
-        }
-
-        stage('SpringBoot Build Complete') {
-            steps {
-                script {
-                    echo 'BE Build Complete'
                 }
             }
         }
