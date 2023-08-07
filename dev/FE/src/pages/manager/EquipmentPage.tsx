@@ -199,6 +199,7 @@ const EquipmentPage = () => {
             setWholeData={setWholeData}
             currentZone={zoneList.filter((cur) => cur.isSelected)[0].name}
             readerData={wholeData}
+            closeModalFunc={() => setIsRegisterModalOn(false)}
           />
         }
         onClose={() => setIsRegisterModalOn(false)}

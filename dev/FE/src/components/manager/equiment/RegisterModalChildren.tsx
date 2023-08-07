@@ -4,12 +4,14 @@ interface RegisterModalChildrenProps {
   currentZone: string;
   readerData: Reader[];
   setWholeData: (data: Reader[]) => void;
+  closeModalFunc: () => void;
 }
 
 const RegisterModalChildren = ({
   currentZone,
   readerData,
   setWholeData,
+  closeModalFunc,
 }: RegisterModalChildrenProps) => {
   const unregisteredReaders = readerData.filter((cur) => cur.region === null);
   return (
@@ -18,7 +20,7 @@ const RegisterModalChildren = ({
         <span className="basis-1/2">리더 코드</span>
         <span className="basis-1/2"></span>
       </div>
-      <div className="h-[400px]">
+      <div className="h-[360px]">
         {unregisteredReaders.map((cur) => (
           <ReaderElement
             key={cur.reader}
@@ -33,6 +35,11 @@ const RegisterModalChildren = ({
             }}
           />
         ))}
+      </div>
+      <div className="w-[400px] flex justify-center">
+        <button className="bg-gray-400 text-white" onClick={closeModalFunc}>
+          닫기
+        </button>
       </div>
     </div>
   );
