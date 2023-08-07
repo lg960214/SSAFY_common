@@ -46,7 +46,7 @@ const RecordCalendar = ({
           className=" mx-auto border-white  bg-white rounded-[15px]"
           onChange={onChange}
           onClickDay={handleDateClick} // 날짜 클릭시 handleDateClick 함수를 실행
-          formatDay={(locale, date) => moment(date).format('DD')} // 날'일' 제외하고 숫자만 보이도록 설정
+          formatDay={(_, date) => moment(date).format('DD')} // 날'일' 제외하고 숫자만 보이도록 설정
           minDetail="month"
           maxDetail="month"
           value={today}
