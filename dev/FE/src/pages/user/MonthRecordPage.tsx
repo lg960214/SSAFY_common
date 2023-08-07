@@ -1,28 +1,22 @@
-import { useParams } from 'react-router-dom';
 import { Exercise } from '@/pages/user/RecordPage';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import recordApi from '@/api/recordApi';
 const MonthRecordPage = () => {
-  const { month } = useParams();
-  const [searchMonth, setSearchMonth] = useState<string | undefined>(month);
+  const [searchMonth, setSearchMonth] = useState<dayjs.Dayjs>(
+    dayjs(new Date()),
+  );
   const handleMonth = (index: number) => {
     if (index === 0 && searchMonth != undefined) {
-      setSearchMonth(
-        moment(
-          searchMonth.slice(0, 5) +
-            (parseInt(searchMonth.slice(5, 7)) - 1).toString(),
-        ).format('YYYY-MM'),
-      );
+      setSearchMonth(() => {
+        return searchMonth.add(-1, 'month');
+      });
     }
     if (index === 1 && searchMonth != undefined) {
-      setSearchMonth(
-        moment(
-          searchMonth.slice(0, 5) +
-            (parseInt(searchMonth.slice(5, 7)) + 1).toString(),
-        ).format('YYYY-MM'),
-      );
+      setSearchMonth(() => {
+        return searchMonth.add(1, 'month');
+      });
     }
   };
 
@@ -30,7 +24,7 @@ const MonthRecordPage = () => {
   useQuery<Exercise[]>(['records', searchMonth], async () => {
     // month가 null인 경우에 대한 예외 처리
 
-    const response = await recordApi({ date: searchMonth });
+    const response = await recordApi({ date: searchMonth.format('YYYY-MM') });
     setExerciseList11(response);
     return response;
   });
@@ -98,7 +92,7 @@ const MonthRecordPage = () => {
             {`<`}{' '}
           </button>
           <p className="text-center text-2xl">
-            {searchMonth?.slice(5, 7)} 월의 통계
+            {searchMonth?.format('MM')} 월의 통계
           </p>
           <button
             className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl"
