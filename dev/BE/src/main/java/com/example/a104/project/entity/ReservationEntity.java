@@ -1,12 +1,11 @@
 package com.example.a104.project.entity;
 
+
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -14,16 +13,19 @@ import javax.persistence.Table;
 @Entity
 @Builder
 @DynamicInsert
-@Table(name="reader_state")
-public class ReaderStateVo {
+@IdClass(ReservationEntityId.class)
+@Table(name="reservation")
+public class ReservationEntity {
 
     @Id
     @Column
     private String reader;
 
-    @Column
-    private Integer state;
-
+    @Id
     @Column(name = "user_id")
     private Integer userId;
+
+    @Column
+    private LocalDateTime reservation;
+
 }

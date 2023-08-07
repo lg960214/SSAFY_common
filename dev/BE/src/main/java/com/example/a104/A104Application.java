@@ -21,11 +21,8 @@ public class A104Application {
         ReaderStateRepository readerStateRepository = context.getBean(ReaderStateRepository.class);
         ReaderRepository readerRepository = context.getBean(ReaderRepository.class);
         WaitRepository waitRepository = context.getBean(WaitRepository.class);
-        //SpringApplication.run(A104Application.class, args);
         new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
-        //MqttConfig mqtt = new MqttConfig(userService);
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
-        // mqtt.init("tcp://localhost:1883","backend").subscriber("sub");
         mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
         System.out.println("구독 완료");
 

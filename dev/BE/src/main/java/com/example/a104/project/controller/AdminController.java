@@ -1,7 +1,9 @@
 package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.DayInfoDto;
+import com.example.a104.project.dto.UserDto;
 import com.example.a104.project.entity.*;
+import com.example.a104.project.repository.UserDateRepository;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.UserDateService;
@@ -30,17 +32,8 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
     private final ReaderService readerService;
+    private final UserDateRepository userDateRepository;
 
-    // 실시간 대기, 사용 현황 (사용안함)
-    // @GetMapping("waiting")
-    // public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
-
-    //     Claims claims = JwtTokenProvider.parseJwtToken(token);
-    //     int gymCode = adminService.getGymCode((String) claims.get("sub"));
-
-    //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-    //     return list;
-    // }
 
     // 일변 운동기구별 검색량과 이용량
     @GetMapping("day-info")
@@ -48,11 +41,10 @@ public class AdminController {
         List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<ReaderVo> readerVoList = readerService.getMatchReaders(gymCode);
-
+        List<ReaderEntity> readerVoList = readerService.getMatchReaders(gymCode);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        for(ReaderVo readerVo: readerVoList){
+        for(ReaderEntity readerVo: readerVoList){
             DayInfoDto dayInfoDto = new DayInfoDto();
             dayInfoDto.setName(readerVo.getName());
             dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
@@ -64,11 +56,10 @@ public class AdminController {
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")
-    public List<UserVo> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
+    public List<UserEntity> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.search(keyword, gymCode);
-        System.out.println(users);
+        List<UserEntity> users = adminService.search(keyword, gymCode);
         return users;
     }
 
@@ -102,27 +93,34 @@ public class AdminController {
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
     @GetMapping("unauthorized-users")
-    public List<UserVo> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
+    public List<UserDto> unAutorizedUsers(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.unauthorizedUser(gymCode);
-        return users;
+        List<UserEntity> users = adminService.unauthorizedUser(gymCode);
+        List<UserDto> userDtoList = new ArrayList<>();
+        for(UserEntity userVo: users){
+            UserDto userDto = new UserDto();
+            userDto.setDate(userDateRepository.getUserDate(userVo.getUserId()));
+            userDto.setUserId(userVo.getUserId());
+            userDto.setName(userVo.getName());
+            userDto.setId(userVo.getId());
+            userDtoList.add(userDto);
+        }
+        return userDtoList;
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
     @GetMapping("users")
-    public List<UserVo> userList(@RequestHeader(value = "Authorization") String token) {
+    public List<UserEntity> userList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        System.out.println(gymCode);
-        List<UserVo> userList = adminService.userList(gymCode);
-        System.out.println(claims);
+        List<UserEntity> userList = adminService.userList(gymCode);
         return userList;
     }
 
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
-        List<AdminVo> admin = adminService.login(map.get("id"));
+        List<AdminEntity> admin = adminService.login(map.get("id"));
 
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
@@ -140,27 +138,19 @@ public class AdminController {
 
         }
 
-        tokenResponse = new TokenResponse("200", "FAIL", "FAIL");
+        tokenResponse = new TokenResponse("202", "FAIL", "FAIL");
         return tokenResponse;
     }
-    // if(admin.size()!=0 && admin.get(0).getPassword().equals(map.get("password"))
-    // ){
-    // returnMsg.put("msg","로그인 성공");
-    // }
-    // else{
-    // returnMsg.put("msg","로그인 실패");
-    // }
-    // return returnMsg;
 
     @PostMapping("create")
-    public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map) {
-        AdminVo admin = AdminVo.builder()
+    public ResponseEntity<AdminEntity> createAdmin(@RequestBody Map<String, Object> map) {
+        AdminEntity admin = AdminEntity.builder()
                 .gymCode((int) map.get("code"))
                 .id((String) map.get("id"))
                 .name((String) map.get("name"))
                 .password((String) map.get("password"))
                 .build();
-        AdminVo savedAdmin = adminService.createAdmin(admin);
+        AdminEntity savedAdmin = adminService.createAdmin(admin);
         return new ResponseEntity<>(savedAdmin, HttpStatus.OK);
     }
 

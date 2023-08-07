@@ -1,6 +1,6 @@
 import { getToken } from '@/utils/storage';
-import axios from 'axios';
 import { BASEURL } from '@/constants/url';
+import axios from 'axios';
 
 export const recordApi = async (date: Object) => {
   try {
@@ -12,8 +12,6 @@ export const recordApi = async (date: Object) => {
       },
     });
     return res.data;
-  } catch (err) {
-    console.log('getRecords err: ', err);
-  }
+  } catch (err) {}
 };
 export default recordApi;

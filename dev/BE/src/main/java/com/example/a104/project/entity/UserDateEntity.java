@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Builder
 @DynamicInsert
 @Table(name="user_date")
-public class UserDateVo {
+public class UserDateEntity {
 
     @Id
     @Column(name="user_id")

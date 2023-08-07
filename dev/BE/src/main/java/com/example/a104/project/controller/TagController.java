@@ -1,8 +1,10 @@
 package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.RealTimeDto;
-import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.entity.ReaderEntity;
+import com.example.a104.project.repository.DeviceRepository;
 import com.example.a104.project.repository.ReaderRepository;
+import com.example.a104.project.repository.ReaderStateRepository;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.TagService;
 import com.example.a104.project.util.JwtTokenProvider;
@@ -27,6 +29,8 @@ public class TagController {
     private final TagService tagService;
     private final AdminService adminService;
     private final ReaderRepository readerRepository;
+    private final ReaderStateRepository readerStateRepository;
+    private final DeviceRepository deviceRepository;
 
     private List<SseEmitter> emitters = new ArrayList<>();
 
@@ -47,15 +51,9 @@ public class TagController {
                 .body(emitter);
     }
 
-    @PostMapping
-    public void Tagging(@RequestBody Map<String, String> map) {
-        String deviceCode = map.get("device_code");
-        String reader = map.get("reader");
-        tagService.Tagging(deviceCode, reader);
-        ReaderVo readerVo = readerRepository.findByReader(reader);
-        String region = readerVo.getRegion();
-        int gymCode = readerVo.getGymCode();
-
+    @GetMapping
+    public void noShow(@RequestParam String deviceCode){
+        int gymCode = deviceRepository.findByDeviceCode(deviceCode).getGymCode();
         List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
         for (SseEmitter emitter : emitters) {
             try {
@@ -64,6 +62,26 @@ public class TagController {
 
             }
         }
+
+    }
+
+    @PostMapping
+    public void Tagging(@RequestBody Map<String, String> map) {
+        String deviceCode = map.get("device_code");
+        String reader = map.get("reader");
+
+        tagService.Tagging(deviceCode, reader);
+        ReaderEntity readerVo = readerRepository.findByReader(reader);
+        int gymCode = readerVo.getGymCode();
+        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
+        for (SseEmitter emitter : emitters) {
+            try {
+                emitter.send(list, MediaType.APPLICATION_JSON);
+            } catch (Exception e) {
+
+            }
+        }
+
 
     }
 }

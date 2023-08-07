@@ -43,7 +43,6 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = items.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(items.length / itemsPerPage);
-  const pageIndex = itemOffset / itemsPerPage;
 
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
