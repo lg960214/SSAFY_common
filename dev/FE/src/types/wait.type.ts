@@ -2,10 +2,11 @@ export interface EquipList {
   region: string;
   reader: string;
   name: string;
-  gymCode: string;
-  userId: string;
+  gymCode: string | number;
+  startTime: string | null;
+  userId: string | null;
   waitingList: string[];
   waitingCount: number;
 }
 
-export type StateType = 'using' | 'waitnext' | 'empty';
+export type ReaderStateType = 'using' | 'waitnext' | 'empty';
