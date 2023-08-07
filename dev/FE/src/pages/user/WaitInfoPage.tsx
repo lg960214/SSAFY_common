@@ -1,6 +1,6 @@
 import Modal from '@/components/common/Modal';
 import TimeInput from '@/components/user/waitinfo/TimeInput';
-import WaitEquitmentList from '@/components/user/waitinfo/WaitEquitmentList';
+import WaitEquipmentList from '@/components/user/waitinfo/WaitEquipmentList';
 import WaitTitle from '@/components/user/waitinfo/WaitTitle';
 import { useState, useEffect, ChangeEvent } from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -16,7 +16,7 @@ import { GymEquipments, SearchingData } from '@/types/user.type';
 const WaitInfoPage = () => {
   const token = JSON.parse(localStorage.getItem('userToken') as string);
   const getGymName = token.gymName;
-  const { data: usingGymUsers, status } = useQuery(
+  const { data: usingGymUsers } = useQuery(
     ['getUsingGymUsers'],
     getUsingGymUsers,
     { enabled: !!getGymName },
@@ -49,11 +49,9 @@ const WaitInfoPage = () => {
   };
 
   // 헬스장 기구정보
-  const { data, status: getGymEquipmentsStatus } = useQuery(
-    ['getGymEquipments'],
-    getGymEquipments,
-    { enabled: !!getGymName },
-  );
+  const { data } = useQuery(['getGymEquipments'], getGymEquipments, {
+    enabled: !!getGymName,
+  });
 
   const [searchingData, setSearchingData] = useState<SearchingData | null>(
     null,
@@ -112,9 +110,8 @@ const WaitInfoPage = () => {
           <div className="flex justify-evenly items-center my-4">
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
-                <WaitEquitmentList
+                <WaitEquipmentList
                   equipmentLists={data}
-                  equipment={pickEquipment}
                   handlePickEquipment={handleSetPickEquipment}
                 />
               </Modal>

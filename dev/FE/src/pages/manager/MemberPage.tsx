@@ -38,9 +38,10 @@ const MemberPage = () => {
   }, [data, status]);
 
   // 미승인 회원정보 불러오기
-  const { data: unAuthorizedUsers, status: unAuthorizedUsersStatus } = useQuery<
-    UnAuthorizedUser[]
-  >(['unAuthorizedUsers'], getUnAuthorizedUsers);
+  const { data: unAuthorizedUsers } = useQuery<UnAuthorizedUser[]>(
+    ['unAuthorizedUsers'],
+    getUnAuthorizedUsers,
+  );
 
   return (
     <div

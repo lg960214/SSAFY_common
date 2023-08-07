@@ -4,7 +4,7 @@ import './usagePage.css';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getUsageData } from '@/api/usageDataApi';
-import { UsageData } from '@/types/usage';
+import { UsageData } from '@/types/usage.type';
 
 const UsagePage = () => {
   const [todayDate, setTodayDate] = useState(dayjs(new Date()));
