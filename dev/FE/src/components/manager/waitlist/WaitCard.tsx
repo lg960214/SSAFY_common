@@ -1,9 +1,9 @@
-import { EquipList, StateType } from '@/types/wait.type';
+import { EquipList, ReaderStateType } from '@/types/wait.type';
 import { useEffect, useState } from 'react';
 
 interface WaitCardProps {
   data: EquipList;
-  state: StateType;
+  state: ReaderStateType;
 }
 
 const WaitCard = ({ data, state }: WaitCardProps) => {

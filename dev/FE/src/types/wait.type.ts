@@ -8,4 +8,4 @@ export interface EquipList {
   waitingCount: number;
 }
 
-export type StateType = 'using' | 'waitnext' | 'empty';
+export type ReaderStateType = 'using' | 'waitnext' | 'empty';
