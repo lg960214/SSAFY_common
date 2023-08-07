@@ -6,7 +6,7 @@ interface WaitCardProps {
   state: ReaderStateType;
 }
 
-const WaitCard = ({ data, state }: WaitCardProps) => {
+const WaitCard = ({ data }: WaitCardProps) => {
   const [minutes, setMinutes] = useState<number>(20);
   const [seconds, setSeconds] = useState<number>(0);
 

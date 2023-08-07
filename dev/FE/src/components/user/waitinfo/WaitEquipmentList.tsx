@@ -1,16 +1,14 @@
 import { GymEquipments } from '@/types/user.type';
 
-interface WaitEquitmentListProps {
+interface WaitEquipmentListProps {
   equipmentLists: GymEquipments[];
-  equipment: GymEquipments | null;
   handlePickEquipment: (equipment: GymEquipments) => void;
 }
 
-const WaitEquitmentList = ({
-  equipment,
+const WaitEquipmentList = ({
   equipmentLists,
   handlePickEquipment,
-}: WaitEquitmentListProps) => {
+}: WaitEquipmentListProps) => {
   return (
     <div className="flex flex-wrap w-[320px]">
       {equipmentLists.map((item: GymEquipments) => {
@@ -51,4 +49,4 @@ const EquipmentButton = ({
   );
 };
 
-export default WaitEquitmentList;
+export default WaitEquipmentList;
