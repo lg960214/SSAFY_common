@@ -9,7 +9,7 @@ interface TagListsProps {
 }
 
 const TagLists = ({ id, onClose }: TagListsProps) => {
-  const { data, status } = useQuery<Device[]>(['deviceLists'], deviceLists);
+  const { data } = useQuery<Device[]>(['deviceLists'], deviceLists);
 
   const itemsPerPage = 28; // 페이지당 표시할 항목의 개수
   const [currentPage, setCurrentPage] = useState(1);
