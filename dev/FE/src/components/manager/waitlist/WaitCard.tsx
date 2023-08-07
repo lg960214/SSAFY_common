@@ -40,7 +40,11 @@ const WaitCard = ({ data, state }: WaitCardProps) => {
         </div>
         <div className="flex justify-between w-[350px] text-3xl">
           <span className="font-inter">{data.name}</span>
-          <Timer data={data} />
+          {state === 'waitnext' ? (
+            <span className="text-2xl text-red-400">2분 초과 시 Pass</span>
+          ) : (
+            <Timer data={data} />
+          )}
         </div>
         {infoStatement}
       </div>
