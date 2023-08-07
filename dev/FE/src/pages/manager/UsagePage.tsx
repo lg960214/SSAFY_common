@@ -4,14 +4,18 @@ import './usagePage.css';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getUsageData } from '@/api/usageDataApi';
-import { UsageData } from '@/types/usage';
-
+import { UsageData } from '@/types/usage.type';
+import DropDown from '@/components/common/DropDown';
+import DateSelect from '@/components/manager/usage/DateSelect';
 const UsagePage = () => {
+  const [dropdownVisibility, setDropdownVisibility] = useState<boolean>(false);
+
   const [todayDate, setTodayDate] = useState(dayjs(new Date()));
   const [dailyUsageData, setDailyUsageData] = useState<UsageData[]>([]);
 
   useEffect(() => {
     getUsageData(todayDate.format('YYYY-MM-DD'), setDailyUsageData);
+    setDropdownVisibility(false);
   }, [todayDate]);
 
   const handleDate = (index: number) => {
@@ -41,7 +45,10 @@ const UsagePage = () => {
               alt="left_circle"
               onClick={() => handleDate(0)}
             />
-            <p className="mx-2 pt-20 fontBungee text-3xl">
+            <p
+              className="mx-2 pt-20 fontBungee text-3xl"
+              onClick={() => setDropdownVisibility(!dropdownVisibility)}
+            >
               {todayDate.format('MM - DD')}
             </p>
             <img
@@ -50,7 +57,13 @@ const UsagePage = () => {
               alt="right_circle"
               onClick={() => handleDate(1)}
             />
+            <div className="absolute bg-white z-10  top-[230px] ">
+              <DropDown visibility={dropdownVisibility}>
+                <DateSelect setTodayDate={setTodayDate} />
+              </DropDown>
+            </div>
           </div>
+
           <div className="mx-auto mt-5">
             <UsageChart dailyUsageData={dailyUsageData} />
           </div>

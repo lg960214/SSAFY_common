@@ -1,6 +1,7 @@
-import { UsageData } from '@/types/usage';
+import { UsageData } from '@/types/usage.type';
 import './usagechart.css';
 import { useState } from 'react';
+import ShowData from './ShowData';
 
 interface SearchDataProps {
   dailyUsageData: UsageData[];
@@ -24,28 +25,13 @@ const SearchData = ({ dailyUsageData }: SearchDataProps) => {
   };
 
   const renderedData = getCurrentPageData();
-  console.log(renderedData);
   return (
     <>
       <div className="searchbox mx-auto flex flex-col justify-between">
-        <p className="fontBungee text-center text-3xl pt-5"> Search data</p>
+        <p className="fontJeju text-center text-3xl pt-5"> 기구별 검색량</p>
         <ul>
           {renderedData.map((item) => (
-            <li className="flex equipmentbox mx-auto my-6" key={item.name}>
-              <img
-                className="w-24 h-24 mt-4 ms-4"
-                src={`/img/equipments/${item.name.replace(/[0-9]/g, '')}.png`}
-                alt={`${item.name.replace(/[0-9]/g, '')}.png`}
-              />
-              <li className="ms-[15px] w-[110px]">
-                <p className="fontJeju text-[20px] text-center pt-[20px]">
-                  {item.name}
-                </p>
-                <p className="fontBungee text-4xl pt-[20px] text-center">
-                  {item.searchCount}
-                </p>
-              </li>
-            </li>
+            <ShowData renderData={item} key={item.name} />
           ))}
         </ul>
         <div className=" flex justify-center fontBungee text-2xl">
