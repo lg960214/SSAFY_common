@@ -6,10 +6,7 @@ interface IssueReaderRowProps {
   data: Reader;
 }
 const IssueReaderRow = ({ isOnEdit, data }: IssueReaderRowProps) => {
-  const { isDragging, getItem, drag, preview } = useDraggable(
-    'issue',
-    data.reader,
-  );
+  const { drag } = useDraggable('issue', data.reader);
   return (
     <div
       ref={isOnEdit ? drag : null}

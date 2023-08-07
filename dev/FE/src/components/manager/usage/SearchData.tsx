@@ -1,4 +1,4 @@
-import { UsageData } from '@/types/usage';
+import { UsageData } from '@/types/usage.type';
 import './usagechart.css';
 import { useState } from 'react';
 

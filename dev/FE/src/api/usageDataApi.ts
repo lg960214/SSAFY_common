@@ -1,5 +1,5 @@
 import { BASEURL } from '@/constants/url';
-import { UsageData } from '@/types/usage';
+import { UsageData } from '@/types/usage.type';
 import { getToken } from '@/utils/storage';
 import axios from 'axios';
 

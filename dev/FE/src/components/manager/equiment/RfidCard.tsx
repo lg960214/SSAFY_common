@@ -29,10 +29,7 @@ const RfidCard = ({
     onEquipmentDrop,
     data,
   );
-  const { isDragging, getItem, drag, preview } = useDraggable(
-    'reader',
-    data.reader,
-  );
+  const { drag } = useDraggable('reader', data.reader);
   drag(drop(ref));
 
   return (

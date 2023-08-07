@@ -1,6 +1,6 @@
 import { ResponsiveBar } from '@nivo/bar';
 import './usagechart.css';
-import { UsageData } from '@/types/usage';
+import { UsageData } from '@/types/usage.type';
 interface UsagePageProps {
   dailyUsageData: UsageData[];
 }
