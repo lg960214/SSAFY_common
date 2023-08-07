@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 @ComponentScan(basePackages = "com.example.a104.project")
 public class A104Application {
     
@@ -22,7 +22,7 @@ public class A104Application {
         ReaderRepository readerRepository = context.getBean(ReaderRepository.class);
         WaitRepository waitRepository = context.getBean(WaitRepository.class);
         //SpringApplication.run(A104Application.class, args);
-        new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
+        //new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
         //MqttConfig mqtt = new MqttConfig(userService);
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
         //mqtt.init("tcp://localhost:1883","backend").subscriber("sub");

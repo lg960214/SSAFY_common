@@ -35,8 +35,8 @@ void initializeRFID() {
 }
 
 // 부저 울림 함수
-void beep(int duration = 250) {
-  int dutyCycle = 1;
+void beep(int duration = 500) {
+  int dutyCycle = 10;
   ledcWrite(channel, dutyCycle);
   delay(duration);
   ledcWrite(channel, 0);
@@ -60,12 +60,12 @@ String getRFIDTagUID() {
 // HTTP POST 요청 보내기
 void sendPostRequest(const String& tagUID) {
   HTTPClient http;
-  http.begin("http://i9a104.p.ssafy.io:8080/tags");
+  http.begin("http://i9a104.p.ssafy.io:8081/tags");
   http.addHeader("Content-Type", "application/json");
   
   StaticJsonDocument<200> doc;
   doc["device_code"] = tagUID;
-  doc["reader"] = 2222;
+  doc["reader"] = 1111;
   
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);

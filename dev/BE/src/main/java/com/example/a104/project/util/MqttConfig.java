@@ -116,7 +116,7 @@ public class MqttConfig implements MqttCallback {
             // 1. 노쇼 한 사람의 예약 취소
             String reader = reservationRepository.findByUserId(userId).getReader();
             reservationRepository.deleteByUserId(userId);
-            // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
+            // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode ////////////여기 다시 확인
             List<ReservationVo> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
 
             // 다음 예약자가 있는 경우
@@ -128,6 +128,7 @@ public class MqttConfig implements MqttCallback {
             }
             //다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
             else{
+                
                 readerStateRepository.nExistReservation(reader);
             }
         } else {
