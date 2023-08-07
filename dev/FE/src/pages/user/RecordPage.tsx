@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import moment from 'moment';
 import RecordDetail from '@/components/user/record/Recorddetail';
 import { useState } from 'react';
+import WaitTitle from '@/components/user/waitinfo/WaitTitle';
 
 export interface Exercise {
   reader: string;
@@ -21,6 +22,7 @@ const RecordPage = () => {
   const month: string = moment(new Date()).format('YYYY-MM');
   return (
     <div>
+      <WaitTitle text="내 운동기록" />
       <RecordCalendar
         setPickDate={setPickDate}
         setExerciseList={setExerciseList}

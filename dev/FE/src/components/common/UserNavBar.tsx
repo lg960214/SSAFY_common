@@ -65,7 +65,7 @@ const UserNavBar = () => {
           }`}
           to={`/user/record/${currentMonth}`}
         >
-          <span>이번달</span>
+          <span>월별</span>
           <br />
           <span>통계</span>
         </NavLink>
