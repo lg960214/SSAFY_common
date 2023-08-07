@@ -13,9 +13,9 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @DynamicInsert
-@IdClass(WaitVoId.class)
+@IdClass(WaitEntityId.class)
 @Table(name="wait")
-public class WaitVo {
+public class WaitEntity {
 
     @Id
     @Column(name = "wait_time")

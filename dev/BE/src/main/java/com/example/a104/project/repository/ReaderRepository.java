@@ -1,13 +1,13 @@
 package com.example.a104.project.repository;
 
-import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.entity.ReaderEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
-public interface ReaderRepository extends JpaRepository<ReaderVo,String> {
-    List<ReaderVo> findByGymCode(int gymCode);
-    List<ReaderVo> findByGymCodeAndNameIsNotNull(int gymCode);
-    ReaderVo findByReader(String reader);
-    List<ReaderVo> findByGymCodeAndRegion(int gymCode, String region);
+public interface ReaderRepository extends JpaRepository<ReaderEntity,String> {
+    List<ReaderEntity> findByGymCode(int gymCode);
+    List<ReaderEntity> findByGymCodeAndNameIsNotNull(int gymCode);
+    ReaderEntity findByReader(String reader);
+    List<ReaderEntity> findByGymCodeAndRegion(int gymCode, String region);
 }
