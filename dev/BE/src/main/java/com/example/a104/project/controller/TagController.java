@@ -1,7 +1,7 @@
 package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.RealTimeDto;
-import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.entity.ReaderEntity;
 import com.example.a104.project.repository.DeviceRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.ReaderStateRepository;
@@ -71,9 +71,8 @@ public class TagController {
         String reader = map.get("reader");
 
         tagService.Tagging(deviceCode, reader);
-        ReaderVo readerVo = readerRepository.findByReader(reader);
+        ReaderEntity readerVo = readerRepository.findByReader(reader);
         int gymCode = readerVo.getGymCode();
-        System.out.println("리더기 정보1!!"+readerStateRepository.findByReader("1111"));
         List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
         for (SseEmitter emitter : emitters) {
             try {

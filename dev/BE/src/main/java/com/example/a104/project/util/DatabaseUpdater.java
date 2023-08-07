@@ -1,8 +1,8 @@
 package com.example.a104.project.util;
 
 
-import com.example.a104.project.entity.ReservationVo;
-import com.example.a104.project.entity.WaitVo;
+import com.example.a104.project.entity.ReservationEntity;
+import com.example.a104.project.entity.WaitEntity;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.ReservationRepository;
 import com.example.a104.project.repository.WaitRepository;
@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,20 +30,19 @@ public class DatabaseUpdater {
 
     @Scheduled(cron = "0 0/10 * * * *")
     public void updateDatabase(){
-        List<ReservationVo> list = reservationRepository.findAll();
+        List<ReservationEntity> list = reservationRepository.findAll();
         System.out.println(list.size());
         Set<String> set = new HashSet<>();
-        for(ReservationVo reservationVo : list){
+        for(ReservationEntity reservationVo : list){
             set.add(reservationVo.getReader());
         }
         for(String reader : set){
-            WaitVo waitVo = WaitVo.builder()
+            WaitEntity waitVo = WaitEntity.builder()
                     .reader(reader)
-                    .waitTime(LocalDateTime.now())
+                    .waitTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                     .count(reservationRepository.findByReaderOrderByReservationAsc(reader).size())
                     .name(readerRepository.findByReader(reader).getName())
                     .build();
-            System.out.println(waitVo);
             waitRepository.save(waitVo);
         }
 //        for(ReservationVo reservationVo : list){
@@ -56,7 +56,5 @@ public class DatabaseUpdater {
 //            System.out.println(waitVo);
 //            waitRepository.save(waitVo);
 //        }
-        System.out.println("디비정보 저장");
-        System.out.println(LocalDateTime.now());
     }
 }

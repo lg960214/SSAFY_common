@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class WaitVoId implements Serializable {
+public class WaitEntityId implements Serializable {
 
 
     @Column(name = "wait_time")

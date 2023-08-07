@@ -41,11 +41,10 @@ public class AdminController {
         List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<ReaderVo> readerVoList = readerService.getMatchReaders(gymCode);
-
+        List<ReaderEntity> readerVoList = readerService.getMatchReaders(gymCode);
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate localDate = LocalDate.parse(date, formatter);
-        for(ReaderVo readerVo: readerVoList){
+        for(ReaderEntity readerVo: readerVoList){
             DayInfoDto dayInfoDto = new DayInfoDto();
             dayInfoDto.setName(readerVo.getName());
             dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
@@ -57,11 +56,10 @@ public class AdminController {
 
     // 헬스장 회원 검색(이름으로 검색)
     @GetMapping("search")
-    public List<UserVo> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
+    public List<UserEntity> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.search(keyword, gymCode);
-        System.out.println(users);
+        List<UserEntity> users = adminService.search(keyword, gymCode);
         return users;
     }
 
@@ -95,14 +93,14 @@ public class AdminController {
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
     @GetMapping("unauthorized-users")
-    public List<UserDto> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
+    public List<UserDto> unAutorizedUsers(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.unauthorizedUser(gymCode);
+        List<UserEntity> users = adminService.unauthorizedUser(gymCode);
         List<UserDto> userDtoList = new ArrayList<>();
-        for(UserVo userVo: users){
+        for(UserEntity userVo: users){
             UserDto userDto = new UserDto();
-            userDto.setDate(userDateRepository.getUserDAte(userVo.getUserId()));
+            userDto.setDate(userDateRepository.getUserDate(userVo.getUserId()));
             userDto.setUserId(userVo.getUserId());
             userDto.setName(userVo.getName());
             userDto.setId(userVo.getId());
@@ -113,18 +111,16 @@ public class AdminController {
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
     @GetMapping("users")
-    public List<UserVo> userList(@RequestHeader(value = "Authorization") String token) {
+    public List<UserEntity> userList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        System.out.println(gymCode);
-        List<UserVo> userList = adminService.userList(gymCode);
-        System.out.println(claims);
+        List<UserEntity> userList = adminService.userList(gymCode);
         return userList;
     }
 
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
-        List<AdminVo> admin = adminService.login(map.get("id"));
+        List<AdminEntity> admin = adminService.login(map.get("id"));
 
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
@@ -147,14 +143,14 @@ public class AdminController {
     }
 
     @PostMapping("create")
-    public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map) {
-        AdminVo admin = AdminVo.builder()
+    public ResponseEntity<AdminEntity> createAdmin(@RequestBody Map<String, Object> map) {
+        AdminEntity admin = AdminEntity.builder()
                 .gymCode((int) map.get("code"))
                 .id((String) map.get("id"))
                 .name((String) map.get("name"))
                 .password((String) map.get("password"))
                 .build();
-        AdminVo savedAdmin = adminService.createAdmin(admin);
+        AdminEntity savedAdmin = adminService.createAdmin(admin);
         return new ResponseEntity<>(savedAdmin, HttpStatus.OK);
     }
 

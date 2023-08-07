@@ -4,7 +4,7 @@ import javax.persistence.Column;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public class CountVoId implements Serializable {
+public class CountEntityId implements Serializable {
 
     @Column
     private LocalDate search;
