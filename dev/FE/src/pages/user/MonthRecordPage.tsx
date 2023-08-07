@@ -88,13 +88,25 @@ const MonthRecordPage = () => {
   );
   return (
     <>
-      <div className="w-[350px] h-[620px] bg-white rounded-[15px] ">
-        <div className="flex justify-center">
-          <button onClick={() => handleMonth(0)}> {`<`} </button>
-          <p className="pt-[10px] text-center fontJeju text-[32px]">
+      <div className=" h-[620px] rounded-[15px] ">
+        <div className="flex justify-center mx-auto w-[350px] items-center bg-CustomNavy h-14 text-white rounded-lg">
+          <button
+            className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl"
+            onClick={() => handleMonth(0)}
+          >
+            {' '}
+            {`<`}{' '}
+          </button>
+          <p className="text-center text-2xl">
             {searchMonth?.slice(5, 7)} 월의 통계
           </p>
-          <button onClick={() => handleMonth(1)}> {`>`} </button>
+          <button
+            className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl"
+            onClick={() => handleMonth(1)}
+          >
+            {' '}
+            {`>`}{' '}
+          </button>
         </div>
         <div className="flex justify-between ms-5 me-[120px]">
           <p>총 운동일</p>
