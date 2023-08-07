@@ -22,7 +22,7 @@ const waitListApi = (
   eventSource.onmessage = async (e) => {
     const res = await e.data;
     const parsedData = JSON.parse(res);
-    console.log('받아오는 data로 할 일', parsedData);
+    console.log('Tagged', parsedData);
     setWaitEquipList(parsedData);
     const readerStateArray = parsedData.map((data: EquipList) => {
       if (data.userId) return 'using';
