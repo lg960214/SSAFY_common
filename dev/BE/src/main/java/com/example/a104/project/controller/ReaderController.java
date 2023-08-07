@@ -1,6 +1,6 @@
 package com.example.a104.project.controller;
 
-import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.entity.ReaderEntity;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.util.JwtTokenProvider;
@@ -19,14 +19,14 @@ public class ReaderController {
     private final AdminService adminService;
 
     @GetMapping
-    public List<ReaderVo> getReaderList(@RequestHeader(value = "Authorization") String token) {
+    public List<ReaderEntity> getReaderList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         int gymCode = adminService.getGymCode((String) claims.get("sub"));
         return readerService.getReaderList(gymCode);
     }
 
     @PutMapping
-    public String updateReader(@RequestBody List<ReaderVo> readers) {
+    public String updateReader(@RequestBody List<ReaderEntity> readers) {
         readerService.updateReader(readers);
         return "update";
     }

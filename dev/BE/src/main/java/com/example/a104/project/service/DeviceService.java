@@ -1,7 +1,7 @@
 package com.example.a104.project.service;
 
-import com.example.a104.project.entity.DeviceVo;
-import com.example.a104.project.entity.UserVo;
+import com.example.a104.project.entity.DeviceEntity;
+import com.example.a104.project.entity.UserEntity;
 import com.example.a104.project.repository.DeviceRepository;
 import com.example.a104.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -15,11 +15,11 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final UserRepository userRepository;
 
-    public List<DeviceVo> DeviceList(int gymCode) {
+    public List<DeviceEntity> DeviceList(int gymCode) {
         return deviceRepository.findByGymCodeAndUseIsNull(gymCode);
     }
 
-    public List<UserVo> UserDevice(int gymCode) {
+    public List<UserEntity> UserDevice(int gymCode) {
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode);
     }
 

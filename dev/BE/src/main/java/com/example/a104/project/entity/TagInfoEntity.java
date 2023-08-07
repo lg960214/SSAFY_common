@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 @Builder
 @DynamicInsert
 @Table(name = "tag_info")
-public class TagInfoVo {
+public class TagInfoEntity {
 
     @Id
     @Column(name = "tag_info_pk")

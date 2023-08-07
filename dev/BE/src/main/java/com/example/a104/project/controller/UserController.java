@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
@@ -38,10 +39,10 @@ public class UserController {
     private final WaitRepository waitRepository;
     // 헬스장에 매칭된 리더기 보여주기
     @GetMapping("readers")
-    public List<ReaderVo> MatchReaders(@RequestHeader(value = "Authorization") String token){
+    public List<ReaderEntity> MatchReaders(@RequestHeader(value = "Authorization") String token){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         String id = (String) claims.get("sub");
-        UserVo user = userService.getUserInfo(id);
+        UserEntity user = userService.getUserInfo(id);
         int gymCode = user.getGymCode();
         return readerService.getMatchReaders(gymCode);
 
@@ -53,16 +54,15 @@ public class UserController {
         SearchDataDto searchDataDto = new SearchDataDto();
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         String id = (String) claims.get("sub");
-        UserVo user = userService.getUserInfo(id);
+        UserEntity user = userService.getUserInfo(id);
         int gymCode = user.getGymCode();
         String name = readerRepository.findByReader(reader).getName();
 
-        List<CountVo> countVo = countRepository.findBySearchAndName(LocalDate.now(),name);
-        System.out.println(countVo);
+        List<CountEntity> countVo = countRepository.findBySearchAndName(LocalDate.now(),name);
         // 검색 시 카운트 +1 하는 부분
         // db 에 정보가 없는 경우
         if(countVo.size()==0){
-            CountVo countVo1 = CountVo.builder()
+            CountEntity countVo1 = CountEntity.builder()
                     .count(1)
                     .search(LocalDate.now())
                     .name(name)
@@ -76,7 +76,7 @@ public class UserController {
         // 검색 시 카운트 +1 하는 부분 끝
 
         // 현재 기구의 대기인원과 1주일 2주일 3주일 전 대기 인원 반환
-        List<ReservationVo> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(reader);
+        List<ReservationEntity> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(reader);
         searchDataDto.setNow(reservationVoList.size());
         String datetime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd "))+date;
 
@@ -105,7 +105,7 @@ public class UserController {
     }
 
     @GetMapping("regist")
-    public UserVo userInfo(@RequestHeader(value = "Authorization") String token){
+    public UserEntity userInfo(@RequestHeader(value = "Authorization") String token){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         String id = (String) claims.get("sub");
         return userService.getUserInfo(id);
@@ -116,7 +116,7 @@ public class UserController {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         String id = (String) claims.get("sub");
         int userId = userDateService.createUserId(id);
-        List<TagInfoVo> list = userService.getUserDate(date,userId);
+        List<TagInfoEntity> list = userService.getUserDate(date,userId);
         userService.getTagInfo(list);
         return  userService.getTagInfo(list);
     }
@@ -140,7 +140,6 @@ public class UserController {
     @GetMapping("check")
     @ResponseBody
     public Map<String, String> DuplicateCheck(@RequestParam String id) {
-        System.out.println(id);
         Map<String, String> map = new HashMap<>();
         if (userService.checkId(id)) {
             map.put("msg", "이미 있는 아이디");
@@ -156,8 +155,7 @@ public class UserController {
     // 로그인
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
-        List<UserVo> user = userService.login(map.get("id"));
-        System.out.println(user);
+        List<UserEntity> user = userService.login(map.get("id"));
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
         try {
@@ -189,9 +187,8 @@ public class UserController {
 
 
     @PostMapping("signup")
-    public ResponseEntity<UserVo> singUp(@RequestBody Map<String, String> map) {
-        System.out.println(map);
-        UserVo user = UserVo.builder()
+    public ResponseEntity<UserEntity> singUp(@RequestBody Map<String, String> map) {
+        UserEntity user = UserEntity.builder()
                 .id(map.get("id"))
                 .password(BCrypt.hashpw(map.get("password"), BCrypt.gensalt()))
                 .email(map.get("email"))
@@ -200,17 +197,13 @@ public class UserController {
                 .name(map.get("name"))
 
                 .build();
-        System.out.println(user);
-        UserVo savedUser = userService.createUser(user);
+        UserEntity savedUser = userService.createUser(user);
 
-        System.out.println("Controller :" + map.get("id"));
         int userId = userDateService.createUserId(map.get("id"));
-        System.out.println("userID: " + userId);
-        UserDateVo userDate = UserDateVo.builder()
+        UserDateEntity userDate = UserDateEntity.builder()
                 .userId(userId)
-                .signin(LocalDateTime.now())
+                .signin(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
-        System.out.println(userDate);
         userDateService.createUserDate(userDate);
         return new ResponseEntity<>(savedUser, HttpStatus.OK);
     }

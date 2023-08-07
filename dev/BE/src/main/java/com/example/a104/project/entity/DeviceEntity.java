@@ -14,21 +14,16 @@ import javax.persistence.Table;
 @Entity
 @Builder
 @DynamicInsert
-@Table(name = "reader")
-public class ReaderVo {
+@Table(name="device")
+public class DeviceEntity {
+
     @Id
-    @Column
-    private String reader;
-
-    @Column
-    @Builder.Default
-    private String region = null;
-
-    @Column
-    @Builder.Default
-    private String name = null;
+    @Column(name = "device_code")
+    private String deviceCode;
 
     @Column(name = "gym_code")
-    private Integer gymCode;
+    private int gymCode;
 
+    @Column(name="use_device")
+    private Integer use;
 }

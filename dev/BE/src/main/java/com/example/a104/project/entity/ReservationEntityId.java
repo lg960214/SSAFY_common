@@ -3,7 +3,7 @@ package com.example.a104.project.entity;
 import javax.persistence.Column;
 import java.io.Serializable;
 
-public class ReservationVoId implements Serializable {
+public class ReservationEntityId implements Serializable {
 
     @Column
     private String reader;

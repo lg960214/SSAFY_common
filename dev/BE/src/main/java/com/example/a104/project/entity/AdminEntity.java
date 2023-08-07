@@ -12,7 +12,7 @@ import javax.persistence.Table;
 @Data
 @Entity
 @Table(name="admin")
-public class AdminVo {
+public class AdminEntity {
 
     @Id
     @Column(name="gym_code")
@@ -28,7 +28,7 @@ public class AdminVo {
     private String password;
 
     @Builder
-    public AdminVo(int gymCode, String name, String id, String password) {
+    public AdminEntity(int gymCode, String name, String id, String password) {
         this.gymCode = gymCode;
         this.name = name;
         this.id = id;
