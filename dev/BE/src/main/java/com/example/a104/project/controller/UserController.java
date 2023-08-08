@@ -186,13 +186,15 @@ public class UserController {
         }
 
     @GetMapping("rank")
-    public List<MonthRanking> rank(@RequestHeader(value = "Authorization") String token){
+    public List<MonthRanking> rank(@RequestHeader(value = "Authorization") String token, String date){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
         String id = (String) claims.get("sub");
         int gymCode = userService.getUserInfo(id).getGymCode();
         List<UserEntity> userEntityList = userService.getGymUsers(gymCode);
-        int month = LocalDate.now().getMonthValue();
-        List<MonthRanking> monthRankingList = userService.getMonthRanking(month, gymCode);
+        String [] dateArr = date.split("-");
+        int month = Integer.valueOf(dateArr[1]);
+        int year = Integer.valueOf(dateArr[0]);
+        List<MonthRanking> monthRankingList = userService.getMonthRanking(year,month, gymCode);
         return monthRankingList;
     }
 

@@ -30,9 +30,9 @@ public class UserService {
     };
 
     // 회원 리스트를 받아
-    public List<MonthRanking> getMonthRanking(int month, int gymCode){
+    public List<MonthRanking> getMonthRanking(int year, int month, int gymCode){
         List<MonthRanking> monthRankingList= new ArrayList<>();
-        for(Object[] object: tagInfoRepository.getRank(month,gymCode)){
+        for(Object[] object: tagInfoRepository.getRank(year,month,gymCode)){
             MonthRanking monthRanking = new MonthRanking();
             monthRanking.setUserId(Integer.valueOf(object[0].toString()));
             monthRanking.setId(userRepository.findByUserId(Integer.valueOf(object[0].toString())).getId());
