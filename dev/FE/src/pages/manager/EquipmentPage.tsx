@@ -20,8 +20,6 @@ const zoneDefault = [
   { name: 'D', isSelected: false },
   { name: 'E', isSelected: false },
   { name: 'F', isSelected: false },
-  { name: 'G', isSelected: false },
-  { name: 'H', isSelected: false },
 ];
 
 const EquipmentPage = () => {
