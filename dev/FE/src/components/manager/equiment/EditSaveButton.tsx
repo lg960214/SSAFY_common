@@ -5,7 +5,7 @@ interface EditSaveButtonProps {
 
 const EditSaveButton = ({ title, onClick }: EditSaveButtonProps) => {
   return (
-    <button onClick={onClick} className="m-4 bg-green-500 h-12">
+    <button onClick={onClick} className="m-4 bg-green-500 h-12 text-white">
       {title}
     </button>
   );

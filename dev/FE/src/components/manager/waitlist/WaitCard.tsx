@@ -1,3 +1,4 @@
+import './waitcard.css';
 import { EquipList, ReaderStateType } from '@/types/wait.type';
 import Timer from './Timer';
 
@@ -32,8 +33,8 @@ const WaitCard = ({ data, state }: WaitCardProps) => {
     );
   }
   return (
-    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px]">
-      <div className="w-[465px] h-[186px] bg-CustomLightNavy text-white rounded-[15px]  flex flex-col justify-between items-center">
+    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px] shadow-lg">
+      <div className="w-[465px] h-[186px] bg-CustomLightNavy text-white rounded-[15px]  flex flex-col justify-between items-center shadow-lg">
         <div className="flex justify-between mt-5 w-[350px] text-xl">
           <span>기구명</span>
           <span>잔여시간</span>
@@ -49,12 +50,21 @@ const WaitCard = ({ data, state }: WaitCardProps) => {
         {infoStatement}
       </div>
       <div className="w-[220px] flex flex-col justify-between text-CustomOrange">
-        <div className="flex flex-wrap justify-between px-5 pt-3 text-center text-[28px]">
-          {data.waitingList.map((person) => (
-            <span key={person} className="w-[80px]">
-              {person}
-            </span>
-          ))}
+        <div className="flex flex-col items-center px-5 pt-3 text-[28px] h-[200px] relative">
+          {data.waitingCount ? (
+            <img
+              src="/img/wait/righttriangle.svg"
+              alt="tri"
+              width={16}
+              className="move-left-right absolute left-9 top-[19%]"
+            />
+          ) : null}
+          <span className="text-5xl">{data.waitingList[0]}</span>
+          <span className="text-3xl">{data.waitingList[1]}</span>
+          <span className="text-2xl">{data.waitingList[2]}</span>
+          {data.waitingCount > 3 ? (
+            <img src="/img/wait/verticaldots.svg" alt="dots" />
+          ) : null}
         </div>
         <div className="text-center text-[24px] flex justify-center">
           <span>{data.waitingCount}</span>명 대기중
