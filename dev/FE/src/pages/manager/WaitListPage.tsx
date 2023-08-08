@@ -30,26 +30,7 @@ const WaitListPage = () => {
       );
     }
   };
-  const tmpSectionData: { [key: string]: number } = {};
-  const [readerData, setReaderData] = useState<Reader[]>([]);
-  const { data, isLoading } = useQuery<Reader[]>(['regions'], getReaders);
-  useEffect(() => {
-    if (!isLoading && data != undefined) {
-      setReaderData(data);
-      readerData.map((reader: Reader) => {
-        const region = reader.region;
-        if (region != null) {
-          if (region in tmpSectionData) {
-            tmpSectionData[region] += 1;
-          } else {
-            tmpSectionData[region] = 0;
-          }
-        }
-      });
-    }
-  }, [data, isLoading]);
 
-  const sectionData = Object.keys(tmpSectionData);
   return (
     <div className="waitpage mx-auto">
       <div>
