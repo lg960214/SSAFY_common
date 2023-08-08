@@ -1,11 +1,9 @@
 import { Exercise } from '@/pages/user/RecordPage';
-import { useEffect, useState } from 'react';
 
 interface CountStandardProps {
   exerciseList1: Exercise[];
 }
 const CountStandard = ({ exerciseList1 }: CountStandardProps) => {
-  const [sortedCountReaders, setSortedCountReaders] = useState<string[]>([]);
   const readerCountMap: { [key: string]: number } = {};
 
   exerciseList1.forEach((record: Exercise) => {
@@ -19,13 +17,9 @@ const CountStandard = ({ exerciseList1 }: CountStandardProps) => {
     }
   });
 
-  const sortedData = Object.keys(readerCountMap).sort(
+  const sortedCountReaders = Object.keys(readerCountMap).sort(
     (a: string, b: string) => readerCountMap[b] - readerCountMap[a],
   );
-
-  useEffect(() => {
-    setSortedCountReaders(sortedData);
-  }, [exerciseList1]);
 
   return (
     <div className="flex justify-evenly my-10">

@@ -1,11 +1,9 @@
 import { Exercise } from '@/pages/user/RecordPage';
-import { useEffect, useState } from 'react';
 
 interface TimeStandardProps {
   exerciseList1: Exercise[];
 }
 const TimeStandard = ({ exerciseList1 }: TimeStandardProps) => {
-  const [sortedTimeReaders, setSortedTimeReaders] = useState<string[]>([]);
   const readerCountTimeMap: { [key: string]: number } = {};
 
   exerciseList1.forEach((record: Exercise) => {
@@ -24,13 +22,9 @@ const TimeStandard = ({ exerciseList1 }: TimeStandardProps) => {
     }
   });
 
-  const sortedData = Object.keys(readerCountTimeMap).sort(
+  const sortedTimeReaders = Object.keys(readerCountTimeMap).sort(
     (a: string, b: string) => readerCountTimeMap[b] - readerCountTimeMap[a],
   );
-
-  useEffect(() => {
-    setSortedTimeReaders(sortedData);
-  }, [exerciseList1]);
 
   return (
     <div className="flex justify-evenly">
