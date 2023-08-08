@@ -1,4 +1,3 @@
-// WaitListPage.tsx
 import ViewSectionButton from '@/components/manager/waitlist/ViewSectionButton';
 import './waitlistpage.css';
 import { useQuery } from '@tanstack/react-query';
