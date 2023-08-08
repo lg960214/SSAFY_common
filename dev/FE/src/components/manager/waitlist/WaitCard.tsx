@@ -50,7 +50,7 @@ const WaitCard = ({ data, state }: WaitCardProps) => {
         {infoStatement}
       </div>
       <div className="w-[220px] flex flex-col justify-between text-CustomOrange">
-        <div className="flex flex-col items-center px-5 pt-3 text-[28px] relative">
+        <div className="flex flex-col items-center px-5 pt-3 text-[28px] h-[200px] relative">
           {data.waitingCount ? (
             <img
               src="/img/wait/righttriangle.svg"

@@ -14,9 +14,7 @@ const WaitListPage = () => {
   return (
     <div className="waitpage mx-auto">
       <div>
-        <p className="fontJeju text-4xl text-center pt-20">
-          구역을 선택하세요.
-        </p>
+        <p className="fontJeju text-4xl text-center pt-20">구역을 선택하세요</p>
       </div>
       <div>
         <ul className="flex selectbox mx-auto mt-20">
