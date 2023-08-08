@@ -35,6 +35,7 @@ public class UserService {
         for(Object[] object: tagInfoRepository.getRank(month,gymCode)){
             MonthRanking monthRanking = new MonthRanking();
             monthRanking.setUserId(Integer.valueOf(object[0].toString()));
+            monthRanking.setId(userRepository.findByUserId(Integer.valueOf(object[0].toString())).getId());
             monthRanking.setSecond(Integer.valueOf(object[1].toString()));
             monthRankingList.add(monthRanking);
 
