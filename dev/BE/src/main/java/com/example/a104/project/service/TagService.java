@@ -187,6 +187,17 @@ public class TagService {
                         readerStateRepository.nExistReservation(readers.getReader());
                     }
 
+                    ReaderStateEntity readerStateVo = new ReaderStateEntity(reader,0,user.getUserId());
+                    readerStateRepository.save(readerStateVo);
+                    TagInfoEntity tagInfoVo = TagInfoEntity.builder()
+                            .primaryKey(null)
+                            .tagDate(LocalDate.now())
+                            .userId(user.getUserId())
+                            .reader(reader)
+                            .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                            .build();
+                    tagInfoRepository.save(tagInfoVo);
+
                 }
                 // 아무것도 사용중이지 않은 상태 (#002_2)
                 else {

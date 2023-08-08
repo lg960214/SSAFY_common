@@ -31,7 +31,6 @@ public class DatabaseUpdater {
     @Scheduled(cron = "0 0,10,20,30,40,50 * * * *")
     public void updateDatabase(){
         List<ReservationEntity> list = reservationRepository.findAll();
-        System.out.println(list.size());
         Set<String> set = new HashSet<>();
         for(ReservationEntity reservationVo : list){
             set.add(reservationVo.getReader());
@@ -45,16 +44,5 @@ public class DatabaseUpdater {
                     .build();
             waitRepository.save(waitVo);
         }
-//        for(ReservationVo reservationVo : list){
-//            String reader = reservationVo.getReader();
-//            WaitVo waitVo = WaitVo.builder()
-//                    .reader(reservationVo.getReader())
-//                    .waitTime(LocalDateTime.now())
-//                    .count(reservationRepository.findByReaderOrderByReservationAsc(reader).size())
-//                    .name(readerRepository.findByReader(reader).getName())
-//                    .build();
-//            System.out.println(waitVo);
-//            waitRepository.save(waitVo);
-//        }
     }
 }
