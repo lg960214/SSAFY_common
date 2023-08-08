@@ -26,8 +26,8 @@ export const MemberItem = (item: MemberInfo) => {
       onClick={handleClick}
       className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer"
     >
-      <span className="w-24">{item.name}</span>
       <span className="w-20">{item.userId}</span>
+      <span className="w-24">{item.name}</span>
       <span className="w-28">{item.phoneNumber}</span>
       <span className="w-16">{item.sex}</span>
       <span className="w-44" onClick={handleRegiClick}>

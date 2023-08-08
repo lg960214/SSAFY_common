@@ -1,7 +1,9 @@
 .navbar {
   width: 1440px;
   height: 100px;
-  background-color: #06092b;
+  /* background-color: #06092b; */
+  background-color: #323554;
+  /* box-shadow: 10px 5px 5px black; */
 }
 
 .fontJeju {

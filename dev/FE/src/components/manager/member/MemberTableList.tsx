@@ -11,14 +11,14 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
   memberInfoLists,
 }) => {
   const tableName = [
-    { title: '이름', className: 'w-24' },
     { title: '회원 번호', className: 'w-20' },
+    { title: '이름', className: 'w-24' },
     { title: '전화 번호', className: 'w-28' },
     { title: '성별', className: 'w-16' },
     { title: '태그 번호', className: 'w-44' },
   ];
   return (
-    <div className="bg-black w-full h-[700px] -mt-12 text-white p-2 rounded-2xl">
+    <div className="bg-slate-200 w-full h-[700px] -mt-12 text-[#323554] p-2 rounded-2xl shadow-lg">
       <div className="flex justify-evenly items-center h-12 text-center text-lg font-bold">
         {tableName.map((item, idx: number) => {
           return (
@@ -28,7 +28,7 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
           );
         })}
       </div>
-      <div className="border-white border-b-2 h-0"></div>
+      <div className="border-[#323554] border-b-2 h-0"></div>
       <MemberPaginatedItems
         memberInfoLists={memberInfoLists}
         checkText={checkText}

@@ -56,13 +56,14 @@ const MemberPage = () => {
       <div className="w-[908px]">
         <div className="flex justify-between">
           <TableMenu name="회원 정보" />
-          <div className="ml-40 float-right border-2 justify-evenly align-middle items-center border-black flex w-[280px] h-10 rounded-2xl px-3">
+          <div className="ml-40 float-right border-2 bg-white justify-center align-middle items-center border-black/30 flex w-[260px] h-10 rounded-2xl px-0">
             <input
-              className="h-6 border-2 border-black rounded-lg pl-4"
+              className="h-6 border-b-2 border-black/30 focus-visible:outline-transparent mr-1"
               type="text"
+              placeholder="이름으로 검색"
               onInput={handleInputSearchText}
             />
-            <img className="w-8" src={`/img/member/loupe.png`} alt="" />
+            <img className="w-8 ml-1" src={`/img/member/loupe.png`} alt="" />
           </div>
         </div>
 
