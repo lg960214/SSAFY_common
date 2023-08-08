@@ -1,5 +1,6 @@
 package com.example.a104.project.service;
 
+import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.TagInfoEntity;
 import com.example.a104.project.entity.UserEntity;
@@ -28,6 +29,25 @@ public class UserService {
         return userRecords;
     };
 
+    // 회원 리스트를 받아
+    public List<MonthRanking> getMonthRanking(int month, int gymCode){
+        List<MonthRanking> monthRankingList= new ArrayList<>();
+        for(Object[] object: tagInfoRepository.getRank(month,gymCode)){
+            MonthRanking monthRanking = new MonthRanking();
+            monthRanking.setUserId(Integer.valueOf(object[0].toString()));
+            monthRanking.setSecond(Integer.valueOf(object[1].toString()));
+            monthRankingList.add(monthRanking);
+
+        }
+
+        return monthRankingList;
+    }
+
+    // 헬스장에 등록된 회원리스트
+    public List<UserEntity> getGymUsers(int gymCode){
+        List<UserEntity> userEntityList = userRepository.findByGymCodeAndRegistIsNotNull(gymCode);
+        return userEntityList;
+    }
 
     public List<TagInfoDto> getTagInfo(List<TagInfoEntity> list){
         List<TagInfoDto> tagInfoDtoList = new ArrayList<>();

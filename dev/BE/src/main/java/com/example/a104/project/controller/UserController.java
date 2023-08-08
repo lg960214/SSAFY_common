@@ -1,5 +1,6 @@
 package com.example.a104.project.controller;
 
+import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.SearchDataDto;
 import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.*;
@@ -184,7 +185,16 @@ public class UserController {
 
         }
 
-
+    @GetMapping("rank")
+    public List<MonthRanking> rank(@RequestHeader(value = "Authorization") String token){
+        Claims claims = JwtTokenProvider.parseJwtToken(token);
+        String id = (String) claims.get("sub");
+        int gymCode = userService.getUserInfo(id).getGymCode();
+        List<UserEntity> userEntityList = userService.getGymUsers(gymCode);
+        int month = LocalDate.now().getMonthValue();
+        List<MonthRanking> monthRankingList = userService.getMonthRanking(month, gymCode);
+        return monthRankingList;
+    }
 
     @PostMapping("signup")
     public ResponseEntity<UserEntity> singUp(@RequestBody Map<String, String> map) {
