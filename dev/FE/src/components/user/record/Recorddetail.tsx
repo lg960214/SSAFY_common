@@ -17,13 +17,16 @@ const RecordDetail = ({ selectedDate, exerciseList }: RecordDetailProps) => {
           <p className="me-[70px]">이용시간</p>
         </div>
         {filteredExercises.map((item) => (
-          <li className="w-[300px] h-[30px]  my-[15px]  flex justify-between mx-auto bg-white rounded-[8px] fontJeju">
+          <li
+            key={item.endTime}
+            className="w-[300px] h-[30px]  my-[15px]  flex justify-between mx-auto bg-white rounded-[8px] fontJeju"
+          >
             <p className="ms-[10px] my-auto">{item.name}</p>
             {item.endTime != null ? (
-              <p className="flex">
+              <div className="flex">
                 <p>{item.startTime.slice(11, 16)} ~</p>
                 <p className="me-[50px]">{item.endTime.slice(11, 16)}</p>
-              </p>
+              </div>
             ) : (
               <p className="me-[80px]">진행중</p> // 종료 시간이 없는 경우 '진행중' 표시
             )}

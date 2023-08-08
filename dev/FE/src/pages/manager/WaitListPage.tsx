@@ -1,16 +1,36 @@
-// WaitListPage.tsx
 import ViewSectionButton from '@/components/manager/waitlist/ViewSectionButton';
 import './waitlistpage.css';
+import { useQuery } from '@tanstack/react-query';
+import { useState, useEffect } from 'react';
+import { getReaders } from '@/api/equipmentApi';
+import { Reader } from '@/types/reader.type';
 const WaitListPage = () => {
-  const sectionData = ['A', 'B', 'C', 'D', 'E'];
   const handleOpenNewTab = (url: string) => {
     window.open(
       `http://localhost:3000/waitlist/${url}`,
-      '_blank',
       'width=1920,height=1080',
     );
   };
+  const tmpSectionData: { [key: string]: number } = {};
+  const [readerData, setReaderData] = useState<Reader[]>([]);
+  const { data, isLoading } = useQuery<Reader[]>(['regions'], getReaders);
+  useEffect(() => {
+    if (!isLoading && data != undefined) {
+      setReaderData(data);
+      readerData.map((reader: Reader) => {
+        const region = reader.region;
+        if (region != null) {
+          if (region in tmpSectionData) {
+            tmpSectionData[region] += 1;
+          } else {
+            tmpSectionData[region] = 0;
+          }
+        }
+      });
+    }
+  }, [data, isLoading]);
 
+  const sectionData = Object.keys(tmpSectionData);
   return (
     <div className="waitpage mx-auto">
       <div>
