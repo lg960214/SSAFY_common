@@ -37,7 +37,7 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer> {
     UserEntity findByUserId(int userId);
     List<UserEntity> findByNameContainingAndGymCode(String keyword, int gymCode);
     List<UserEntity> findById(String Id);
-    List<UserEntity> findByGymCodeAndRegistIsNotNull(int GymCode);
-    List<UserEntity> findByGymCodeAndDeviceCodeIsNotNull(int GymCode);
+    List<UserEntity> findByGymCodeAndRegistIsNotNull(int gymCode);
+    List<UserEntity> findByGymCodeAndDeviceCodeIsNotNull(int gymCode);
     List<UserEntity> findByGymCodeAndRegistIsNull(int gymCode);
 }

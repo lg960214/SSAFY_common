@@ -28,7 +28,7 @@ public class DatabaseUpdater {
         this.readerRepository = readerRepository;
     }
 
-    @Scheduled(cron = "0 0/10 * * * *")
+    @Scheduled(cron = "0 0,10,20,30,40,50 * * * *")
     public void updateDatabase(){
         List<ReservationEntity> list = reservationRepository.findAll();
         System.out.println(list.size());

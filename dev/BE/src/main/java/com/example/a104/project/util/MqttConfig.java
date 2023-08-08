@@ -91,7 +91,6 @@ public class MqttConfig implements MqttCallback {
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         System.out.println("=====================메세지 도착=================");
-
         String msg = new String(message.getPayload());
         System.out.println("메세지 :" + msg);
         String arr[] = msg.split("&");
