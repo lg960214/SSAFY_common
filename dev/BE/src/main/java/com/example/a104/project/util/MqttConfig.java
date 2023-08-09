@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 import java.util.Arrays;
 import java.util.List;
 
-
 @Component
 @Configuration
 public class MqttConfig implements MqttCallback {
@@ -21,7 +20,9 @@ public class MqttConfig implements MqttCallback {
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
-    public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository, ReaderStateRepository readerStateRepository) {
+
+    public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository,
+            ReaderStateRepository readerStateRepository) {
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.readerStateRepository = readerStateRepository;
@@ -99,7 +100,7 @@ public class MqttConfig implements MqttCallback {
         System.out.println(Arrays.toString(arr));
         System.out.println(arr[2]);
         if (arr[2].equals("noshow")) {
-            //arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
+            // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
 
             int userId = userRepository.findByDeviceCode(arr[0]).getUserId(); // 노쇼한 사람의 userId
 
@@ -107,7 +108,7 @@ public class MqttConfig implements MqttCallback {
             String reader = reservationRepository.findByUserId(userId).getReader();
             reservationRepository.deleteByUserId(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
-            List<ReservationEntity> list = reservationRepository.findByReaderOrderByReservationAsc(arr[1]);
+            List<ReservationEntity> list = reservationRepository.findByReaderOrderByReservationAsc(reader);
 
             // 다음 예약자가 있는 경우
             if (list.size() != 0) {
@@ -116,8 +117,9 @@ public class MqttConfig implements MqttCallback {
                 // 3. 해당 deviceCode(Topic)으로 메세지 전송
                 send(deviceCode, "your turn");
             }
-            //다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
-            else{
+            // 다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
+            else {
+                System.out.println("====================check==============");
                 readerStateRepository.nExistReservation(reader);
             }
         } else {
