@@ -30,14 +30,12 @@ const App: React.FC = () => {
           <>
             <Route path="/" element={<Layout />}>
               <Route path="" element={<MainPage />} />
-              {/* guarded ~ */}
               <Route element={<ManagerAuthGuard />}>
                 <Route path="member" element={<MemberPage />} />
                 <Route path="equipment" element={<EquipmentPage />} />
                 <Route path="usage" element={<UsagePage />} />
                 <Route path="waitlist" element={<WaitListPage />} />
               </Route>
-              {/* ~ guarded */}
             </Route>
             <Route path="/" element={<NoNavbarLayout />}>
               <Route
@@ -46,13 +44,11 @@ const App: React.FC = () => {
               />
             </Route>
             <Route path="/user" element={<UserLayout />}>
-              {/* guarded ~ */}
               <Route element={<UserAuthGuard />}>
                 <Route path="record" element={<RecordPage />} />
                 <Route path="record/:month" element={<MonthRecordPage />} />
                 <Route path="information" element={<WaitInfoPage />} />
               </Route>
-              {/* ~ guarded */}
             </Route>
             <Route path="/user" element={<NoNavbarUserLayout />}>
               <Route path="login" element={<LoginPage />} />
