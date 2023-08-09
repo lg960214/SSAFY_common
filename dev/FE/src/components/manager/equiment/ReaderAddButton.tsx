@@ -4,12 +4,12 @@ interface ReaderAddButtonProps {
 
 const ReaderAddButton = ({ onClick }: ReaderAddButtonProps) => {
   return (
-    <button
+    <div
       onClick={onClick}
-      className="w-32 h-32 mt-11 ml-8 bg-gray-300 shadow-lg rounded-full flex justify-center items-center"
+      className="w-28 h-28 bg-stone-300 shadow-xl hover:bg-green-400 hover:cursor-pointer rounded-full flex justify-center items-center"
     >
-      +
-    </button>
+      <img src="/img/plus.svg" alt="plus" width={64} />
+    </div>
   );
 };
 
