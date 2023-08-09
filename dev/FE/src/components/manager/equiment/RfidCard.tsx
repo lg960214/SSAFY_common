@@ -36,7 +36,7 @@ const RfidCard = ({
     <div
       ref={isOnEdit ? ref : null}
       style={{ backgroundColor: isOver ? 'red' : '#FF8000' }}
-      className="mx-4 bg-orange-500 w-40 h-48 rounded-3xl flex flex-col justify-around items-center"
+      className="mx-4 w-40 h-48 rounded-lg flex flex-col justify-around items-center"
     >
       <div className="flex">
         <span className={`text-white text-xl ml-${isOnEdit ? 8 : 0}`}>

@@ -1,5 +1,4 @@
 import ViewSectionButton from '@/components/manager/waitlist/ViewSectionButton';
-import './waitlistpage.css';
 import { useQuery } from '@tanstack/react-query';
 import { Reader } from '@/types/reader.type';
 import { getReaders } from '@/api/equipmentApi';
@@ -32,12 +31,12 @@ const WaitListPage = () => {
   };
 
   return (
-    <div className="waitpage mx-auto">
+    <>
       <div>
         <p className="fontJeju text-4xl text-center pt-20">구역을 선택하세요</p>
       </div>
       <div>
-        <ul className="flex selectbox mx-auto mt-20">
+        <div className="w-[960px] mx-auto mt-20 rounded-xl flex flex-wrap bg-white">
           {sectionList.map((sect) =>
             sect ? (
               <ViewSectionButton
@@ -47,9 +46,9 @@ const WaitListPage = () => {
               />
             ) : null,
           )}
-        </ul>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

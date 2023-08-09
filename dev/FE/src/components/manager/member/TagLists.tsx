@@ -30,35 +30,37 @@ const TagLists = ({ id, onClose }: TagListsProps) => {
 
   const renderedData = getCurrentPageData();
   return (
-    <div className="text-black bg-white w-[440px] h-[640px] p-4 rounded-2xl">
-      <div className="h-12 flex justify-center items-center text-xl font-bold border-b-2 border-black">
-        <p>태그 목록</p>
+    <div className="text-black bg-CustomBg cursor-default w-[460px] h-[640px] p-4 rounded-2xl">
+      <div className="h-16 flex justify-center items-center text-xl font-bold border-b-2 border-black">
+        <span>디바이스 목록</span>
       </div>
-      <div className="flex flex-wrap justify-around">
-        {renderedData.map((item, idx) => {
-          return (
-            <TagButton
-              key={idx}
-              onClose={onClose}
-              id={id}
-              deviceCode={item.deviceCode}
-            />
-          );
-        })}
-      </div>
-      <div className="flex justify-center text-xl">
-        {Array.from(
-          { length: Math.ceil((data?.length || 0) / itemsPerPage) },
-          (_, index) => (
-            <button
-              className="mx-2"
-              key={index + 1}
-              onClick={() => handlePageChange(index + 1)}
-            >
-              {index + 1}
-            </button>
-          ),
-        )}
+      <div className="h-[540px] flex flex-col justify-between">
+        <div className="flex flex-wrap">
+          {renderedData.map((item, idx) => {
+            return (
+              <TagButton
+                key={idx}
+                onClose={onClose}
+                id={id}
+                deviceCode={item.deviceCode}
+              />
+            );
+          })}
+        </div>
+        <div className="flex justify-center text-xl">
+          {Array.from(
+            { length: Math.ceil((data?.length || 0) / itemsPerPage) },
+            (_, index) => (
+              <button
+                className="mx-2 bg-CustomBg text-xl"
+                key={index + 1}
+                onClick={() => handlePageChange(index + 1)}
+              >
+                {index + 1}
+              </button>
+            ),
+          )}
+        </div>
       </div>
     </div>
   );
@@ -85,7 +87,7 @@ const TagButton = ({ id, deviceCode, onClose }: TagButtonProps) => {
   return (
     <div
       onClick={handleMatchDevice}
-      className="w-[88px] h-[56px] my-2 flex justify-center items-center bg-[#DFDCDE] text-lg rounded-2xl"
+      className="w-[100px] h-[64px] my-2 mr-[6px] flex justify-center items-center cursor-pointer bg-CustomNavy text-white text-lg rounded-2xl hover:bg-CustomOrange"
     >
       <span>{deviceCode}</span>
     </div>
