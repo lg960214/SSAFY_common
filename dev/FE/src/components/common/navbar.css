@@ -20,13 +20,13 @@
 }
 
 .navmenu a:hover {
-  color: #ff8000;
+  color: #ffa850;
 }
 
 .activeLink {
-  color: #ff8000;
+  color: #ffa850;
   padding-bottom: 5px;
-  border-bottom: #ff8000 solid 4px;
+  border-bottom: #ffa850 solid 4px;
   font-size: x-large;
   font-family: 'jejuGodic';
 }

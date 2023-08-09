@@ -16,9 +16,9 @@ export const TagTableList = ({ memberInfoLists }: TagTablelistProps) => {
       </div>
       <div className="bg-slate-200 w-[440px] h-[700px] -mt-12 text-[#323554] p-2 rounded-2xl shadow-lg">
         <div className="flex justify-evenly items-center h-12 text-lg font-bold text-center">
-          <span className="basis-1/4">회원 번호</span>
-          <span className="basis-1/4">이름</span>
-          <span className="basis-1/2">태그 번호</span>
+          <span className="basis-1/5">회원 번호</span>
+          <span className="basis-1/5">이름</span>
+          <span className="basis-2/5">태그 번호</span>
         </div>
         <div className="border-[#323554] border-b-2 h-0"></div>
         <div>

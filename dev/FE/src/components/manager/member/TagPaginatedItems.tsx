@@ -47,15 +47,15 @@ const TagPaginatedItems: React.FC<PaginatedItemsProps> = ({
         <ReactPaginate
           breakLabel="..."
           nextLabel=">"
-          nextLinkClassName="text-[#323554] hover:text-red-600"
+          nextLinkClassName="text-[#323554] hover:text-CustomOrange"
           className="flex justify-center text-xl"
-          pageLinkClassName="mx-2 text-[#323554] hover:text-red-600"
+          pageLinkClassName="mx-2 text-[#323554] hover:text-CustomOrange"
           activeLinkClassName="font-extrabold border-b-2 border-[#323554]"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={pageCount}
           previousLabel="<"
-          previousLinkClassName="text-[#323554] hover:text-red-600"
+          previousLinkClassName="text-[#323554] hover:text-CustomOrange"
           renderOnZeroPageCount={null}
         />
       </div>

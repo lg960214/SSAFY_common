@@ -28,7 +28,7 @@ export const MemberItem = (item: MemberInfo) => {
       <span className="w-24">{item.name}</span>
       <span className="w-28">{item.phoneNumber}</span>
       <span className="w-16">{item.sex}</span>
-      <span className="w-44" onClick={handleRegiClick}>
+      <span className="w-28" onClick={handleRegiClick}>
         {createTagRegi(item.id, item.deviceCode)}
       </span>
 
@@ -81,7 +81,7 @@ export const TagRegiButton = ({
   color,
   handleEvent,
 }: TagRegiButtonProps) => {
-  const colorClass = color === 'indigo' ? 'bg-indigo-700' : 'bg-green-700';
+  const colorClass = color === 'indigo' ? 'bg-indigo-700' : 'bg-CustomOrange';
   const regiBtnClassName = `w-16 h-8 text-white p-0 content-center ${colorClass}`;
 
   return (

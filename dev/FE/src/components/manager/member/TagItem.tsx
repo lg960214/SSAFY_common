@@ -5,9 +5,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 export const TagItem = ({ ...item }: MemberInfo) => {
   return (
     <li className="flex justify-evenly items-center h-12 text-center">
-      <span className="basis-1/4">{item.userId}</span>
-      <span className="basis-1/4">{item.name}</span>
-      <div className="basis-1/2 flex justify-evenly">
+      <span className="basis-1/5">{item.userId}</span>
+      <span className="basis-1/5">{item.name}</span>
+      <div className="basis-2/5 flex justify-evenly items-center">
         <span className="font-bold">{item.deviceCode}</span>
         <DeleteDeviceButton id={item.id} deviceCode={item.deviceCode} />
       </div>
@@ -31,7 +31,7 @@ const DeleteDeviceButton = ({ id, deviceCode }: DeleteDeviceButtonProps) => {
   return (
     <button
       onClick={() => deleteDeviceMutation.mutate()}
-      className="w-16 h-8 text-white p-0 content-center bg-indigo-700"
+      className="w-16 h-8 text-white p-0 content-center bg-CustomNavy"
     >
       해제
     </button>
