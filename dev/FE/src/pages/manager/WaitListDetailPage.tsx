@@ -1,4 +1,3 @@
-import './waitlistpage.css';
 import WaitListDetail from '@/components/manager/waitlist/WaitListDetail';
 import { useState } from 'react';
 import { FullScreen, useFullScreenHandle } from 'react-full-screen';
@@ -48,7 +47,7 @@ interface SectionHeaderProps {
 
 const SectionHeader = ({ section }: SectionHeaderProps) => {
   return (
-    <div className="flex justify-center items-center bg-[#ff8000] p-5 w-[280px] shadow-right-bottom shadow-gray-400">
+    <div className="flex justify-center items-center bg-CustomOrange p-5 w-[280px] shadow-right-bottom shadow-gray-400">
       <span className="fontJeju text-7xl text-white ">{section} 구역</span>
     </div>
   );
