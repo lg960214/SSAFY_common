@@ -17,7 +17,7 @@ const EquipmentCard = ({
     <div
       ref={dragRef}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      className="bg-white w-28 h-32 rounded-3xl shadow-inner-deep flex flex-col justify-around items-center"
+      className="bg-white w-28 h-32 rounded-lg shadow-inner-deep flex flex-col justify-around items-center"
     >
       {equipment ? (
         <>
@@ -29,7 +29,9 @@ const EquipmentCard = ({
           />
         </>
       ) : (
-        <div>+</div>
+        <div>
+          <img src="/img/plus.svg" alt="plus" width={60} />
+        </div>
       )}
     </div>
   );
