@@ -102,11 +102,10 @@ const WaitInfoPage = () => {
     <div className="bg-[#f2f2f2]">
       {checkGymApprove ? (
         <div>
-          <div className="m-2 text-black">
-            <div className="float-left font-bold text-lg">나의 헬스장</div>
-            <div className="float-right">현재 {usingGymUsers}명 이용중</div>
-          </div>
           <WaitTitle text={getGymName} />
+          <div className="p-2">
+            <span className="float-right">현재 {usingGymUsers}명 이용중</span>
+          </div>
           <div className="flex justify-evenly items-center my-4">
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
@@ -116,9 +115,12 @@ const WaitInfoPage = () => {
                 />
               </Modal>
             )}
-            <EquipmentCircle equipment={pickEquipment} />
+            <div className="flex flex-wrap justify-center">
+              <EquipmentCircle equipment={pickEquipment} />
+              <span className="w-22 text-center">{pickEquipment?.name}</span>
+            </div>
             <button
-              className="w-[200px] h-[66px] text-xl"
+              className="w-[200px] h-[66px] text-xl bg-white"
               onClick={handleOpenModal}
             >
               기구 선택 하기
@@ -135,13 +137,12 @@ const WaitInfoPage = () => {
             </div>
             <button
               onClick={() => gymSearchMutation.mutate()}
-              className="w-25 h-11 bg-CustomOrange"
+              className="w-25 h-11 bg-CustomOrange text-white"
             >
               조회
             </button>
           </div>
-
-          <div className="w-[360px] h-[200px] flex justify-evenly py-2 bg-CustomGray rounded-lg mx-auto">
+          <div className="w-[360px] h-[200px] mt-8 flex justify-evenly py-4 bg-CustomGray rounded-lg mx-auto">
             <div className="w-[120px] text-black border-r-2 border-black">
               <span className="font-bold text-center">실시간</span>
               <p>

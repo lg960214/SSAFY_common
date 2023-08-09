@@ -1,63 +1,70 @@
-import { EquipList, StateType } from '@/types/wait.type';
-import { useEffect, useState } from 'react';
+import './waitcard.css';
+import { EquipList, ReaderStateType } from '@/types/wait.type';
+import Timer from './Timer';
 
 interface WaitCardProps {
   data: EquipList;
-  state: StateType;
+  state?: ReaderStateType;
 }
 
-const WaitCard = ({ data }: WaitCardProps) => {
-  const [minutes, setMinutes] = useState<number>(20);
-  const [seconds, setSeconds] = useState<number>(0);
-
-  useEffect(() => {
-    // 초마다 시간 업데이트
-    const intervalId = setInterval(() => {
-      if (minutes === 0 && seconds === 0) {
-        // 타이머 종료
-        clearInterval(intervalId);
-      } else {
-        if (seconds === 0) {
-          // 분이 감소할 때
-          setMinutes((prevMinutes) => prevMinutes - 1);
-          setSeconds(59);
-        } else {
-          // 초가 감소할 때
-          setSeconds((prevSeconds) => prevSeconds - 1);
-        }
-      }
-    }, 1000); // 1000ms = 1초
-
-    // 컴포넌트가 언마운트될 때 interval 정리
-    return () => clearInterval(intervalId);
-  }, [minutes, seconds]);
-
+const WaitCard = ({ data, state }: WaitCardProps) => {
+  let infoStatement;
+  if (state === 'empty') {
+    infoStatement = (
+      <div className="pt-10 pb-5">
+        <span className="text-xl">현재 사용자가 없습니다.</span>
+      </div>
+    );
+  } else if (state === 'using') {
+    infoStatement = (
+      <div className="pt-7 pb-5">
+        <span className="text-xl">현재</span>
+        <span className="text-4xl mx-5">{data.userId}</span>
+        <span className="text-xl">회원님이 이용중입니다.</span>
+      </div>
+    );
+  } else if (state === 'waitnext') {
+    infoStatement = (
+      <div className="pt-7 pb-5">
+        <span className="text-xl">현재</span>
+        <span className="text-4xl mx-5">{data.waitingList[0]}</span>
+        <span className="text-xl">님을 기다리고 있습니다.</span>
+      </div>
+    );
+  }
   return (
-    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px]">
-      <div className="w-[465px] h-[186px] bg-CustomLightNavy text-white rounded-[15px]  flex flex-col justify-between items-center">
+    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px] shadow-lg">
+      <div className="w-[465px] h-[186px] bg-CustomLightNavy text-white rounded-[15px]  flex flex-col justify-between items-center shadow-lg">
         <div className="flex justify-between mt-5 w-[350px] text-xl">
           <span>기구명</span>
           <span>잔여시간</span>
         </div>
         <div className="flex justify-between w-[350px] text-3xl">
           <span className="font-inter">{data.name}</span>
-          <span className="font-extrabold">
-            {minutes} : {seconds}
-          </span>
+          {state === 'waitnext' ? (
+            <span className="text-2xl text-red-400">2분 초과 시 Pass</span>
+          ) : (
+            <Timer data={data} />
+          )}
         </div>
-        <div className="pt-10 pb-5">
-          <span className="text-xl">현재</span>
-          <span className="text-4xl mx-5">{data.userId}</span>
-          <span className="text-xl">회원님이 이용중입니다.</span>
-        </div>
+        {infoStatement}
       </div>
       <div className="w-[220px] flex flex-col justify-between text-CustomOrange">
-        <div className="flex flex-wrap justify-between px-5 pt-3 text-center text-[28px]">
-          {data.waitingList.map((person) => (
-            <span key={person} className="w-[80px]">
-              {person}
-            </span>
-          ))}
+        <div className="flex flex-col items-center px-5 pt-3 text-[28px] h-[200px] relative">
+          {data.waitingCount ? (
+            <img
+              src="/img/wait/righttriangle.svg"
+              alt="tri"
+              width={16}
+              className="move-left-right absolute left-9 top-[19%]"
+            />
+          ) : null}
+          <span className="text-5xl">{data.waitingList[0]}</span>
+          <span className="text-3xl">{data.waitingList[1]}</span>
+          <span className="text-2xl">{data.waitingList[2]}</span>
+          {data.waitingCount > 3 ? (
+            <img src="/img/wait/verticaldots.svg" alt="dots" />
+          ) : null}
         </div>
         <div className="text-center text-[24px] flex justify-center">
           <span>{data.waitingCount}</span>명 대기중

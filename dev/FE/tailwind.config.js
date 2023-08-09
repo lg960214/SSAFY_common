@@ -15,6 +15,7 @@ export default {
       },
       boxShadow: {
         'inner-deep': 'inset 0 3px 3px rgba(0, 0, 0, 0.5)',
+        'right-bottom': '8px 8px 15px rgba(0, 0, 0, 0.1)',
       },
     },
     plugins: [],

@@ -55,6 +55,7 @@ public class AdminService {
             realTimeDto.setGymCode(readerVo.getGymCode());
             realTimeDto.setRegion(readerVo.getRegion());
             Integer userId;
+            // 사용중이지 않은 경우
             if(readerStateRepository.findByReader(readerVo.getReader())== null){
                 realTimeDto.setUserId(null);
                 userId = null;
@@ -67,18 +68,16 @@ public class AdminService {
                 realTimeDto.setStartTime(null);
             }
             else{
-                TagInfoEntity tagInfoVo = tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).get(0);
-                realTimeDto.setStartTime(tagInfoVo.getStartTime());
+                if(tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).size()==0){
+                    realTimeDto.setStartTime(null);
+                }
+                else{
+                    TagInfoEntity tagInfoVo = tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).get(0);
+                    realTimeDto.setStartTime(tagInfoVo.getStartTime());
+                }
+
             }
 
-
-//            try{
-//                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
-//
-//            }
-//            catch (NullPointerException e){
-//                realTimeDto.setUserId(null);
-//            }
 
             List<ReservationEntity> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
             List<Integer> userList = new ArrayList<>();

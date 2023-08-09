@@ -17,7 +17,7 @@ const IssueSection = ({
   return (
     <div
       ref={drop}
-      className="mt-4 py-2 shadow-lg rounded-xl flex flex-col bg-slate-200"
+      className="mt-4 py-2 shadow-right-bottom rounded-xl flex flex-col bg-slate-200"
       style={{
         width: 580,
         height: 205,

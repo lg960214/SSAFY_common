@@ -17,7 +17,7 @@ const EquipmentCard = ({
     <div
       ref={dragRef}
       style={{ opacity: isDragging ? 0.5 : 1 }}
-      className="bg-white w-24 h-28 rounded-3xl shadow-inner-deep flex flex-col justify-around items-center"
+      className="bg-white w-28 h-32 rounded-3xl shadow-inner-deep flex flex-col justify-around items-center"
     >
       {equipment ? (
         <>

@@ -27,4 +27,7 @@ public interface TagInfoRepository extends JpaRepository<TagInfoEntity, Integer>
     List<TagInfoEntity> findByReaderAndTagDate(String reader, LocalDate date);
 
     List<TagInfoEntity> findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(int userId, String reader);
+
+    @Query(value = "select t.user_id, sum(TIMESTAMPDIFF(SECOND, t.start_time,t.end_time)) as seconds from tag_info t, user u where year(t.tag_date) = :year and month(t.tag_date) = :month and t.user_id = u.user_id  and u.gym_code = :gymCode group by t.user_id order by seconds desc ",nativeQuery = true)
+    List<Object[]> getRank(int year,int month, int gymCode); // 월별로 구분아직 안함
 }

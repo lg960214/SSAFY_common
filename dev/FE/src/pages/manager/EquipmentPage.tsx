@@ -20,8 +20,6 @@ const zoneDefault = [
   { name: 'D', isSelected: false },
   { name: 'E', isSelected: false },
   { name: 'F', isSelected: false },
-  { name: 'G', isSelected: false },
-  { name: 'H', isSelected: false },
 ];
 
 const EquipmentPage = () => {
@@ -199,6 +197,7 @@ const EquipmentPage = () => {
             setWholeData={setWholeData}
             currentZone={zoneList.filter((cur) => cur.isSelected)[0].name}
             readerData={wholeData}
+            closeModalFunc={() => setIsRegisterModalOn(false)}
           />
         }
         onClose={() => setIsRegisterModalOn(false)}

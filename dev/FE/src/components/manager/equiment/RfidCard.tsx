@@ -39,13 +39,13 @@ const RfidCard = ({
       className="mx-4 bg-orange-500 w-40 h-48 rounded-3xl flex flex-col justify-around items-center"
     >
       <div className="flex">
-        <span className={`text-white ml-${isOnEdit ? 7 : 0}`}>
+        <span className={`text-white text-xl ml-${isOnEdit ? 8 : 0}`}>
           {data.reader}
         </span>
         {isOnEdit ? (
           <img
             onClick={() => deleteReader(data)}
-            className="ml-1 hover:cursor-pointer"
+            className="ml-1 pt-1 hover:cursor-pointer"
             width={24}
             src="/img/cancel.svg"
             alt="delete"
