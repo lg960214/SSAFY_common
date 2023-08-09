@@ -26,8 +26,7 @@ const SearchData = ({ dailyUsageData }: SearchDataProps) => {
   const renderedData = getCurrentPageData();
   return (
     <>
-      <div className="w-[380px] h-[640px] rounded-[20px] bg-slate-200 mx-auto flex flex-col justify-between">
-        <p className="font-Jeju text-center text-3xl pt-5"> 기구별 검색량</p>
+      <div className="float-left -mt-11 pt-5 w-[420px] h-[600px] rounded-[20px] bg-slate-200 mx-auto flex flex-col justify-between shadow-right-bottom shadow-gray-300">
         <ul>
           {renderedData.map((item) => (
             <ShowData renderData={item} key={item.name} />
@@ -48,7 +47,6 @@ const SearchData = ({ dailyUsageData }: SearchDataProps) => {
           )}
         </div>
       </div>
-      ;
     </>
   );
 };
