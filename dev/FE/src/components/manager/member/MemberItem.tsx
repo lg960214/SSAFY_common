@@ -3,8 +3,6 @@ import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
-import { deleteDevice } from '@/api/memberPageApi';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const MemberItem = (item: MemberInfo) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,24 +40,12 @@ export const MemberItem = (item: MemberInfo) => {
 };
 
 const createTagRegi = (id: string, deviceCode: string | null) => {
-  const queryClient = useQueryClient();
-  const deleteDeviceMutation = useMutation(() => deleteDevice(id, deviceCode), {
-    onSuccess: () => {
-      queryClient.invalidateQueries(['memberLists']);
-    },
-    onError: () => {},
-  });
-
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const handleIsTagListClick = () => {
     setIsTagListOpen(true);
   };
   const handleIstagListClose = () => {
     setIsTagListOpen(false);
-  };
-
-  const dummyClose = () => {
-    deleteDeviceMutation.mutate();
   };
 
   if (deviceCode === null) {
@@ -79,7 +65,6 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
     return (
       <div className="flex justify-evenly">
         <span className="font-bold">{deviceCode}</span>
-        <TagRegiButton handleEvent={dummyClose} name="해제" color="indigo" />
       </div>
     );
   }

@@ -49,11 +49,11 @@ const MemberPage = () => {
       className="flex justify-between mx-auto mt-8"
       style={{ height: '830px', width: '1440px' }}
     >
-      <div className="w-[404px]">
+      <div className="w-[440px]">
         <TableMenu name="태그 현황" />
         <TagTableList memberInfoLists={userListsData} />
       </div>
-      <div className="w-[908px]">
+      <div className="w-[880px]">
         <div className="flex justify-between">
           <TableMenu name="회원 정보" />
           <div className="ml-40 float-right border-2 bg-white justify-center align-middle items-center border-black/30 flex w-[260px] h-10 rounded-2xl px-0">
