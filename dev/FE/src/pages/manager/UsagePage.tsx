@@ -1,6 +1,5 @@
 import UsageChart from '@/components/manager/usage/UsageChart';
 import SearchData from '@/components/manager/usage/SearchData';
-import './usagePage.css';
 import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 import { getUsageData } from '@/api/usageDataApi';
@@ -21,7 +20,7 @@ const UsagePage = () => {
 
   return (
     <>
-      <div className="flex mx-auto mainpage">
+      <div className="flex mx-auto w-[1440px] bg-CustomBg">
         <div className="w-1/3 pt-10">
           <SearchData dailyUsageData={dailyUsageData} />
         </div>

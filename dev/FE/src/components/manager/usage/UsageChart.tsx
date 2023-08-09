@@ -1,5 +1,4 @@
 import { ResponsiveBar } from '@nivo/bar';
-import './usagechart.css';
 import { UsageData } from '@/types/usage.type';
 interface UsagePageProps {
   dailyUsageData: UsageData[];
@@ -18,7 +17,7 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
 
   return (
     // chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정
-    <div className="chartbox fontBungee">
+    <div className="w-[900px] h-[550px] rounded-[20px] mx-auto bg-slate-200 fontBungee">
       <ResponsiveBar
         /**
          * chart에 사용될 데이터

@@ -34,7 +34,7 @@ const DateRender = ({
         onClick={() => handleDate(0)}
       />
       <p
-        className="mx-2 pt-20 fontBungee text-3xl"
+        className="mx-2 pt-20 font-Bungee text-3xl"
         onClick={() => setDropdownVisibility(!dropdownVisibility)}
       >
         {todayDate.format('MM - DD')}
