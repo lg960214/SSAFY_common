@@ -87,7 +87,7 @@ export default function Root() {
 
   return (
     <AuthProvider>
-      <nav className="flex navbar mx-auto">
+      <nav className="flex navbar mx-auto shadow-md shadow-black">
         <p className="text-white fontBungee whitespace-pre-line ms-4 mt-1 me-8">
           <span className="text-5xl tracking-widest">WAIT</span> <br />{' '}
           <span className="text-4xl">WEIGHT</span>

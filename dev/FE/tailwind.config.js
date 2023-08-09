@@ -6,8 +6,10 @@ export default {
     colors,
     extend: {
       colors: {
-        CustomOrange: '#FF8000',
-        CustomNavy: '#06092B',
+        CustomOrange: '#FFAA50',
+        // CustomOrange: '#FF8000',
+        CustomNavy: '#323554',
+        // CustomNavy: '#06092B',
         CustomGray: '#D9D9D9',
         CustomBg: '#F2F2F2',
         CustomLightNavy: '#323554',

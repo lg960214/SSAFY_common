@@ -28,7 +28,7 @@ export const MemberInfomation = (item: MemberInfo) => {
     onError: () => {},
   });
   return (
-    <div className="text-black pt-2 px-6 w-[400px] h-[440px] border-2 bg-white border-black rounded-2xl">
+    <div className="text-black pt-2 px-6 w-[400px] h-[440px] bg-CustomBg cursor-default rounded-2xl">
       <div className="w-50 h-16 border-b-2 border-black text-xl font-bold flex justify-center items-center">
         <span className="">회원 상세 정보</span>
       </div>
@@ -67,7 +67,7 @@ export const MemberInfomation = (item: MemberInfo) => {
       <div className="">
         <button
           onClick={() => deleteUserMutation.mutate(item.id)}
-          className="bg-black float-right text-white w-24 h-12 text-center p-0"
+          className="bg-CustomNavy float-right text-white w-24 h-12 text-center p-0"
         >
           회원 해제
         </button>
