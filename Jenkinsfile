@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'nodejs-20.5.0'
+    }
 
     stages {
         stage('SpringBoot Build') {
@@ -19,6 +22,15 @@ pipeline {
                 }
             }
         }
+        
+        
+    
+        stage('Node install') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    
 
         stage('React Build') {
             steps {
