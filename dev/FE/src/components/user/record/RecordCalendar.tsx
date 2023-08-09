@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Calendar from 'react-calendar';
 import moment from 'moment';
-import 'react-calendar/dist/Calendar.css'; // css import
+import 'react-calendar/dist/Calendar.css';
 import { useQuery } from '@tanstack/react-query';
 import recordApi from '@/api/recordApi';
 import { Exercise } from '@/pages/user/RecordPage';
