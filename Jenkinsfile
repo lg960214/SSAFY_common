@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'nodejs-20.5.0'
+    }
 
     stages {
         stage('SpringBoot Build') {
@@ -19,6 +22,15 @@ pipeline {
                 }
             }
         }
+        
+        
+    
+        stage('Node install') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    
 
         stage('React Build') {
             steps {
@@ -26,7 +38,7 @@ pipeline {
                     script {
                         sh 'npm cache clean --force'
                         sh 'rm -rf node_modules'
-                        sh 'npm install packages' 
+                        sh 'npm install' 
                         sh 'npm run build'
                     }
                 }
