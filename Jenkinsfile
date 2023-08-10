@@ -34,9 +34,9 @@ pipeline {
         stage('Remove Previous SpringBoot Docker') {
             steps {
                 script {
-                    sh 'docker -H=unix:///var/run/docker.sock stop be || true'
-                    sh 'docker -H=unix:///var/run/docker.sock rm be || true'
-                    sh 'docker -H=unix:///var/run/docker.sock rmi ibe || true'
+                    sh 'docker stop be || true'
+                    sh 'docker rm be || true'
+                    sh 'docker rmi ibe || true'
                 }
             }
         }
@@ -44,8 +44,8 @@ pipeline {
         stage('Spring Docker Build') {
             steps {
                 script {
-                    sh 'docker -H=unix:///var/run/docker.sock build -t ibe .'
-                    sh 'docker -H=unix:///var/run/docker.sock run -p 10002:8081 -d --name be ibe'
+                    sh 'docker build -t ibe .'
+                    sh 'docker run -p 10002:8081 -d --name be ibe'
                 }
             }
         }
@@ -75,9 +75,9 @@ pipeline {
         stage('Remove Previous React Docker') {
             steps {
                 script {
-                    sh 'docker -H=unix:///var/run/docker.sock stop fe || true'
-                    sh 'docker -H=unix:///var/run/docker.sock rm fe || true'
-                    sh 'docker -H=unix:///var/run/docker.sock rmi ife || true'
+                    sh 'docker stop fe || true'
+                    sh 'docker rm fe || true'
+                    sh 'docker rmi ife || true'
                 }
             }
         }
@@ -85,8 +85,8 @@ pipeline {
         stage('Spring React Build') {
             steps {
                 script {
-                    sh 'docker -H=unix:///var/run/docker.sock build -t ife .'
-                    sh 'docker -H=unix:///var/run/docker.sock run -p 10001:3000 -d --name fe ife'
+                    sh 'docker build -t ife .'
+                    sh 'docker run -p 10001:3000 -d --name fe ife'
                 }
             }
         }
