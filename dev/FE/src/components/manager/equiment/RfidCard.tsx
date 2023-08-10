@@ -35,23 +35,21 @@ const RfidCard = ({
   return (
     <div
       ref={isOnEdit ? ref : null}
-      style={{ backgroundColor: isOver ? 'red' : '#FF8000' }}
-      className="mx-4 w-40 h-48 rounded-lg flex flex-col justify-around items-center"
+      style={{ backgroundColor: isOver ? 'red' : undefined }}
+      className={`mx-4 w-40 h-48 bg-CustomOrange rounded-lg flex flex-col justify-around items-center relative ${
+        isOnEdit ? 'hover:cursor-pointer' : null
+      }`}
     >
-      <div className="flex">
-        <span className={`text-white text-xl ml-${isOnEdit ? 8 : 0}`}>
-          {data.reader}
-        </span>
-        {isOnEdit ? (
-          <img
-            onClick={() => deleteReader(data)}
-            className="ml-1 pt-1 hover:cursor-pointer"
-            width={24}
-            src="/img/cancel.svg"
-            alt="delete"
-          />
-        ) : null}
-      </div>
+      <span className="text-white text-xl">{data.reader}</span>
+      {isOnEdit ? (
+        <img
+          onClick={() => deleteReader(data)}
+          className="ml-1 pt-1 hover:cursor-pointer absolute right-7 top-[9px]"
+          width={24}
+          src="/img/cancel.svg"
+          alt="delete"
+        />
+      ) : null}
       <EquipmentCard title={data.name} equipment={pureName} />
     </div>
   );
