@@ -6,15 +6,9 @@ pipeline {
     }
 
     stages {
-        stage('Node install') {
-            steps {
-                sh 'node --version'
-            }
-        }
-
         stage('Remove Previous SpringBoot Settings') {
             steps {
-                dir('dev/FE') {
+                dir('dev/BE') {
                     script {
                         sh 'rm -rf target'
                     }
@@ -27,7 +21,6 @@ pipeline {
                 dir('dev/BE') {
                     script {
                         sh 'mvn clean package'
-
                     }
                 }
                 dir('dev/BE/target') {
@@ -38,13 +31,22 @@ pipeline {
             }
         }
 
-        stage('Previous SpringBoot Docker remove') {
+        stage('Remove Previous SpringBoot Docker') {
             steps {
-                dir('dev/BE') {
-                    script {
-                        sh 'sudo docker stop be'
-                        sh 'sudo docker rm -f be'
-                        sh 'sudo docker rmi ibe'
+                script {
+                    def containers = docker.containerList(filter: "name=be")
+                    if (containers) {
+                        containers.each { container ->
+                            sh "docker stop ${container.id}"
+                            sh "docker rm ${container.id}"
+                        }
+                    }
+
+                    def images = docker.imageList(filter: "reference:ibe")
+                    if (images) {
+                        images.each { image ->
+                            sh "docker rmi ${image.id}"
+                        }
                     }
                 }
             }
@@ -52,15 +54,12 @@ pipeline {
 
         stage('Spring Docker Build') {
             steps {
-                dir('dev/BE') {
-                    script {
-                        sh 'sudo docker build -t ibe .'
-                        sh 'sudo docker run --name be -p 10002:8081 ibe'
-                    }
+                script {
+                    def dockerImage = docker.build("ibe", '.')
+                    dockerImage.run('-p 10002:8081 -d be')
                 }
             }
         }
-
 
         stage('Remove Previous React Settings') {
             steps {
@@ -84,13 +83,22 @@ pipeline {
             }
         }
 
-        stage('Previous React Docker remove') {
+        stage('Remove Previous React Docker') {
             steps {
-                dir('dev/FE') {
-                    script {
-                        sh 'sudo docker stop fe'
-                        sh 'sudo docker rm -f fe'
-                        sh 'sudo docker rmi ife'
+                script {
+                    def containers = docker.containerList(filter: "name=fe")
+                    if (containers) {
+                        containers.each { container ->
+                            sh "docker stop ${container.id}"
+                            sh "docker rm ${container.id}"
+                        }
+                    }
+
+                    def images = docker.imageList(filter: "reference:ife")
+                    if (images) {
+                        images.each { image ->
+                            sh "docker rmi ${image.id}"
+                        }
                     }
                 }
             }
@@ -98,11 +106,9 @@ pipeline {
 
         stage('Spring React Build') {
             steps {
-                dir('dev/BE') {
-                    script {
-                        sh 'sudo docker build -t ife .'
-                        sh 'sudo docker run --name fe -p 10001:3000 ife'
-                    }
+                script {
+                    def dockerImage = docker.build("ife", '.')
+                    dockerImage.run('-p 10001:3000 -d fe')
                 }
             }
         }
