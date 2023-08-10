@@ -34,24 +34,9 @@ pipeline {
         stage('Remove Previous SpringBoot Docker') {
             steps {
                 script {
-                    def containers = docker.containerList(filter: "name=be")
-                    if (containers) {
-                        containers.each { container ->
-                            sh "docker stop ${container.id}"
-                            sh "docker rm ${container.id}"
-                        }
-                    } else {
-                        echo "No SpringBoot containers found."
-                    }
-
-                    def images = docker.imageList(filter: "reference:ibe")
-                    if (images) {
-                        images.each { image ->
-                            sh "docker rmi ${image.id}"
-                        }
-                    } else {
-                        echo "No SpringBoot images found."
-                    }
+                    sh 'docker -H=unix:///var/run/docker.sock stop be || true'
+                    sh 'docker -H=unix:///var/run/docker.sock rm be || true'
+                    sh 'docker -H=unix:///var/run/docker.sock rmi ibe || true'
                 }
             }
         }
@@ -59,8 +44,8 @@ pipeline {
         stage('Spring Docker Build') {
             steps {
                 script {
-                    def dockerImage = docker.build("ibe", '.')
-                    dockerImage.run('-p 10002:8081 -d be')
+                    sh 'docker -H=unix:///var/run/docker.sock build -t ibe .'
+                    sh 'docker -H=unix:///var/run/docker.sock run -p 10002:8081 -d --name be ibe'
                 }
             }
         }
@@ -90,20 +75,9 @@ pipeline {
         stage('Remove Previous React Docker') {
             steps {
                 script {
-                    def containers = docker.containerList(filter: "name=fe")
-                    if (containers) {
-                        containers.each { container ->
-                            sh "docker stop ${container.id}"
-                            sh "docker rm ${container.id}"
-                        }
-                    }
-
-                    def images = docker.imageList(filter: "reference:ife")
-                    if (images) {
-                        images.each { image ->
-                            sh "docker rmi ${image.id}"
-                        }
-                    }
+                    sh 'docker -H=unix:///var/run/docker.sock stop fe || true'
+                    sh 'docker -H=unix:///var/run/docker.sock rm fe || true'
+                    sh 'docker -H=unix:///var/run/docker.sock rmi ife || true'
                 }
             }
         }
@@ -111,8 +85,8 @@ pipeline {
         stage('Spring React Build') {
             steps {
                 script {
-                    def dockerImage = docker.build("ife", '.')
-                    dockerImage.run('-p 10001:3000 -d fe')
+                    sh 'docker -H=unix:///var/run/docker.sock build -t ife .'
+                    sh 'docker -H=unix:///var/run/docker.sock run -p 10001:3000 -d --name fe ife'
                 }
             }
         }
