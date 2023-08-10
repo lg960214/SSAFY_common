@@ -8,24 +8,21 @@ interface ModalProps {
 
 const Modal: FC<ModalProps> = ({ isOpen, onClose, children }) => {
   const handleBackgroundClick = (e: React.MouseEvent) => {
-    onClose(); // 배경 클릭시 모달 닫기
+    onClose();
     e.stopPropagation();
   };
 
   const handleContentClick = (event: React.MouseEvent) => {
-    event.stopPropagation(); // 모달 내용 클릭시 이벤트 전파 방지
+    event.stopPropagation();
   };
 
   useEffect(() => {
     if (isOpen) {
-      // Disable scrolling on the body by setting overflow to hidden
       document.body.style.overflow = 'hidden';
     } else {
-      // Re-enable scrolling when modal is closed
       document.body.style.overflow = 'unset';
     }
 
-    // Cleanup method to reset body's overflow property when component is unmounted
     return () => {
       document.body.style.overflow = 'unset';
     };

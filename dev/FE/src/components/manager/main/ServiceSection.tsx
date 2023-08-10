@@ -5,7 +5,7 @@ const ServiceSection = () => {
         <div className="w-[696px] h-[464px] my-auto">
           <img
             className="rounded-2xl w-full h-full"
-            src="/public/img/main/gym2.png"
+            src="/img/main/gym2.png"
             alt="gym2.png"
           />
         </div>
@@ -43,7 +43,7 @@ const ServiceSection = () => {
         <div className="w-[696px] h-[464px] my-auto">
           <img
             className="rounded-2xl w-full h-full"
-            src="/public/img/main/gym3.png"
+            src="/img/main/gym3.png"
             alt="gym3.png"
           />
         </div>

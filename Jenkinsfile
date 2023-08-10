@@ -1,5 +1,8 @@
 pipeline {
     agent any
+    tools {
+        nodejs 'nodejs-20.5.0'
+    }
 
     stages {
         stage('Remove Previous SpringBoot Settings') {
@@ -39,6 +42,15 @@ pipeline {
                 }
             }
         }
+        
+        
+    
+        stage('Node install') {
+            steps {
+                sh 'node --version'
+            }
+        }
+    
 
         stage('Spring Docker Build') {
             steps {

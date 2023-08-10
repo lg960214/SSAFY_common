@@ -6,7 +6,7 @@ interface TimerProps {
 }
 
 const Timer = ({ data }: TimerProps) => {
-  const TOTAL_TIME = 20 * 60; // 20 minutes in seconds
+  const TOTAL_TIME = 20 * 60;
   const [timeLeft, setTimeLeft] = useState<number>(TOTAL_TIME);
 
   useEffect(() => {
