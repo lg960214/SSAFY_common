@@ -16,6 +16,10 @@ public class UserDateService {
     private final UserDateRepository userDateRepository;
     private final UserRepository userRepository;
 
+    public LocalDate getUserDate(int userId){
+        return userDateRepository.getUserDate(userId);
+    }
+
     public UserDateEntity createUserDate(UserDateEntity userDate){
         UserDateEntity savedUserDate = userDateRepository.save(userDate);
         return savedUserDate;

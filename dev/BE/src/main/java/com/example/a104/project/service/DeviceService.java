@@ -15,6 +15,10 @@ public class DeviceService {
     private final DeviceRepository deviceRepository;
     private final UserRepository userRepository;
 
+    public DeviceEntity getDevice(String deviceCode){
+        return deviceRepository.findByDeviceCode(deviceCode);
+    }
+
     public List<DeviceEntity> DeviceList(int gymCode) {
         return deviceRepository.findByGymCodeAndUseIsNull(gymCode);
     }
