@@ -2,20 +2,63 @@ pipeline {
     agent any
 
     stages {
-        stage('SpringBoot Build') {
+        stage('Remove Previous SpringBoot Settings') {
             steps {
-                dir('dev/BE') {
+                dir('dev/FE') {
                     script {
-                        sh 'mvn clean package'
+                        sh 'rm -rf target'
                     }
                 }
             }
         }
 
-        stage('SpringBoot Build Complete') {
+        stage('SpringBoot Build') {
             steps {
-                script {
-                    echo 'BE Build Complete'
+                dir('dev/BE') {
+                    script {
+                        sh 'mvn clean package'
+
+                    }
+                }
+                dir('dev/BE/target') {
+                    script {
+                        sh 'mv *.jar A104.jar'
+                    }
+                }
+            }
+        }
+
+        stage('Previous SpringBoot Docker remove') {
+            steps {
+                dir('dev/BE') {
+                    script {
+                        sh 'sudo docker stop be'
+                        sh 'sudo docker rm -f be'
+                        sh 'sudo docker rmi ibe'
+                    }
+                }
+            }
+        }
+
+        stage('Spring Docker Build') {
+            steps {
+                dir('dev/BE') {
+                    script {
+                        sh 'sudo docker build -t ibe .'
+                        sh 'sudo docker run --name be -p 10002:8081 ibe'
+                    }
+                }
+            }
+        }
+
+
+        stage('Remove Previous React Settings') {
+            steps {
+                dir('dev/FE') {
+                    script {
+                        sh 'npm cache clean --force'
+                        sh 'rm -rf node_modules'
+                    }
                 }
             }
         }
@@ -24,8 +67,6 @@ pipeline {
             steps {
                 dir('dev/FE') {
                     script {
-                        sh 'npm cache clean --force'
-                        sh 'rm -rf node_modules'
                         sh 'npm install' 
                         sh 'npm run build'
                     }
@@ -33,10 +74,25 @@ pipeline {
             }
         }
 
-        stage('React Build Complete') {
+        stage('Previous React Docker remove') {
             steps {
-                script {
-                    echo 'FE Build Complete'
+                dir('dev/FE') {
+                    script {
+                        sh 'sudo docker stop fe'
+                        sh 'sudo docker rm -f fe'
+                        sh 'sudo docker rmi ife'
+                    }
+                }
+            }
+        }
+
+        stage('Spring Docker Build') {
+            steps {
+                dir('dev/BE') {
+                    script {
+                        sh 'sudo docker build -t ife .'
+                        sh 'sudo docker run --name fe -p 10001:3000 ife'
+                    }
                 }
             }
         }
