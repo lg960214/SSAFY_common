@@ -16,9 +16,11 @@ const ApproveContent = ({
         <span className="basis-1/4">승인/거절</span>
       </div>
       <div className="border-white border-b-2 h-0"></div>
-      {unAuthorizedUsers.map((item) => {
-        return <ApproveItem key={item.userId} {...item} />;
-      })}
+      <div className="overflow-y-auto">
+        {unAuthorizedUsers.map((item) => {
+          return <ApproveItem key={item.userId} {...item} />;
+        })}
+      </div>
     </div>
   );
 };

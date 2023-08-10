@@ -23,7 +23,7 @@ const WaitListPage = () => {
   const handleOpenNewTab = (url: string | null) => {
     if (url) {
       window.open(
-        `http://localhost:3000/waitlist/${url}`,
+        `${window.location.href}/${url}`,
         '_blank',
         'width=1920,height=1080',
       );

@@ -23,7 +23,7 @@ const EquipmentCard = ({
         <>
           <p>{title}</p>
           <img
-            src={`../../../../public/img/equipments/${equipment}.png`}
+            src={`/img/equipments/${equipment}.png`}
             alt={equipment}
             width={56}
           />

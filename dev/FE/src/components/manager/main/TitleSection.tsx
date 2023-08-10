@@ -10,7 +10,7 @@ const TitleSection = () => {
       <div className="w-[696px] h-[464px] my-auto">
         <img
           className="rounded-2xl w-full h-full"
-          src="/public/img/main/gym1.png"
+          src="/img/main/gym1.png"
           alt="gym1.png"
         />
       </div>
