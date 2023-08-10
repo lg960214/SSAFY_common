@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public interface UserDateRepository extends JpaRepository<UserDateEntity, Integer> {
-    @Query("select u.access_admin from UserDateEntity u where u.userId=:userId")
+    @Query("select u.approval_user from UserDateEntity u where u.userId=:userId")
     LocalDate getUserDate(int userId);
 
     @Modifying
