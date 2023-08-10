@@ -18,7 +18,7 @@ const FormInput = ({
   return (
     <div className="relative my-2">
       <input
-        className="pr-10 px-5 py-2 rounded-xl"
+        className="w-[256px] px-5 py-2 rounded-xl"
         type={type}
         value={value}
         onChange={onChange}
@@ -30,7 +30,7 @@ const FormInput = ({
           src={'/img/cancel.svg'}
           alt="비움"
           onClick={setValueEmpty}
-          className="absolute right-2 top-1/2 transform -translate-y-1/2"
+          className="absolute right-2 top-1/2 transform -translate-y-1/2 hover:cursor-pointer"
         />
       )}
     </div>

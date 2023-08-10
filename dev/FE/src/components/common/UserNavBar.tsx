@@ -19,17 +19,20 @@ const UserNavBar = () => {
     <div className="fixed bottom-0 w-full">
       {isModal && (
         <Modal isOpen={isModal} onClose={() => setIsModal(false)}>
-          <div className="w-[280px] h-[200px] bg-white rounded-lg flex flex-wrap justify-evenly">
-            <span className="w-[240px] h-[100px] py-10 text-lg font-bold align-middle text-center">
-              정말 로그아웃 하시겠습니까?
+          <div className="w-[280px] h-[200px] bg-CustomNavy rounded-lg flex flex-wrap justify-evenly">
+            <span className="w-[240px] h-[100px] py-10 text-lg font-bold align-middle text-center text-white">
+              로그아웃 하시겠습니까?
             </span>
-            <button
-              className="w-[120px] h-[40px]"
+            <div
+              className="w-[100px] h-[40px] bg-CustomOrange rounded-2xl flex justify-center items-center text-white font-bold"
               onClick={() => setIsModal(false)}
             >
               아니오
-            </button>
-            <button className="w-[120px] h-[40px]" onClick={logOut}>
+            </div>
+            <button
+              className="w-[100px] h-[40px] rounded-2xl flex justify-center items-center text-black font-bold"
+              onClick={logOut}
+            >
               예
             </button>
           </div>
