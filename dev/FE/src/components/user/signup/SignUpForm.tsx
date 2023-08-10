@@ -140,7 +140,7 @@ const SignUpForm = () => {
         value={password}
         onChange={handlePasswordChange}
         setValueEmpty={() => setPassword('')}
-        placeholder="비밀번호"
+        placeholder="비밀번호 (8자~15자)"
       />
       <FormInput
         type="password"
@@ -154,7 +154,7 @@ const SignUpForm = () => {
         value={phoneNumber}
         onChange={handlePhoneNumberChange}
         setValueEmpty={() => setPhoneNumber('')}
-        placeholder="전화번호"
+        placeholder="전화번호 (000-0000-000)"
       />
       <FormInput
         type="email"
@@ -194,9 +194,9 @@ const GenderSelectButton = ({
   onFemaleClick,
 }: GenderSelectButtonProps) => {
   const selectedClass =
-    'bg-CustomOrange text-white mx-2 my-2 px-10 py-2 rounded-xl';
+    'bg-CustomOrange text-white mx-2 my-2 px-10 py-2 rounded-xl hover:cursor-pointer';
   const unSelectedClass =
-    'text-gray-400 bg-white mx-2 my-2 px-10 py-2 rounded-xl';
+    'text-gray-400 bg-white mx-2 my-2 px-10 py-2 rounded-xl hover:cursor-pointer';
   return (
     <div className="flex ">
       <div
