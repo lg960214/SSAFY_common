@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-
 @Component
 @Configuration
 public class MqttConfig implements MqttCallback {
@@ -19,7 +18,9 @@ public class MqttConfig implements MqttCallback {
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
-    public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository, ReaderStateRepository readerStateRepository) {
+
+    public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository,
+            ReaderStateRepository readerStateRepository) {
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.readerStateRepository = readerStateRepository;
@@ -84,7 +85,7 @@ public class MqttConfig implements MqttCallback {
         String msg = new String(message.getPayload());
         String arr[] = msg.split("&");
         if (arr[2].equals("noshow")) {
-            //arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
+            // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
             int userId = userRepository.findByDeviceCode(arr[0]).getUserId(); // 노쇼한 사람의 userId
             // 1. 노쇼 한 사람의 예약 취소
             String reader = reservationRepository.findByUserId(userId).getReader();
@@ -99,8 +100,9 @@ public class MqttConfig implements MqttCallback {
                 // 3. 해당 deviceCode(Topic)으로 메세지 전송
                 send(deviceCode, "your turn");
             }
-            //다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
-            else{
+            // 다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
+            else {
+                System.out.println("====================check==============");
                 readerStateRepository.nExistReservation(reader);
             }
         } else {
