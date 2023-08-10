@@ -6,7 +6,7 @@ interface ViewSectionButtonProps {
 const ViewSectionButton = ({ section, onClick }: ViewSectionButtonProps) => {
   return (
     <div
-      className="w-60 h-36 m-10 flex justify-center items-center rounded-xl bg-CustomOrange shadow-gray-400 shadow-right-bottom"
+      className="w-60 h-36 m-10 flex justify-center items-center rounded-xl bg-CustomOrange hover:bg-rose-500 shadow-gray-400 shadow-right-bottom hover:cursor-pointer"
       onClick={onClick}
     >
       <span className="fontJeju text-4xl text-white">
