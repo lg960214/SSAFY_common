@@ -40,6 +40,8 @@ pipeline {
                             sh "docker stop ${container.id}"
                             sh "docker rm ${container.id}"
                         }
+                    } else {
+                        echo "No SpringBoot containers found."
                     }
 
                     def images = docker.imageList(filter: "reference:ibe")
@@ -47,6 +49,8 @@ pipeline {
                         images.each { image ->
                             sh "docker rmi ${image.id}"
                         }
+                    } else {
+                        echo "No SpringBoot images found."
                     }
                 }
             }
