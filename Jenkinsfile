@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        stage('Spring Docker Build') {
+        stage('Spring Docker Build and Run') {
             steps {
                 dir('dev/BE') {
                     script {
@@ -88,7 +88,7 @@ pipeline {
             }
         }
 
-        stage('Spring React Build') {
+        stage('React Docker Build and Run') {
             steps {
                 dir('dev/FE') {
                     script {
