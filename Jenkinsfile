@@ -96,7 +96,7 @@ pipeline {
             }
         }
 
-        stage('Spring Docker Build') {
+        stage('Spring React Build') {
             steps {
                 dir('dev/BE') {
                     script {
