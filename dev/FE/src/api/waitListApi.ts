@@ -1,3 +1,4 @@
+import { BASEURL } from '@/constants/url';
 import { EquipList, ReaderStateType } from '@/types/wait.type';
 import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
@@ -5,11 +6,10 @@ const waitListApi = (
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
   setState: React.Dispatch<React.SetStateAction<ReaderStateType[]>>,
 ) => {
-  const url = `http://i9a104.p.ssafy.io:8081/tags/sse`;
-
-  const eventSource = new EventSourcePolyfill(url, {
+  const token = getToken('managerToken');
+  const eventSource = new EventSourcePolyfill(BASEURL + 'sse/tags/sse', {
     headers: {
-      Authorization: `bearer ${getToken('managerToken')}`,
+      Authorization: `bearer ${token}`,
     },
     heartbeatTimeout: 600000,
   });

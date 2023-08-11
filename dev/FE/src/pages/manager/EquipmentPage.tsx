@@ -151,7 +151,7 @@ const EquipmentPage = () => {
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-6 mb-1">
           <ZoneChoice zoneList={zoneList} onZoneClick={handleZoneClick} />
           {isOnEdit ? (
             <div className="flex">

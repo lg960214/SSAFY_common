@@ -3,27 +3,32 @@ import { ChangeEvent } from 'react';
 interface FormInputProps {
   type: string;
   value: string;
+  width?: number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   setValueEmpty?: () => void;
   placeholder?: string;
+  autoFocus?: boolean;
 }
 
 const FormInput = ({
   type,
   value,
+  width,
   onChange,
   setValueEmpty,
   placeholder,
+  autoFocus,
 }: FormInputProps) => {
   return (
     <div className="relative my-2">
       <input
-        className="w-[256px] px-5 py-2 rounded-xl"
+        className={`w-[${width ?? 256}px] px-5 py-2 rounded-xl`}
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
         required
+        autoFocus={autoFocus ?? false}
       />
       {!setValueEmpty ? null : (
         <img

@@ -32,6 +32,7 @@ const LoginForm = () => {
         onChange={handleIdChange}
         setValueEmpty={() => setId('')}
         placeholder="아이디"
+        autoFocus={true}
       />
       <FormInput
         type="password"

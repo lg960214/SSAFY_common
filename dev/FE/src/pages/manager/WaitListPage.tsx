@@ -33,7 +33,9 @@ const WaitListPage = () => {
   return (
     <>
       <div>
-        <p className="fontJeju text-4xl text-center pt-20">구역을 선택하세요</p>
+        <p className="font-Jeju text-4xl text-CustomNavy font-semibold text-center pt-20">
+          구역을 선택하세요
+        </p>
       </div>
       <div>
         <div className="w-[960px] mx-auto mt-20 rounded-xl flex flex-wrap bg-white">
