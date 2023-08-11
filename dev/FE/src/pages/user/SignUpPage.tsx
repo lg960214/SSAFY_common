@@ -6,7 +6,7 @@ const SignUpPage = () => {
   return (
     <OnboardingContainer>
       <SignUpForm />
-      <Link to="/user/login" className="mt-5">
+      <Link to="/user/login" className="mt-5 italic underline text-blue-600">
         {'<- 로그인으로 돌아가기'}
       </Link>
     </OnboardingContainer>

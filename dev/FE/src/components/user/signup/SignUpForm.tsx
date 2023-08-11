@@ -126,6 +126,7 @@ const SignUpForm = () => {
         onChange={handleNameChange}
         setValueEmpty={() => setName('')}
         placeholder="이 름"
+        autoFocus={true}
       />
       <FormInput
         type="text"

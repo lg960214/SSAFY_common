@@ -48,7 +48,8 @@ interface SectionHeaderProps {
 const SectionHeader = ({ section }: SectionHeaderProps) => {
   return (
     <div className="flex justify-center items-center bg-CustomOrange p-5 w-[280px] shadow-right-bottom shadow-gray-400">
-      <span className="fontJeju text-7xl text-white ">{section} 구역</span>
+      <span className="font-Bungee text-7xl mr-4 text-white ">{section}</span>
+      <span className="font-Jeju text-6xl text-white ">구역</span>
     </div>
   );
 };

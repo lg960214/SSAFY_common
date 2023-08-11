@@ -24,7 +24,7 @@ const EquipmentMatchingSection = ({
   return (
     <div
       ref={drop}
-      className="py-8 px-4 shadow-right-bottom rounded-xl flex flex-wrap bg-slate-200"
+      className="pt-10 px-4 shadow-right-bottom rounded-xl flex flex-wrap bg-slate-200"
       style={{
         width: 800,
         height: 520,

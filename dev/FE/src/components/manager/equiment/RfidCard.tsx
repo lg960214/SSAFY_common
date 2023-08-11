@@ -36,11 +36,11 @@ const RfidCard = ({
     <div
       ref={isOnEdit ? ref : null}
       style={{ backgroundColor: isOver ? 'red' : undefined }}
-      className={`mx-4 w-40 h-48 bg-CustomOrange rounded-lg flex flex-col justify-around items-center relative ${
-        isOnEdit ? 'hover:cursor-pointer' : null
+      className={`mx-4 w-40 h-48 bg-CustomOrange rounded-lg shadow-right-bottom flex flex-col justify-around items-center relative ${
+        isOnEdit ? 'hover:cursor-pointer hover:shadow-2xl' : ''
       }`}
     >
-      <span className="text-white text-xl">{data.reader}</span>
+      <span className="text-white text-xl font-semibold">{data.reader}</span>
       {isOnEdit ? (
         <img
           onClick={() => deleteReader(data)}
