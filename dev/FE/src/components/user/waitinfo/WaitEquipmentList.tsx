@@ -3,23 +3,39 @@ import { GymEquipments } from '@/types/user.type';
 interface WaitEquipmentListProps {
   equipmentLists: GymEquipments[];
   handlePickEquipment: (equipment: GymEquipments) => void;
+  equiptment: GymEquipments | null;
+  onClose: () => void;
 }
 
 const WaitEquipmentList = ({
   equipmentLists,
   handlePickEquipment,
+  equiptment,
+  onClose,
 }: WaitEquipmentListProps) => {
   return (
-    <div className="flex flex-wrap w-[320px]">
-      {equipmentLists.map((item: GymEquipments) => {
-        return (
-          <EquipmentButton
-            key={item.reader}
-            handlePickEquipment={() => handlePickEquipment(item)}
-            equipment={item}
-          />
-        );
-      })}
+    <div className="w-[320px] bg-CustomBg rounded-lg py-4 px-2">
+      <div className="w-[300px] h-10 text-center border-b-2 border-black align-middle">
+        <span className="w-[120px] mx-auto text-lg">기구 목록</span>
+        <button
+          className="bg-CustomNavy text-white float-right"
+          onClick={onClose}
+        >
+          닫기
+        </button>
+      </div>
+      <div className="flex flex-wrap justify-evenly w-[320px] h-[500px] overflow-y-auto">
+        {equipmentLists.map((item: GymEquipments) => {
+          if (equiptment?.name !== item.name)
+            return (
+              <EquipmentButton
+                key={item.reader}
+                handlePickEquipment={() => handlePickEquipment(item)}
+                equipment={item}
+              />
+            );
+        })}
+      </div>
     </div>
   );
 };

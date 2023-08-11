@@ -4,7 +4,17 @@ import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
 import { MemberInfo } from '@/types/member.type';
 
-export const MemberItem = (item: MemberInfo) => {
+interface MemberItemProps {
+  item: MemberInfo;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export const MemberItem = ({
+  item,
+  currentPage,
+  setCurrentPage,
+}: MemberItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleClick: React.MouseEventHandler<HTMLElement> = () => {
@@ -29,7 +39,12 @@ export const MemberItem = (item: MemberInfo) => {
       <span className="w-28">{item.phoneNumber}</span>
       <span className="w-16">{item.sex}</span>
       <span className="w-28" onClick={handleRegiClick}>
-        {createTagRegi(item.id, item.deviceCode)}
+        <TagRegister
+          id={item.id}
+          deviceCode={item.deviceCode}
+          currentPage={currentPage}
+          setCurrentPage={setCurrentPage}
+        />
       </span>
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
@@ -39,7 +54,19 @@ export const MemberItem = (item: MemberInfo) => {
   );
 };
 
-const createTagRegi = (id: string, deviceCode: string | null) => {
+interface TagRegisterProps {
+  id: string;
+  deviceCode: string | null;
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+const TagRegister = ({
+  id,
+  deviceCode,
+  currentPage,
+  setCurrentPage,
+}: TagRegisterProps) => {
   const [isTagListOpen, setIsTagListOpen] = useState(false);
   const handleIsTagListClick = () => {
     setIsTagListOpen(true);
@@ -57,7 +84,12 @@ const createTagRegi = (id: string, deviceCode: string | null) => {
           color=""
         />
         <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
-          <TagLists onClose={handleIstagListClose} id={id} />
+          <TagLists
+            currentPaginationIdx={currentPage}
+            setCurrentPaginationIdx={setCurrentPage}
+            onClose={handleIstagListClose}
+            id={id}
+          />
         </Modal>
       </>
     );
