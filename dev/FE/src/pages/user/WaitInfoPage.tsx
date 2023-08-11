@@ -12,6 +12,7 @@ import {
 import FormInput from '@/components/common/FormInput';
 import { registGym } from '@/api/waitInfoApi';
 import { GymEquipments, SearchingData } from '@/types/user.type';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const WaitInfoPage = () => {
   const token = JSON.parse(localStorage.getItem('userToken') as string);
@@ -40,13 +41,23 @@ const WaitInfoPage = () => {
     }
   }, []);
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
   const [isModal, setIsModal] = useState(false);
   const handleOpenModal = () => {
+    navigate('#modal');
     setIsModal(true);
   };
   const handleCloseModal = () => {
+    navigate('#');
     setIsModal(false);
   };
+  useEffect(() => {
+    if (location.hash !== '#modal' && isModal) {
+      setIsModal(false);
+    }
+  }, [location]);
 
   // 헬스장 기구정보
   const { data } = useQuery(['getGymEquipments'], getGymEquipments, {
@@ -101,7 +112,7 @@ const WaitInfoPage = () => {
   return (
     <div className="bg-[#f2f2f2]">
       {checkGymApprove ? (
-        <div>
+        <>
           <WaitTitle text={getGymName} />
           <div className="p-2">
             <span className="float-right">현재 {usingGymUsers}명 이용중</span>
@@ -159,6 +170,7 @@ const WaitInfoPage = () => {
               </p>
             </div>
             <div className="flex flex-col justify-evenly">
+              <div></div>
               <div className="w-[176px] h-[40px] bg-white rounded">
                 저번주:
                 {!searchingData
@@ -188,9 +200,9 @@ const WaitInfoPage = () => {
               </div>
             </div>
           </div>
-        </div>
+        </>
       ) : (
-        <div>
+        <>
           <WaitTitle text="헬스장을 등록하세요!" />
           <div className="p-0 h-16 flex justify-evenly items-center">
             <FormInput
@@ -212,7 +224,7 @@ const WaitInfoPage = () => {
               <p>다른 헬스장을 등록하고 싶으시다면 새로 등록을 해주세요</p>
             </div>
           )}
-        </div>
+        </>
       )}
     </div>
   );
