@@ -86,12 +86,15 @@ export default function Root() {
 
   return (
     <AuthProvider>
-      <nav className="flex justify-between items-center w-[80%] sm:w-[1440px] mx-auto bg-CustomNavy shadow-md shadow-black">
+      <nav
+        className="flex justify-between items-center w-[80%] md:w-[100%] mx-auto bg-CustomNavy shadow-md shadow-black"
+        style={{ maxWidth: '1440px' }}
+      >
         <div className="flex flex-col text-white font-Bungee ml-6 my-3 me-8">
-          <span className="sm:text-4xl sm:ml-[7px] text-xl ml-[2px] tracking-widest">
+          <span className="md:text-4xl md:ml-[7px] text-xl ml-[2px] tracking-widest">
             WAIT
           </span>
-          <span className="sm:text-3xl text-md">WEIGHT</span>
+          <span className="md:text-3xl text-md">WEIGHT</span>
         </div>
         {isLoggedIn ? (
           <div className="w-full flex justify-between">
@@ -162,7 +165,7 @@ export default function Root() {
           </div>
         ) : (
           <>
-            <div className="lg:block hidden">
+            <div className="md:block hidden">
               <div className="flex items-center">
                 <span className="text-white font-Bungee text-2xl mx-3 ">
                   ID
@@ -190,13 +193,13 @@ export default function Root() {
                 </button>
               </div>
             </div>
-            <div className="sm:hidden">
+            <div className="md:hidden">
               <div className="flex items-center">
                 <button
-                  className="mx-5 py-2 px-3 bg-white text-CustomNavy text-md font-Jeju font-bold"
+                  className="mx-5 py-2 px-4 flex flex-col items-center bg-white text-CustomNavy text-lg font-Jeju font-bold"
                   onClick={() => navigate('/user/information')}
                 >
-                  이용자 페이지 가기
+                  <span>GO</span>
                 </button>
               </div>
             </div>
