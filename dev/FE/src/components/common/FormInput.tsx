@@ -3,6 +3,7 @@ import { ChangeEvent } from 'react';
 interface FormInputProps {
   type: string;
   value: string;
+  width?: number;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   setValueEmpty?: () => void;
   placeholder?: string;
@@ -11,6 +12,7 @@ interface FormInputProps {
 const FormInput = ({
   type,
   value,
+  width,
   onChange,
   setValueEmpty,
   placeholder,
@@ -18,7 +20,7 @@ const FormInput = ({
   return (
     <div className="relative my-2">
       <input
-        className="w-[256px] px-5 py-2 rounded-xl"
+        className={`w-[${width ?? 256}px] px-5 py-2 rounded-xl`}
         type={type}
         value={value}
         onChange={onChange}

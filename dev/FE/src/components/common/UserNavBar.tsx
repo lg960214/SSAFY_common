@@ -30,7 +30,7 @@ const UserNavBar = () => {
               아니오
             </div>
             <button
-              className="w-[100px] h-[40px] rounded-2xl flex justify-center items-center text-black font-bold"
+              className="w-[100px] h-[40px] rounded-2xl flex justify-center items-center bg-white text-CustomNavy font-bold"
               onClick={logOut}
             >
               예

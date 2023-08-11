@@ -87,86 +87,120 @@ export default function Root() {
 
   return (
     <AuthProvider>
-      <nav className="flex navbar mx-auto shadow-md shadow-black">
-        <p className="text-white font-Bungee whitespace-pre-line ms-4 mt-1 me-8">
-          <span className="text-5xl tracking-widest">WAIT</span> <br />{' '}
-          <span className="text-4xl">WEIGHT</span>
-        </p>
+      <nav className="flex justify-between items-center sm:w-[80%] mx-auto bg-CustomNavy shadow-md shadow-black">
+        <div className="flex flex-col text-white font-Bungee ml-6 my-3 me-8">
+          <span className="sm:text-4xl sm:ml-[7px] text-xl ml-[2px] tracking-widest">
+            WAIT
+          </span>
+          <span className="sm:text-3xl text-md">WEIGHT</span>
+        </div>
         {isLoggedIn ? (
           <div className="w-full flex justify-between">
-            <ul className="flex text-right">
-              <li className="navmenu my-auto mx-4">
+            <div className="flex">
+              <span className="my-auto mx-4">
                 <NavLink
                   to="/member"
-                  className={0 === clickedLinks ? 'activeLink' : 'noactive'}
+                  className={
+                    0 === clickedLinks
+                      ? 'activeLink'
+                      : 'noactive hover:text-CustomOrange'
+                  }
                   onClick={() => handleAnchorClick(0)}
                 >
                   회원 관리
                 </NavLink>
-              </li>
-              <li className="navmenu my-auto mx-4">
+              </span>
+              <span className="my-auto mx-4">
                 <NavLink
                   to="/equipment"
-                  className={1 === clickedLinks ? 'activeLink' : 'noactive'}
+                  className={
+                    1 === clickedLinks
+                      ? 'activeLink'
+                      : 'noactive hover:text-CustomOrange'
+                  }
                   onClick={() => handleAnchorClick(1)}
                 >
                   기구 관리
                 </NavLink>
-              </li>
-              <li className="navmenu my-auto mx-4">
+              </span>
+              <span className="my-auto mx-4">
                 <NavLink
                   to="/usage"
-                  className={2 === clickedLinks ? 'activeLink' : 'noactive'}
+                  className={
+                    2 === clickedLinks
+                      ? 'activeLink'
+                      : 'noactive hover:text-CustomOrange'
+                  }
                   onClick={() => handleAnchorClick(2)}
                 >
                   이용 현황
                 </NavLink>
-              </li>
-              <li className="navmenu my-auto mx-4">
+              </span>
+              <span className="my-auto mx-4">
                 <NavLink
                   to="/waitlist"
-                  className={3 == clickedLinks ? 'activeLink' : 'noactive'}
+                  className={
+                    3 == clickedLinks
+                      ? 'activeLink'
+                      : 'noactive hover:text-CustomOrange'
+                  }
                   onClick={() => handleAnchorClick(3)}
                 >
                   대기 현황
                 </NavLink>
-              </li>
-            </ul>
-            <ul className="my-auto text-right flex font-Jeju text-[20px] text-white">
-              <li className="my-auto">{placeName} 님 환영합니다!</li>
+              </span>
+            </div>
+            <div className="my-auto text-right flex font-Jeju text-[20px] text-white">
+              <span className="my-auto">{placeName} 님 환영합니다!</span>
               <button
                 className="mx-3 text-[24px] bg-CustomNavy border-0 transition-colors duration-300 hover:text-CustomOrange"
                 onClick={handleManagerLogout}
               >
                 <p className="font-Bungee ">logout</p>
               </button>
-            </ul>
+            </div>
           </div>
         ) : (
-          <div className="ms-[500px] my-auto">
-            <ul className="flex items-center">
-              <p className="text-white font-Bungee text-2xl mx-3 ">ID</p>
-              <FormInput
-                type="text"
-                value={managerId}
-                onChange={handleManagerIdChange}
-                placeholder=" "
-              />
-              <p className="text-white font-Bungee text-2xl mx-3 ">pw</p>
-              <FormInput
-                type="password"
-                value={managerPassword}
-                onChange={handleManagerPasswordChange}
-                placeholder=" "
-              />
-              <button
-                className="ms-1 h-30 w-30 border-none bg-CustomNavy text-white text-2xl font-Bungee"
-                onClick={handleManagerLogIn}
-              >
-                Login
-              </button>
-            </ul>{' '}
-          </div>
+          <>
+            <div className="lg:block hidden">
+              <div className="flex items-center">
+                <span className="text-white font-Bungee text-2xl mx-3 ">
+                  ID
+                </span>
+                <FormInput
+                  type="text"
+                  value={managerId}
+                  width={150}
+                  onChange={handleManagerIdChange}
+                />
+                <span className="text-white font-Bungee text-2xl ml-8 mr-3 ">
+                  pw
+                </span>
+                <FormInput
+                  type="password"
+                  value={managerPassword}
+                  width={150}
+                  onChange={handleManagerPasswordChange}
+                />
+                <button
+                  className="mx-5 py-1 px-4 bg-CustomNavy hover:bg-white text-white hover:text-CustomNavy text-2xl font-Bungee"
+                  onClick={handleManagerLogIn}
+                >
+                  Login
+                </button>
+              </div>
+            </div>
+            <div className="sm:hidden">
+              <div className="flex items-center">
+                <button
+                  className="mx-5 py-2 px-3 bg-white text-CustomNavy text-md font-Jeju font-bold"
+                  onClick={() => navigate('/user/information')}
+                >
+                  이용자 페이지 가기
+                </button>
+              </div>
+            </div>
+          </>
         )}
       </nav>
     </AuthProvider>
