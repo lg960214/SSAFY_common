@@ -75,28 +75,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Remove Previous React Docker') {
-            steps {
-                dir('dev/FE') {
-                    script {
-                        sh 'docker stop fe || true'
-                        sh 'docker rm fe || true'
-                        sh 'docker rmi ife || true'
-                    }
-                }
-            }
-        }
-
-        stage('React Docker Build and Run') {
-            steps {
-                dir('dev/FE') {
-                    script {
-                        sh 'docker build -t ife .'
-                        sh 'docker run -p 10001:3000 -d --name fe ife'
-                    }
-                }
-            }
-        }
     }
 }
