@@ -9,6 +9,10 @@ import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
 import com.example.a104.project.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
@@ -22,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name="관리자페이지 API", description = "관리자 페이지에서 사용되는 API 입니다.")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -34,6 +39,11 @@ public class AdminController {
 
 
     // 일변 운동기구별 검색량과 이용량
+    @Operation(summary = "일별, 운동기구별 검색량과 이용량",description = "헬스장 이용객들이 실제로 이용한 데이터와 검색 데이터를 가지고 관리자 페이지에서 시각화할수 있도록 제공하는 데이터")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="date", description = "YYYY-MM-DD 형식의 날짜 데이터, 타입은 문자열")
+    })
     @GetMapping("day-info")
     public List<DayInfoDto> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
         List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
@@ -53,6 +63,11 @@ public class AdminController {
     }
 
     // 헬스장 회원 검색(이름으로 검색)
+    @Operation(summary = "헬스장 회원 검색",description = "검색란에 키워드를 입력하면 키워드를 포함한 이름을 가진 이용자들을 반환해줌")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="keyword", description = "검색할 키워드 문자열")
+    })
     @GetMapping("search")
     public List<UserEntity> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -62,6 +77,7 @@ public class AdminController {
     }
 
     // 헬스장 회원 삭제
+    @Operation(summary = "헬스장 회원 삭제",description = "삭제할 회원의 ID 를 입력 받아 해당 회원 삭제 (등록된 헬스장이 삭제)")
     @Transactional
     @PutMapping("users")
     public String delete(@RequestBody Map<String, String> map) {
@@ -74,6 +90,7 @@ public class AdminController {
     }
 
     // 헬스장 등록 회원 승인
+    @Operation(summary = "헬스장 등록 회원 승인",description = "헬스장을 등록 신청한 회원을 승인해주는 API")
     @Modifying
     @Transactional
     @PutMapping("approval")
@@ -90,6 +107,8 @@ public class AdminController {
     }
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
+    @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("unauthorized-users")
     public List<UserDto> unAutorizedUsers(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -108,6 +127,8 @@ public class AdminController {
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
+    @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("users")
     public List<UserEntity> userList(@RequestHeader(value = "Authorization") String token) {
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -116,6 +137,7 @@ public class AdminController {
         return userList;
     }
 
+    @Operation(summary = "관리자 로그인",description = "아이디와 비밀번호를 입력받아 로그인.")
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
         List<AdminEntity> admin = adminService.login(map.get("id"));
@@ -139,6 +161,7 @@ public class AdminController {
         tokenResponse = new TokenResponse("202", "FAIL", "FAIL");
         return tokenResponse;
     }
+
 
     @PostMapping("create")
     public ResponseEntity<AdminEntity> createAdmin(@RequestBody Map<String, Object> map) {
