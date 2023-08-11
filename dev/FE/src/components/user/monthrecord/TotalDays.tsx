@@ -9,9 +9,13 @@ const TotalDays = ({ exerciseList1 }: TotalDaysProps) => {
     .size;
 
   return (
-    <div className="flex justify-between ms-5 me-[120px]">
-      <p>총 운동일</p>
-      <p>{countDate} 일</p>
+    <div className="w-[200px] mt-[15px]">
+      <div className="w-[120px] h-[30px] mx-auto bg-CustomOrange rounded-[20px] text-white font-Jeju text-center text-[20px]">
+        총 운동일
+      </div>
+      <div className="w-[120px] h-[30px] mt-[5px] mx-auto font-Jeju text-[20px]">
+        <p className="text-center">{countDate} 일</p>
+      </div>
     </div>
   );
 };

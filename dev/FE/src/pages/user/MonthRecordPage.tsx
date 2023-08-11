@@ -11,6 +11,7 @@ import CountStandard from '@/components/user/monthrecord/CountStandard';
 import TotalDays from '@/components/user/monthrecord/TotalDays';
 import TotalTimes from '@/components/user/monthrecord/TotalTimes';
 import WholeMonthRank from '@/components/user/monthrecord/WholeMonthRank';
+import MyRank from '@/components/user/monthrecord/MyRank';
 
 const MonthRecordPage = () => {
   const [searchMonth, setSearchMonth] = useState<dayjs.Dayjs>(
@@ -38,24 +39,25 @@ const MonthRecordPage = () => {
 
   return (
     <>
-      <div className=" h-[620px] rounded-[15px] ">
-        <div className="flex justify-center mx-auto w-[350px] items-center bg-CustomNavy h-14 text-white rounded-lg">
-          <MonthSelect
-            searchMonth={searchMonth}
-            setSearchMonth={setSearchMonth}
-          />
+      <div className="flex justify-center mx-auto w-[350px] items-center bg-CustomNavy h-14 text-white rounded-lg">
+        <MonthSelect
+          searchMonth={searchMonth}
+          setSearchMonth={setSearchMonth}
+        />
+      </div>
+      <div className="w-[360px] h-[710px] rounded-[15px] bg-white mx-auto">
+        <div className="flex">
+          <div>
+            <MyRank rankMonth={rankMonth} />
+          </div>
+          <div>
+            <TotalDays exerciseList1={exerciseList1} />
+            <TotalTimes rankMonth={rankMonth} />
+          </div>
         </div>
-        <TotalDays exerciseList1={exerciseList1} />
-        <TotalTimes exerciseList1={exerciseList1} rankMonth={rankMonth} />
         <WholeMonthRank rankMonth={rankMonth} />
-        <div>
-          <p>많이 사용한 기구(횟수)</p>
-          <CountStandard exerciseList1={exerciseList1} />
-        </div>
-        <div>
-          <p>많이 사용한 기구(시간)</p>
-          <TimeStandard exerciseList1={exerciseList1} />
-        </div>
+        <CountStandard exerciseList1={exerciseList1} />
+        <TimeStandard exerciseList1={exerciseList1} />
       </div>
     </>
   );

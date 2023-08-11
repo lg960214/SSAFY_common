@@ -88,7 +88,7 @@ export default function Root() {
   return (
     <AuthProvider>
       <nav className="flex navbar mx-auto shadow-md shadow-black">
-        <p className="text-white fontBungee whitespace-pre-line ms-4 mt-1 me-8">
+        <p className="text-white font-Bungee whitespace-pre-line ms-4 mt-1 me-8">
           <span className="text-5xl tracking-widest">WAIT</span> <br />{' '}
           <span className="text-4xl">WEIGHT</span>
         </p>
@@ -132,27 +132,27 @@ export default function Root() {
                 </NavLink>
               </li>
             </ul>
-            <ul className="my-auto text-right flex fontJeju text-[20px] text-white">
+            <ul className="my-auto text-right flex font-Jeju text-[20px] text-white">
               <li className="my-auto">{placeName} 님 환영합니다!</li>
               <button
                 className="mx-3 text-[24px] bg-CustomNavy border-0 transition-colors duration-300 hover:text-CustomOrange"
                 onClick={handleManagerLogout}
               >
-                <p className="fontBungee ">logout</p>
+                <p className="font-Bungee ">logout</p>
               </button>
             </ul>
           </div>
         ) : (
           <div className="ms-[500px] my-auto">
             <ul className="flex items-center">
-              <p className="text-white fontBungee text-2xl mx-3 ">ID</p>
+              <p className="text-white font-Bungee text-2xl mx-3 ">ID</p>
               <FormInput
                 type="text"
                 value={managerId}
                 onChange={handleManagerIdChange}
                 placeholder=" "
               />
-              <p className="text-white fontBungee text-2xl mx-3 ">pw</p>
+              <p className="text-white font-Bungee text-2xl mx-3 ">pw</p>
               <FormInput
                 type="password"
                 value={managerPassword}
@@ -160,7 +160,7 @@ export default function Root() {
                 placeholder=" "
               />
               <button
-                className="ms-1 h-30 w-30 border-none bg-CustomNavy text-white text-2xl fontBungee"
+                className="ms-1 h-30 w-30 border-none bg-CustomNavy text-white text-2xl font-Bungee"
                 onClick={handleManagerLogIn}
               >
                 Login
