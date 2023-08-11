@@ -34,7 +34,6 @@ export default function Root() {
   const navigate = useNavigate();
   const [managerId, setManagerId] = useState<string>('');
   const [placeName, setPlaceName] = useState<string | null>('');
-
   const [managerPassword, setManagerPassword] = useState<string>('');
 
   useEffect(() => {
@@ -87,7 +86,7 @@ export default function Root() {
 
   return (
     <AuthProvider>
-      <nav className="flex justify-between items-center sm:w-[80%] mx-auto bg-CustomNavy shadow-md shadow-black">
+      <nav className="flex justify-between items-center w-[80%] sm:w-[1440px] mx-auto bg-CustomNavy shadow-md shadow-black">
         <div className="flex flex-col text-white font-Bungee ml-6 my-3 me-8">
           <span className="sm:text-4xl sm:ml-[7px] text-xl ml-[2px] tracking-widest">
             WAIT
@@ -150,8 +149,9 @@ export default function Root() {
                 </NavLink>
               </span>
             </div>
-            <div className="my-auto text-right flex font-Jeju text-[20px] text-white">
-              <span className="my-auto">{placeName} 님 환영합니다!</span>
+            <div className="flex items-center font-Jeju text-[20px] text-white">
+              <span className="mr-4 font-bold italic">{placeName}</span>
+              <span>님 환영합니다!</span>
               <button
                 className="mx-3 text-[24px] bg-CustomNavy border-0 transition-colors duration-300 hover:text-CustomOrange"
                 onClick={handleManagerLogout}

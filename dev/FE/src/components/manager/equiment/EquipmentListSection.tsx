@@ -116,7 +116,7 @@ const PagenateArrow = ({ isUp, onClick }: PagenateArrowProps) => {
   return (
     <button
       onClick={onClick}
-      className="bg-orange-300 w-8 h-8 rounded-full flex justify-center items-center"
+      className="bg-CustomOrange w-8 h-8 rounded-full flex justify-center items-center"
     >
       {isUp ? '▲' : '▼'}
     </button>

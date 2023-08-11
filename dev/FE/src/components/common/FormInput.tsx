@@ -7,6 +7,7 @@ interface FormInputProps {
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
   setValueEmpty?: () => void;
   placeholder?: string;
+  autoFocus?: boolean;
 }
 
 const FormInput = ({
@@ -16,6 +17,7 @@ const FormInput = ({
   onChange,
   setValueEmpty,
   placeholder,
+  autoFocus,
 }: FormInputProps) => {
   return (
     <div className="relative my-2">
@@ -26,6 +28,7 @@ const FormInput = ({
         onChange={onChange}
         placeholder={placeholder}
         required
+        autoFocus={autoFocus ?? false}
       />
       {!setValueEmpty ? null : (
         <img
