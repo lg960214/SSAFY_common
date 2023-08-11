@@ -6,9 +6,16 @@ import { Device } from '@/types/member.type';
 interface TagListsProps {
   id: string;
   onClose: () => void;
+  currentPaginationIdx: number;
+  setCurrentPaginationIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TagLists = ({ id, onClose }: TagListsProps) => {
+const TagLists = ({
+  id,
+  onClose,
+  currentPaginationIdx,
+  setCurrentPaginationIdx,
+}: TagListsProps) => {
   const { data } = useQuery<Device[]>(['deviceLists'], deviceLists);
 
   const itemsPerPage = 28; // 페이지당 표시할 항목의 개수
@@ -40,6 +47,8 @@ const TagLists = ({ id, onClose }: TagListsProps) => {
             return (
               <TagButton
                 key={idx}
+                currentPaginationIdx={currentPaginationIdx}
+                setCurrentPaginationIdx={setCurrentPaginationIdx}
                 onClose={onClose}
                 id={id}
                 deviceCode={item.deviceCode}
@@ -70,13 +79,28 @@ interface TagButtonProps {
   deviceCode: string;
   id: string;
   onClose: () => void;
+  currentPaginationIdx: number;
+  setCurrentPaginationIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const TagButton = ({ id, deviceCode, onClose }: TagButtonProps) => {
+const TagButton = ({
+  id,
+  deviceCode,
+  onClose,
+  currentPaginationIdx,
+  setCurrentPaginationIdx,
+}: TagButtonProps) => {
+  const [tempPage, setTempPage] = useState<number | null>(null);
   const queryClient = useQueryClient();
   const matchDeviceMutation = useMutation(() => matchDevice(id, deviceCode), {
+    onMutate: () => {
+      setTempPage(currentPaginationIdx);
+    },
     onSuccess: () => {
       queryClient.invalidateQueries(['memberLists']);
+      if (tempPage !== null) {
+        setCurrentPaginationIdx(tempPage);
+      }
       onClose();
     },
     onError: () => {},

@@ -19,6 +19,11 @@ public class ReaderService {
     public List<ReaderEntity> getMatchReaders(int gymCode){
         return readerRepository.findByGymCodeAndNameIsNotNull(gymCode);
     }
+
+
+    public ReaderEntity getReader(String reader){
+        return readerRepository.findByReader(reader);
+    }
     public void updateReader(List<ReaderEntity> readers){
         for(ReaderEntity reader: readers){
             readerRepository.save(reader);

@@ -3,7 +3,6 @@ package com.example.a104.project.controller;
 import com.example.a104.project.dto.DayInfoDto;
 import com.example.a104.project.dto.UserDto;
 import com.example.a104.project.entity.*;
-import com.example.a104.project.repository.UserDateRepository;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.UserDateService;
@@ -32,7 +31,6 @@ public class AdminController {
     private final UserDateService userDateService;
     private final UserService userService;
     private final ReaderService readerService;
-    private final UserDateRepository userDateRepository;
 
 
     // 일변 운동기구별 검색량과 이용량
@@ -100,7 +98,7 @@ public class AdminController {
         List<UserDto> userDtoList = new ArrayList<>();
         for(UserEntity userVo: users){
             UserDto userDto = new UserDto();
-            userDto.setDate(userDateRepository.getUserDate(userVo.getUserId()));
+            userDto.setDate(userDateService.getUserDate(userVo.getUserId()));
             userDto.setUserId(userVo.getUserId());
             userDto.setName(userVo.getName());
             userDto.setId(userVo.getId());

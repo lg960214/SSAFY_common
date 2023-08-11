@@ -76,7 +76,7 @@ const MemberPage = () => {
             <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
           </Modal>
           <button
-            className="mt-2 bg-CustomOrange text-white text-lg float-right"
+            className="mt-4 bg-CustomOrange text-white text-lg float-right hover:border-CustomNavy"
             onClick={openApproveModal}
           >
             승인 요청
@@ -91,9 +91,9 @@ interface TableMenuProps {
   name: string;
 }
 
-const TableMenu = (props: TableMenuProps) => {
+export const TableMenu = (props: TableMenuProps) => {
   return (
-    <div className="w-40 h-24 p-2 bg-CustomOrange text-white text-center rounded-2xl text-xl">
+    <div className="w-40 h-24 p-2 font-Jeju bg-CustomOrange text-white text-center rounded-2xl text-xl">
       {props.name}
     </div>
   );

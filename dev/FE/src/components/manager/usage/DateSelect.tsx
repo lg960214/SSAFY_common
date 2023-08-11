@@ -1,8 +1,8 @@
 import Calendar from 'react-calendar';
 import React, { useState } from 'react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 export interface DateSelectProps {
-  setTodayDate: React.Dispatch<React.SetStateAction<any>>;
+  setTodayDate: React.Dispatch<React.SetStateAction<dayjs.Dayjs>>;
 }
 type ValuePiece = Date | null;
 
@@ -11,7 +11,7 @@ const DateSelect = ({ setTodayDate }: DateSelectProps) => {
   const [today, onChange] = useState<Value>(new Date());
 
   const handleDateClick = (date: Date) => {
-    const formattedDate = moment(date);
+    const formattedDate = dayjs(date);
     setTodayDate(formattedDate);
   };
 
@@ -19,10 +19,10 @@ const DateSelect = ({ setTodayDate }: DateSelectProps) => {
     <div>
       {' '}
       <Calendar
-        className=" mx-auto border-white  bg-white rounded-[15px]"
+        className=" mx-auto border-white  bg-white rounded-[15px] "
         onChange={onChange}
         onClickDay={handleDateClick} // 날짜 클릭시 handleDateClick 함수를 실행
-        formatDay={(_, date) => moment(date).format('DD')} // 날'일' 제외하고 숫자만 보이도록 설정
+        formatDay={(_, date) => dayjs(date).format('DD')} // 날'일' 제외하고 숫자만 보이도록 설정
         minDetail="month"
         maxDetail="month"
         value={today}

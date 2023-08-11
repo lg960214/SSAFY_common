@@ -110,14 +110,18 @@ const WaitInfoPage = () => {
             {isModal && (
               <Modal isOpen={isModal} onClose={handleCloseModal}>
                 <WaitEquipmentList
+                  equiptment={pickEquipment}
+                  onClose={handleCloseModal}
                   equipmentLists={data}
                   handlePickEquipment={handleSetPickEquipment}
                 />
               </Modal>
             )}
-            <div className="flex flex-wrap justify-center">
-              <EquipmentCircle equipment={pickEquipment} />
-              <span className="w-22 text-center">{pickEquipment?.name}</span>
+            <div className="flex justify-center">
+              <div className="flex flex-col justify-center items-center">
+                <EquipmentCircle equipment={pickEquipment} />
+                <span className="w-24 text-center">{pickEquipment?.name}</span>
+              </div>
             </div>
             <button
               className="w-[200px] h-[66px] text-xl bg-white"

@@ -5,6 +5,10 @@ export default {
   theme: {
     colors,
     extend: {
+      fontFamily: {
+        Jeju: ['jejuGothic', 'sans'],
+        Bungee: ['Bungee-Regular', 'sans'],
+      },
       colors: {
         CustomOrange: '#FFAA50',
         // CustomOrange: '#FF8000',
