@@ -110,56 +110,62 @@ const WaitInfoPage = () => {
   }, []);
 
   return (
-    <div className="bg-[#f2f2f2]">
+    <div className="">
       {checkGymApprove ? (
         <>
           <WaitTitle text={getGymName} />
-          <div className="p-2">
+          <div className="p-4 mb-5">
             <span className="float-right">현재 {usingGymUsers}명 이용중</span>
           </div>
-          <div className="flex justify-evenly items-center my-4">
-            {isModal && (
-              <Modal isOpen={isModal} onClose={handleCloseModal}>
-                <WaitEquipmentList
-                  equiptment={pickEquipment}
-                  onClose={handleCloseModal}
-                  equipmentLists={data}
-                  handlePickEquipment={handleSetPickEquipment}
-                />
-              </Modal>
-            )}
-            <div className="flex justify-center">
-              <div className="flex flex-col justify-center items-center">
-                <EquipmentCircle equipment={pickEquipment} />
-                <span className="w-24 text-center">{pickEquipment?.name}</span>
-              </div>
-            </div>
-            <button
-              className="w-[200px] h-[66px] text-xl bg-white"
-              onClick={handleOpenModal}
-            >
-              기구 선택 하기
-            </button>
-          </div>
-          <div className="w-[330px] mx-auto flex justify-between items-center my-4">
-            <div>
-              <TimeInput
-                hour={hour}
-                minute={minute}
-                setHour={setHour}
-                setMinute={setMinute}
+          {isModal && (
+            <Modal isOpen={isModal} onClose={handleCloseModal}>
+              <WaitEquipmentList
+                equiptment={pickEquipment}
+                onClose={handleCloseModal}
+                equipmentLists={data}
+                handlePickEquipment={handleSetPickEquipment}
               />
+            </Modal>
+          )}
+          <div className="bg-slate-200 py-3 rounded-lg">
+            <div className="flex justify-evenly items-center my-4">
+              <div className="flex justify-center">
+                <div className="flex flex-col justify-center items-center">
+                  <EquipmentCircle equipment={pickEquipment} />
+                  <span className="w-24 text-center">
+                    {pickEquipment?.name}
+                  </span>
+                </div>
+              </div>
+              <button
+                className="w-[200px] h-[66px] text-xl bg-white"
+                onClick={handleOpenModal}
+              >
+                기구 선택 하기
+              </button>
             </div>
-            <button
-              onClick={() => gymSearchMutation.mutate()}
-              className="w-25 h-11 bg-CustomOrange text-white"
-            >
-              조회
-            </button>
+            <div className="w-[330px] mx-auto flex justify-between items-center my-4">
+              <div>
+                <TimeInput
+                  hour={hour}
+                  minute={minute}
+                  setHour={setHour}
+                  setMinute={setMinute}
+                />
+              </div>
+              <button
+                onClick={() => gymSearchMutation.mutate()}
+                className="w-25 h-11 bg-CustomOrange text-white"
+              >
+                조회
+              </button>
+            </div>
           </div>
-          <div className="w-[360px] h-[200px] mt-8 flex justify-evenly py-4 bg-CustomGray rounded-lg mx-auto">
+          <div className="w-[360px] h-[200px] mt-8 flex justify-evenly py-4 bg-slate-200 rounded-lg mx-auto">
             <div className="w-[120px] text-black border-r-2 border-black">
-              <span className="font-bold text-center">실시간</span>
+              <span className="font-bold text-center">
+                현재 <br /> {pickEquipment?.name}
+              </span>
               <p>
                 {!searchingData
                   ? 0
@@ -167,6 +173,8 @@ const WaitInfoPage = () => {
                   ? 0
                   : searchingData.now}
                 명
+                <br />
+                사용중
               </p>
             </div>
             <div className="flex flex-col justify-evenly">
