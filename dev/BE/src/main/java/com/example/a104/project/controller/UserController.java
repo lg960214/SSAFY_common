@@ -4,10 +4,14 @@ import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.SearchDataDto;
 import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.*;
-import com.example.a104.project.repository.*;
+import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.service.*;
 import com.example.a104.project.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.http.HttpStatus;
@@ -23,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Tag(name="이용자페이지 API", description = "이용자 페이지에서 사용되는 API 입니다.")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/user")
@@ -37,6 +42,8 @@ public class UserController {
     private final WaitService waitService;
 
     // 헬스장에 매칭된 리더기 보여주기
+    @Operation(summary = "기구와 매칭된 리더기 목록",description = "헬스장에 기구와 리더기가 매칭된 리더기 목록을 반환합니다..")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("readers")
     public List<ReaderEntity> MatchReaders(@RequestHeader(value = "Authorization") String token){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -48,6 +55,12 @@ public class UserController {
     }
 
     // 기구랑 시간 선택 후 클릭하면 기구와 해당 날짜 카운트 + 1 AND 현재 선택 기구의 대기인원과 1주일 2주일 3주일전 대기인원 반환
+    @Operation(summary = "선택 기구의 현재 대기인원과 1,2,3 주전 대기인원",description = "사용자가 기구와 시간을 선택하면 현재 기구의 대기인원과 1,2,3주일 전의 그 시간에 대기인원을 반환.")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="date", description = "HH:mm 형식의 시간, 분 데이터 (타입은 문자열)"),
+            @Parameter(name="reader", description = "리더기 번호")
+    })
     @GetMapping("search")
     public SearchDataDto searchDataDto(@RequestHeader(value = "Authorization") String token, @RequestParam String date, String reader){
         SearchDataDto searchDataDto = new SearchDataDto();
@@ -93,6 +106,8 @@ public class UserController {
     }
 
 
+    @Operation(summary = "현재 헬스장 이용자 수",description = "현재 헬스장을 이용하는 사람들의 숫자를 반환합니다.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("using-gym")
     public int countUsers(@RequestHeader(value = "Authorization") String token){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -103,6 +118,8 @@ public class UserController {
 
     }
 
+    @Operation(summary = "현재 헬스장을 등록했는지 여부",description = "회원가입을 하고 헬스장에 등록을 했는지 안했는지 파악하기 위해 유저정보 반환.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("regist")
     public UserEntity userInfo(@RequestHeader(value = "Authorization") String token){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -110,6 +127,12 @@ public class UserController {
         return userService.getUserInfo(id);
     }
 
+    @Operation(summary = "사용자의 운동 기록",description = "해당 년,월에 사용자의 운동기록에 대한 데이터를 반환합니다.")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="date", description = "YY-MM 형식의 년, 월 데이터 (타입은 문자열)"),
+
+    })
     @GetMapping("records")
     public List<TagInfoDto> userDate(@RequestHeader(value = "Authorization") String token, @RequestParam String date){
         Claims claims = JwtTokenProvider.parseJwtToken(token);
@@ -120,6 +143,7 @@ public class UserController {
         return  userService.getTagInfo(list);
     }
     // 헬스장 등록
+    @Operation(summary = "헬스장 등록",description = "사용자가 헬스장코드를 입력 하여 등록합니다.")
     @Transactional
     @PutMapping("regist-gym")
     public Map<String, String> RegistGym(@RequestHeader(value = "Authorization") String token,
@@ -136,6 +160,8 @@ public class UserController {
     }
 
     // 중복체크
+    @Operation(summary = "아이디 중복체크",description = "아이디가 중복인지 아닌지 반환해줍니다..")
+    @Parameter(name="id", description = "사용자가 작성한 아이디")
     @GetMapping("check")
     @ResponseBody
     public Map<String, String> DuplicateCheck(@RequestParam String id) {
@@ -152,6 +178,7 @@ public class UserController {
     }
 
     // 로그인
+    @Operation(summary = "사용자 로그인",description = "아이디와 비밀번호를 입력받아 로그인.")
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
         List<UserEntity> user = userService.login(map.get("id"));
