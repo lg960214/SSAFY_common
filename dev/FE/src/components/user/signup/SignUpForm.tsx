@@ -116,9 +116,20 @@ const SignUpForm = () => {
     setErrorMessage('');
   }, [name, id, password, passwordCheck, phoneNumber, email, gender]);
 
+  const checkIdWarning = (id: string) => {
+    if (id.length > 12) return '12자 이하로 설정하세요.';
+    else return '';
+  };
+
   useEffect(() => {
     if (id) {
-      checkUserId(id).then((res) => setIdResponse(res));
+      checkUserId(id).then((res) => {
+        setIdResponse(
+          res === '이미 있는 아이디'
+            ? '중복된 아이디가 존재합니다.'
+            : checkIdWarning(id),
+        );
+      });
     } else {
       setIdResponse('');
     }
@@ -141,7 +152,9 @@ const SignUpForm = () => {
         setValueEmpty={() => setId('')}
         placeholder="아이디"
       />
-      <div className="text-red-500">{idCheckResponse}</div>
+      <div className="text-sm text-red-500 font-semibold">
+        {idCheckResponse}
+      </div>
       <FormInput
         type="password"
         value={password}
