@@ -21,9 +21,12 @@ const int resolution = 8;
 void initializeWiFi() {
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
+    digitalWrite(2, LOW);
     delay(1000);
     Serial.println("Connecting to WiFi..");
   }
+  digitalWrite(2, HIGH);
+  delay(1000);
   Serial.println("Connected to the WiFi network");
   Serial.println("Please tag your band");
 }
@@ -60,12 +63,12 @@ String getRFIDTagUID() {
 // HTTP POST 요청 보내기
 void sendPostRequest(const String& tagUID) {
   HTTPClient http;
-  http.begin("http://i9a104.p.ssafy.io:8081/tags");
+  http.begin("https://i9a104.p.ssafy.io/api/tags");
   http.addHeader("Content-Type", "application/json");
   
   StaticJsonDocument<200> doc;
   doc["device_code"] = tagUID;
-  doc["reader"] = 1111;
+  doc["reader"] = "WW1002";
   
   char jsonBuffer[512];
   serializeJson(doc, jsonBuffer);
@@ -88,6 +91,7 @@ void setup() {
   delay(4000);
   ledcSetup(channel, freq, resolution);
   ledcAttachPin(buzzerPin, channel);
+  pinMode(2, OUTPUT); 
   
   initializeWiFi();
   initializeRFID();
@@ -104,6 +108,7 @@ void loop() {
   } 
   else {
     Serial.println("Error in WiFi connection or RFID reading.");
+    initializeWiFi();
   }
   delay(1000);
 }

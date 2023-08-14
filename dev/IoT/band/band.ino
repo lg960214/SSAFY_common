@@ -2,7 +2,30 @@
 #include <PubSubClient.h>
 #include <Adafruit_NeoPixel.h>
 #include <HTTPClient.h>
+#include <SPIFFS.h>
 
+//const int BOOT_BUTTON_PIN = 0;  // Boot 버튼의 GPIO 번호
+
+/*
+// 로깅 한수 정의
+void initFileSystem() {
+    if (!SPIFFS.begin(true)) {
+        Serial.println("An error occurred while mounting SPIFFS");
+        return;
+    }
+}
+
+// SPIFFS 초기화
+void logToFile(const String& message) {
+    File logFile = SPIFFS.open("/log.txt", "a");
+    if (!logFile) {
+        Serial.println("Failed to open log file for writing");
+        return;
+    }
+    logFile.println(message);
+    logFile.close();
+}
+*/
 // 네트워크 및 MQTT 정보 설정
 const char* ssid = "alveo";
 const char* password = "905612yy@@";
@@ -34,8 +57,7 @@ const unsigned long duration = 10 * 1000; //
 
 bool ledOff = false;
 unsigned long offTimestamp = 0;
-//const unsigned long offDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
-const unsigned long offDuration = 60 * 1000;
+const unsigned long offDuration = 20 * 60 * 1000;
 
 TaskHandle_t countdownTask; // Task handle for the countdown task
 
@@ -63,13 +85,14 @@ void setup_wifi() {
 // HTTP GET 요청 보내기
 void sendGetRequest(const String& deviceCode) {
   HTTPClient http;
-  String url = "http://i9a104.p.ssafy.io:8081/tags?deviceCode=" + deviceCode;
+  String url = "https://i9a104.p.ssafy.io/api/tags?deviceCode=" + deviceCode;
   http.begin(url);
 
   int httpResponseCode = http.GET();
   if (httpResponseCode > 0) {
     String response = http.getString();
     Serial.println("HTTP Response code: " + String(httpResponseCode));
+    logToFile("HTTP Response code: " + String(httpResponseCode));
     Serial.println("Response: " + response);
   } 
   else {
@@ -92,6 +115,7 @@ void handleReceivedMessage(char* topic, byte* payload, unsigned int length) {
   Serial.println(topic);
   Serial.print("Message: ");
   Serial.println(message);
+  logToFile("message");
 
   if (message == "your turn") {
     ledBlinking = true;
@@ -100,12 +124,10 @@ void handleReceivedMessage(char* topic, byte* payload, unsigned int length) {
   } 
   else if (message == "off") {
     ledBlinking = false;
-    //moving = false;
     for (int i = 0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, 0);  // LED를 끕니다.
     }
     strip.show();
-    //digitalWrite(ledPin, LOW);
     digitalWrite(movePin, LOW);
     ledOn = false;  // led가 켜진 상태에서 off메시지를 받으면 2분 카운트 정지
     // led가 꺼지면 20분 카운트 시작
@@ -123,10 +145,13 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
     if (client.connect(clientId)) {
       Serial.println("connected");
-      client.subscribe("f566c3a3");  // Topic
+      client.subscribe(deviceNum);  // Topic
+      digitalWrite(2, HIGH);
     } 
     else {
+      digitalWrite(2, LOW);
       Serial.print("failed, rc=");
+      logToFile("MQTT fail");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
       delay(5000);
@@ -139,6 +164,7 @@ void handleLEDActions(void* parameter) {
   static int currentLED = 0;
 
   while(1){
+    client.loop();
     if (ledBlinking) {
       strip.setPixelColor(currentLED, strip.Color(0, 0, 255));  // 파란색으로 설정
       strip.show();
@@ -154,7 +180,6 @@ void handleLEDActions(void* parameter) {
         strip.setPixelColor(i, 0);  // LED를 끕니다.
       }
       strip.show();
-    //digitalWrite(ledPin, LOW);
       Serial.println("noshownoshow");
       digitalWrite(movePin, LOW);
       ledBlinking = false;
@@ -166,11 +191,12 @@ void handleLEDActions(void* parameter) {
        bool result = client.publish("esp32", message);
       if(result) {
           Serial.println("Message successfully published!");
+          //logToFile("Message successfully published!");
       } else {
           Serial.println("Failed to publish the message.");
       }
       Serial.println(message);
-
+      //logToFile(message);
       // HTTP GET 요청 보내기
       sendGetRequest(deviceNum);
       Serial.println("stop");
@@ -183,21 +209,29 @@ void handleLEDActions(void* parameter) {
       snprintf(message, sizeof(message), "%s&%s&notag", deviceNum, readerNum);
       // topic "esp32/status"으로 메시지 송신
       client.publish("esp32", message);
-      // max시간(20분)이 다되었음을 led를 깜빡여 알려줌
-      //for(int t=0; t<5; t++){
-        //digitalWrite(ledPinMax, HIGH);
-        //delay(1000);
-        //digitalWrite(ledPinMax, LOW);
-        //delay(1000);
-      //}
     }
     vTaskDelay(100 / portTICK_PERIOD_MS); // delay를 줄이기 위해
   }
 }
+/*
+void printLogFileToSerial() {
+    File logFile = SPIFFS.open("/log.txt", "r");
+    if (!logFile) {
+        Serial.println("Failed to open log file for reading");
+        return;
+    }
 
+    while (logFile.available()) {
+        Serial.write(logFile.read());
+    }
+    logFile.close();
+}
+*/
 void setup() {
-  //pinMode(ledPin, OUTPUT);
-  //pinMode(ledPinMax, OUTPUT);
+  pinMode(2, OUTPUT); 
+  // Boot 버튼 설정
+  //pinMode(BOOT_BUTTON_PIN, INPUT_PULLUP);  // 내부 풀업 저항 사용
+  //initFileSystem();
   strip.begin();
   strip.show();
   pinMode(movePin, OUTPUT);
@@ -217,10 +251,15 @@ void setup() {
   );
 }
 
-
 void loop() {
   if (!client.connected()) {
     reconnect();
   }
+  /*
+  if (digitalRead(BOOT_BUTTON_PIN) == LOW) {
+        printLogFileToSerial();
+        delay(1000);  // 버튼 디바운싱과 연속적인 호출을 방지하기 위한 딜레이
+    }
+  */
   client.loop();
 }

@@ -2,6 +2,7 @@
 #include <PubSubClient.h>
 #include <Adafruit_NeoPixel.h>
 #include <HTTPClient.h>
+#include <SPIFFS.h>
 
 // 네트워크 및 MQTT 정보 설정
 const char* ssid = "alveo";
@@ -25,7 +26,7 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 
 bool ledBlinking = false;
-//bool moving = false;
+
 
 bool ledOn = false;
 unsigned long ledOnTime = 0;
@@ -34,8 +35,7 @@ const unsigned long duration = 10 * 1000; //
 
 bool ledOff = false;
 unsigned long offTimestamp = 0;
-//const unsigned long offDuration = 20 * 60 * 1000; // 20 minutes in milliseconds
-const unsigned long offDuration = 60 * 1000;
+const unsigned long offDuration = 20 * 60 * 1000;
 
 TaskHandle_t countdownTask; // Task handle for the countdown task
 
@@ -63,7 +63,7 @@ void setup_wifi() {
 // HTTP GET 요청 보내기
 void sendGetRequest(const String& deviceCode) {
   HTTPClient http;
-  String url = "http://i9a104.p.ssafy.io:8081/tags?deviceCode=" + deviceCode;
+  String url = "https://i9a104.p.ssafy.io/api/tags?deviceCode=" + deviceCode;
   http.begin(url);
 
   int httpResponseCode = http.GET();
@@ -100,12 +100,10 @@ void handleReceivedMessage(char* topic, byte* payload, unsigned int length) {
   } 
   else if (message == "off") {
     ledBlinking = false;
-    //moving = false;
     for (int i = 0; i < strip.numPixels(); i++) {
       strip.setPixelColor(i, 0);  // LED를 끕니다.
     }
     strip.show();
-    //digitalWrite(ledPin, LOW);
     digitalWrite(movePin, LOW);
     ledOn = false;  // led가 켜진 상태에서 off메시지를 받으면 2분 카운트 정지
     // led가 꺼지면 20분 카운트 시작
@@ -123,9 +121,11 @@ void reconnect() {
     Serial.print("Attempting MQTT connection...");
     if (client.connect(clientId)) {
       Serial.println("connected");
-      client.subscribe("a582c5a3");  // Topic
+      client.subscribe(deviceNum);  // Topic
+      digitalWrite(2, HIGH);
     } 
     else {
+      digitalWrite(2, LOW);                                   
       Serial.print("failed, rc=");
       Serial.print(client.state());
       Serial.println(" try again in 5 seconds");
@@ -139,6 +139,7 @@ void handleLEDActions(void* parameter) {
   static int currentLED = 0;
 
   while(1){
+    client.loop();
     if (ledBlinking) {
       strip.setPixelColor(currentLED, strip.Color(0, 0, 255));  // 파란색으로 설정
       strip.show();
@@ -154,7 +155,6 @@ void handleLEDActions(void* parameter) {
         strip.setPixelColor(i, 0);  // LED를 끕니다.
       }
       strip.show();
-    //digitalWrite(ledPin, LOW);
       Serial.println("noshownoshow");
       digitalWrite(movePin, LOW);
       ledBlinking = false;
@@ -183,21 +183,13 @@ void handleLEDActions(void* parameter) {
       snprintf(message, sizeof(message), "%s&%s&notag", deviceNum, readerNum);
       // topic "esp32/status"으로 메시지 송신
       client.publish("esp32", message);
-      // max시간(20분)이 다되었음을 led를 깜빡여 알려줌
-      //for(int t=0; t<5; t++){
-        //digitalWrite(ledPinMax, HIGH);
-        //delay(1000);
-        //digitalWrite(ledPinMax, LOW);
-        //delay(1000);
-      //}
     }
     vTaskDelay(100 / portTICK_PERIOD_MS); // delay를 줄이기 위해
   }
 }
 
 void setup() {
-  //pinMode(ledPin, OUTPUT);
-  //pinMode(ledPinMax, OUTPUT);
+  pinMode(2, OUTPUT); 
   strip.begin();
   strip.show();
   pinMode(movePin, OUTPUT);
@@ -216,7 +208,6 @@ void setup() {
     0                      
   );
 }
-
 
 void loop() {
   if (!client.connected()) {
