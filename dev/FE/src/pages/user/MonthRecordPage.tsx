@@ -1,6 +1,5 @@
 import { Exercise } from '@/pages/user/RecordPage';
 import dayjs from 'dayjs';
-// import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import recordApi from '@/api/recordApi';
 import { RankData } from '@/types/user.type';

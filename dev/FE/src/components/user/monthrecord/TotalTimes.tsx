@@ -1,6 +1,6 @@
 import { RankData } from '@/types/user.type';
 import { useEffect, useState } from 'react';
-import SectionHeader from './sectionHeader';
+import SectionHeader from './SectionHeader';
 interface TotalTimesProps {
   rankMonth: RankData[];
 }
