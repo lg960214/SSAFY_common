@@ -8,6 +8,7 @@ import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
+import com.example.a104.project.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,6 @@ public class UserService {
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
     private final AdminRepository adminRepository;
-
     public int countUsers(int gymCode){
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode).size();
     }
@@ -86,10 +86,14 @@ public class UserService {
         userRepository.Delete(id);
     }
 
-    @Transactional(dontRollbackOn = Exception.class)
+    //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
+<<<<<<< dev/BE/src/main/java/com/example/a104/project/service/UserService.java
         userRepository.UpdateGymCode(code,id);
+=======
+        log.info("logging"+adminRepository.findByGymCode(code));
+>>>>>>> dev/BE/src/main/java/com/example/a104/project/service/UserService.java
         if(adminRepository.findByGymCode(code) == null){
             log.info("Method : UpdateGymCode, Not Exist GymCode");
         }
@@ -97,13 +101,14 @@ public class UserService {
             count = userRepository.UpdateGymCode(code, id);
             log.info("Method : UpdateGymCode, Update GymCode");
         }
-//        try{
-//            count = userRepository.UpdateGymCode(code, id);
-//            log.info("Method : UpdateGymCode, Update GymCode");
-//        }
-//        catch (Exception e){
-//            log.info("Method : UpdateGymCode, Not Exist GymCode");
-//        }
+
+        // try{
+        //     count = userRepository.UpdateGymCode(code, id);
+        //     log.info("Method : UpdateGymCode, Update GymCode");
+        // }
+        // catch (Exception e){
+        //     log.info("Method : UpdateGymCode, Not Exist GymCode");
+        // }
 
         return count;
     }
