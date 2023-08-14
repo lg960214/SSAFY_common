@@ -87,8 +87,13 @@ const UserNavBar = () => {
           <br />
           <span>통계</span>
         </NavLink>
-        <div onClick={handleOpenModal} className=" w-[48px] fontBungee">
-          <img src="/img/navbar/sign-out.png" alt="" />
+        <div onClick={handleOpenModal} className="w-[48px] fontBungee">
+          <img
+            className="w-[36px] mx-auto"
+            src="/img/navbar/sign-out.png"
+            alt=""
+          />
+          <span className="text-xs">로그아웃</span>
         </div>
       </nav>
     </div>
