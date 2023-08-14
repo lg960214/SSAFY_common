@@ -4,12 +4,14 @@ import com.example.a104.project.dto.RealTimeDto;
 import com.example.a104.project.entity.*;
 import com.example.a104.project.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -26,7 +28,7 @@ public class AdminService {
             cnt = tagInfoRepository.findByReaderAndTagDate(readerVo.getReader(),date).size();
         }
         catch (Exception e){
-
+            log.info("Method : getDayUsing, no using data {} in {}",readerVo.getReader(),date);
         }
         return cnt;
     }
@@ -37,7 +39,7 @@ public class AdminService {
             cnt = countRepository.findBySearchAndName(date,readerVo.getName()).get(0).getCount();
         }
         catch (Exception e){
-
+            log.info("Method : getDaySearch, no search data {} in {}",readerVo.getReader(),date);
         }
         return cnt;
 
@@ -46,7 +48,6 @@ public class AdminService {
     public List<RealTimeDto> realTimeDtoList(int gymCode){
         List<ReaderEntity> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
         List<RealTimeDto> realTimeDtoList = new ArrayList<>();
-        System.out.println(realTimeDtoList);
         for(ReaderEntity readerVo: readerVoList){
             //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
             RealTimeDto realTimeDto = new RealTimeDto();
@@ -91,6 +92,7 @@ public class AdminService {
 
             realTimeDto.setWaitingList(userList); // 대기중인 사람들 리스트
             realTimeDto.setWaitingCount(cnt);
+            log.info("Method : realTimeDtoList, realTimeWaiting : {}",realTimeDto);
             realTimeDtoList.add(realTimeDto);
         }
         return realTimeDtoList;

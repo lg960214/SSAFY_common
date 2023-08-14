@@ -8,11 +8,14 @@ import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -81,8 +84,17 @@ public class UserService {
         userRepository.Delete(id);
     }
 
+    @Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
-        int count = userRepository.UpdateGymCode(code, id);
+        int count = 0;
+        try{
+            count = userRepository.UpdateGymCode(code, id);
+            log.info("Method : UpdateGymCode, Update GymCode");
+        }
+        catch (Exception e){
+            log.info("Method : UpdateGymCode, Not Exist GymCode");
+        }
+
         return count;
     }
 

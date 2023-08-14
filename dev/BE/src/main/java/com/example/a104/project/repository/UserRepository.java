@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface UserRepository extends JpaRepository<UserEntity,Integer> {
 
-    @Modifying
+    //@Modifying
     @Query("update UserEntity u set u.gymCode = :code where u.id= :id")
     int UpdateGymCode(int code, String id);
 

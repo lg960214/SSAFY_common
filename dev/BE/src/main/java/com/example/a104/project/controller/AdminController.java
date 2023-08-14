@@ -9,11 +9,13 @@ import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
 import com.example.a104.project.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Tag(name="관리자페이지 API", description = "관리자 페이지에서 사용되는 API 입니다.")
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -45,21 +48,32 @@ public class AdminController {
             @Parameter(name="date", description = "YYYY-MM-DD 형식의 날짜 데이터, 타입은 문자열")
     })
     @GetMapping("day-info")
-    public List<DayInfoDto> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
-        List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<ReaderEntity> readerVoList = readerService.getMatchReaders(gymCode);
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        for(ReaderEntity readerVo: readerVoList){
-            DayInfoDto dayInfoDto = new DayInfoDto();
-            dayInfoDto.setName(readerVo.getName());
-            dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
-            dayInfoDto.setUsingCount(adminService.getDayUsing(readerVo,localDate));
-            dayInfoDtoList.add(dayInfoDto);
+    public ResponseEntity<List<DayInfoDto>> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
+        try{
+            List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<ReaderEntity> readerVoList = readerService.getMatchReaders(gymCode);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            for(ReaderEntity readerVo: readerVoList){
+                DayInfoDto dayInfoDto = new DayInfoDto();
+                dayInfoDto.setName(readerVo.getName());
+                dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
+                dayInfoDto.setUsingCount(adminService.getDayUsing(readerVo,localDate));
+                dayInfoDtoList.add(dayInfoDto);
+            }
+            log.info("Method : getDayInfo, {} Gym {} search data and using data", gymCode, date);
+            return ResponseEntity.ok(dayInfoDtoList);
         }
-        return dayInfoDtoList;
+        catch(JwtException e){
+            log.info("Method: getDayInfo, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: getDayInfo, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // 헬스장 회원 검색(이름으로 검색)
@@ -69,11 +83,23 @@ public class AdminController {
             @Parameter(name="keyword", description = "검색할 키워드 문자열")
     })
     @GetMapping("search")
-    public List<UserEntity> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserEntity> users = adminService.search(keyword, gymCode);
-        return users;
+    public ResponseEntity<List<UserEntity>> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> users = adminService.search(keyword, gymCode);
+            log.info("Method : search, search User keyword : {}",keyword);
+            return ResponseEntity.ok(users);
+        }
+        catch(JwtException e){
+            log.info("Method: search, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: search, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 헬스장 회원 삭제
@@ -86,6 +112,7 @@ public class AdminController {
         // 회원의 탈퇴 날짜 저장
         int userId = userDateService.createUserId(map.get("id"));
         userDateService.dropout(userId);
+        log.info("Method : delete, delete {} user", map.get("id"));
         return "Delete Success";
     }
 
@@ -94,47 +121,82 @@ public class AdminController {
     @Modifying
     @Transactional
     @PutMapping("approval")
-    public String approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, String> map) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        String id = map.get("id");
-        adminService.approval(1, id);
+    public ResponseEntity<String> approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, String> map) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            String id = map.get("id");
+            adminService.approval(1, id);
 
-        // 승인 후 승인 날짜 저장
-        int userId = userDateService.createUserId(id);
-        userDateService.accessAdmin(userId);
-        return "Success";
+            // 승인 후 승인 날짜 저장
+            int userId = userDateService.createUserId(id);
+            userDateService.accessAdmin(userId);
+            log.info("Method : approval, approval {} user",map.get("id"));
+            return ResponseEntity.ok("Success");
+        }
+        catch(JwtException e){
+            log.info("Method: approval, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: approval, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
     @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
     @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("unauthorized-users")
-    public List<UserDto> unAutorizedUsers(@RequestHeader(value = "Authorization") String token) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserEntity> users = adminService.unauthorizedUser(gymCode);
-        List<UserDto> userDtoList = new ArrayList<>();
-        for(UserEntity userVo: users){
-            UserDto userDto = new UserDto();
-            userDto.setDate(userDateService.getUserDate(userVo.getUserId()));
-            userDto.setUserId(userVo.getUserId());
-            userDto.setName(userVo.getName());
-            userDto.setId(userVo.getId());
-            userDtoList.add(userDto);
+    public ResponseEntity<List<UserDto>> unAuthorizedUsers(@RequestHeader(value = "Authorization") String token) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> users = adminService.unauthorizedUser(gymCode);
+            List<UserDto> userDtoList = new ArrayList<>();
+            for(UserEntity userVo: users){
+                UserDto userDto = new UserDto();
+                userDto.setDate(userDateService.getUserDate(userVo.getUserId()));
+                userDto.setUserId(userVo.getUserId());
+                userDto.setName(userVo.getName());
+                userDto.setId(userVo.getId());
+                userDtoList.add(userDto);
+            }
+            log.info("Method : unAuthorizedUsers, {} Gym get unAuthorizedUsers {}",gymCode, userDtoList);
+            return ResponseEntity.ok(userDtoList);
         }
-        return userDtoList;
+        catch(JwtException e){
+            log.info("Method: unAuthorizedUsers, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: unAuthorizedUsers, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
     @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
     @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("users")
-    public List<UserEntity> userList(@RequestHeader(value = "Authorization") String token) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserEntity> userList = adminService.userList(gymCode);
-        return userList;
+    public ResponseEntity<List<UserEntity>> userList(@RequestHeader(value = "Authorization") String token) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> userList = adminService.userList(gymCode);
+            log.info("Method : userList, {} Gym's UserList : {}",gymCode, userList);
+            return ResponseEntity.ok(userList);
+        }
+        catch(JwtException e){
+            log.info("Method: userList, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: userList, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     @Operation(summary = "관리자 로그인",description = "아이디와 비밀번호를 입력받아 로그인.")
@@ -144,6 +206,7 @@ public class AdminController {
 
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
+        log.info("Method : login, {} admin login",map.get("id"));
         try {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
@@ -151,11 +214,11 @@ public class AdminController {
                 tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),null,admin.get(0).getName(),
                         claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
-
+                log.info("admin login success");
                 return tokenResponse;
             }
-        } catch (Exception siginError) {
-
+        } catch (Exception loginError) {
+            log.error("admin login fail");
         }
 
         tokenResponse = new TokenResponse("202", "FAIL", "FAIL");
