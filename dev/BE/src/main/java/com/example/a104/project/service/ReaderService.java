@@ -1,6 +1,6 @@
 package com.example.a104.project.service;
 
-import com.example.a104.project.entity.ReaderVo;
+import com.example.a104.project.entity.ReaderEntity;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,14 +13,19 @@ import java.util.List;
 public class ReaderService {
     private final ReaderRepository readerRepository;
     private final ReservationRepository reservationRepository;
-    public List<ReaderVo> getReaderList(int gymCode){
+    public List<ReaderEntity> getReaderList(int gymCode){
         return readerRepository.findByGymCode(gymCode);
     }
-    public List<ReaderVo> getMatchReaders(int gymCode){
+    public List<ReaderEntity> getMatchReaders(int gymCode){
         return readerRepository.findByGymCodeAndNameIsNotNull(gymCode);
     }
-    public void updateReader(List<ReaderVo> readers){
-        for(ReaderVo reader: readers){
+
+
+    public ReaderEntity getReader(String reader){
+        return readerRepository.findByReader(reader);
+    }
+    public void updateReader(List<ReaderEntity> readers){
+        for(ReaderEntity reader: readers){
             readerRepository.save(reader);
         }
     }

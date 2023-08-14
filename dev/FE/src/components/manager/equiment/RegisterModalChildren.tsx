@@ -4,21 +4,23 @@ interface RegisterModalChildrenProps {
   currentZone: string;
   readerData: Reader[];
   setWholeData: (data: Reader[]) => void;
+  closeModalFunc: () => void;
 }
 
 const RegisterModalChildren = ({
   currentZone,
   readerData,
   setWholeData,
+  closeModalFunc,
 }: RegisterModalChildrenProps) => {
   const unregisteredReaders = readerData.filter((cur) => cur.region === null);
   return (
-    <div className="bg-white rounded-lg w-[440px] h-[480px] px-4 border-black border-2 overflow-y-auto">
-      <div className="flex justify-evenly items-center h-12 basis-32 text-center border-b-2 border-black">
+    <div className="bg-white rounded-lg w-[440px] h-[510px] px-4 border-black border-2 overflow-y-auto">
+      <div className="flex justify-evenly items-center h-12 mt-2 basis-32 text-center border-b-2 border-black">
         <span className="basis-1/2">리더 코드</span>
         <span className="basis-1/2"></span>
       </div>
-      <div className="h-[400px]">
+      <div className="h-[340px] mt-[20px] overflow-y-auto">
         {unregisteredReaders.map((cur) => (
           <ReaderElement
             key={cur.reader}
@@ -33,6 +35,14 @@ const RegisterModalChildren = ({
             }}
           />
         ))}
+      </div>
+      <div className="w-[400px] flex justify-center">
+        <button
+          className="mt-[30px] bg-gray-400 text-white"
+          onClick={closeModalFunc}
+        >
+          닫기
+        </button>
       </div>
     </div>
   );

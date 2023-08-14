@@ -5,14 +5,27 @@ import { MemberInfo } from '@/types/member.type';
 
 interface ItemsProps {
   currentItems: MemberInfo[];
+  currentPage: number;
+  setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
-const Items: React.FC<ItemsProps> = ({ currentItems }) => {
+const Items: React.FC<ItemsProps> = ({
+  currentItems,
+  currentPage,
+  setCurrentPage,
+}) => {
   return (
     <>
       {currentItems &&
         currentItems.map((item) => {
-          return <MemberItem key={item.userId} {...item} />;
+          return (
+            <MemberItem
+              key={item.userId}
+              item={item}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+            />
+          );
         })}
     </>
   );
@@ -36,42 +49,52 @@ const MemberPaginatedItems: React.FC<PaginatedItemsProps> = ({
       item.name.includes(checkText),
     );
     setDummyItems(filterItems);
-    setItemOffset(0);
   }, [checkText, memberInfoLists]);
+
+  useEffect(() => {
+    setItemOffset(0);
+    setCurrentPage(0);
+  }, [checkText]);
 
   const [itemOffset, setItemOffset] = useState(0);
   const endOffset = itemOffset + itemsPerPage;
   const currentItems = items.slice(itemOffset, endOffset);
   const pageCount = Math.ceil(items.length / itemsPerPage);
-  const pageIndex = itemOffset / itemsPerPage;
+  const [currentPage, setCurrentPage] = useState<number>(0);
 
   const handlePageClick = (event: { selected: number }) => {
     const newOffset = (event.selected * itemsPerPage) % items.length;
     setItemOffset(newOffset);
+    setCurrentPage(event.selected + 1);
   };
 
   return (
     <div className="flex flex-col h-[620px] justify-between">
       <div>
         <ul className="">
-          <Items currentItems={currentItems} />
+          <Items
+            currentItems={currentItems}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
         </ul>
       </div>
       <div>
         <ReactPaginate
           breakLabel="..."
           nextLabel=">"
-          nextLinkClassName="text-white hover:text-red-600"
-          className="flex justify-center  text-xl"
-          pageLinkClassName=" mx-2 text-white hover:text-red-600"
+          nextLinkClassName="text-[#323554] hover:text-CustomOrange"
+          className="flex justify-center text-xl"
+          pageLinkClassName=" mx-2 text-[#323554] hover:text-CustomOrange"
           disabledLinkClassName="text-black"
-          activeLinkClassName="font-extrabold border-b-2 border-white"
+          activeLinkClassName="font-extrabold border-b-2 text-[#323554] border-[#323554]"
           onPageChange={handlePageClick}
           pageRangeDisplayed={5}
           pageCount={pageCount}
           previousLabel="<"
-          previousLinkClassName="text-white hover:text-red-600"
+          previousLinkClassName="text-[#323554] hover:text-CustomOrange"
           renderOnZeroPageCount={null}
+          // forcePage={currentPage}
         />
       </div>
     </div>

@@ -18,3 +18,9 @@ export interface SearchingData {
   week2: number | null;
   week3: number | null;
 }
+
+export interface RankData {
+  userId: number;
+  id: string;
+  second: number;
+}

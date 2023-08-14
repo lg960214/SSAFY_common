@@ -1,6 +1,6 @@
-import { UsageData } from '@/types/usage';
-import './usagechart.css';
+import { UsageData } from '@/types/usage.type';
 import { useState } from 'react';
+import ShowData from './ShowData';
 
 interface SearchDataProps {
   dailyUsageData: UsageData[];
@@ -24,45 +24,29 @@ const SearchData = ({ dailyUsageData }: SearchDataProps) => {
   };
 
   const renderedData = getCurrentPageData();
-  console.log(renderedData);
   return (
     <>
-      <div className="searchbox mx-auto flex flex-col justify-between">
-        <p className="fontBungee text-center text-3xl pt-5"> Search data</p>
+      <div className="float-left -mt-11 pt-5 w-[420px] h-[600px] rounded-[20px] bg-slate-200 mx-auto flex flex-col justify-between shadow-right-bottom shadow-gray-300">
         <ul>
           {renderedData.map((item) => (
-            <li className="flex equipmentbox mx-auto my-6" key={item.name}>
-              <img
-                className="w-24 h-24 mt-4 ms-4"
-                src={`/img/equipments/${item.name.replace(/[0-9]/g, '')}.png`}
-                alt={`${item.name.replace(/[0-9]/g, '')}.png`}
-              />
-              <li className="ms-[15px] w-[110px]">
-                <p className="fontJeju text-[20px] text-center pt-[20px]">
-                  {item.name}
-                </p>
-                <p className="fontBungee text-4xl pt-[20px] text-center">
-                  {item.searchCount}
-                </p>
-              </li>
-            </li>
+            <ShowData renderData={item} key={item.name} />
           ))}
         </ul>
-        <div className=" flex justify-center fontBungee text-2xl">
+        <div className=" flex justify-center font-Bungee text-2xl ">
           {Array.from(
             { length: Math.ceil(dailyUsageData.length / itemsPerPage) },
             (_, index) => (
               <button
+                className="bg-slate-200 "
                 key={index + 1}
                 onClick={() => handlePageChange(index + 1)}
               >
-                {index + 1}
+                <span>{index + 1}</span>
               </button>
             ),
           )}
         </div>
       </div>
-      ;
     </>
   );
 };

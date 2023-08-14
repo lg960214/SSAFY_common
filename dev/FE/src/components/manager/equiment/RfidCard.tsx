@@ -29,32 +29,27 @@ const RfidCard = ({
     onEquipmentDrop,
     data,
   );
-  const { isDragging, getItem, drag, preview } = useDraggable(
-    'reader',
-    data.reader,
-  );
+  const { drag } = useDraggable('reader', data.reader);
   drag(drop(ref));
 
   return (
     <div
       ref={isOnEdit ? ref : null}
-      style={{ backgroundColor: isOver ? 'red' : '#FF8000' }}
-      className="mx-4 bg-orange-500 w-40 h-48 rounded-3xl flex flex-col justify-around items-center"
+      style={{ backgroundColor: isOver ? 'red' : undefined }}
+      className={`mx-4 w-40 h-48 bg-CustomOrange rounded-lg shadow-right-bottom flex flex-col justify-around items-center relative ${
+        isOnEdit ? 'hover:cursor-pointer hover:shadow-2xl' : ''
+      }`}
     >
-      <div className="flex">
-        <span className={`text-white ml-${isOnEdit ? 7 : 0}`}>
-          {data.reader}
-        </span>
-        {isOnEdit ? (
-          <img
-            onClick={() => deleteReader(data)}
-            className="ml-1 hover:cursor-pointer"
-            width={24}
-            src="/img/cancel.svg"
-            alt="delete"
-          />
-        ) : null}
-      </div>
+      <span className="text-white text-xl font-semibold">{data.reader}</span>
+      {isOnEdit ? (
+        <img
+          onClick={() => deleteReader(data)}
+          className="ml-1 pt-1 hover:cursor-pointer absolute right-7 top-[9px]"
+          width={24}
+          src="/img/cancel.svg"
+          alt="delete"
+        />
+      ) : null}
       <EquipmentCard title={data.name} equipment={pureName} />
     </div>
   );

@@ -5,11 +5,14 @@ interface ViewSectionButtonProps {
 
 const ViewSectionButton = ({ section, onClick }: ViewSectionButtonProps) => {
   return (
-    <button className="w-60 h-36 bg-CustomGray m-10 pt-3" onClick={onClick}>
-      <span className="fontJeju text-4xl">
-        <span className="fontBungee">{section}</span> 구역
+    <div
+      className="w-60 h-36 m-10 flex justify-center items-center rounded-xl bg-CustomOrange hover:bg-rose-500 shadow-gray-400 shadow-right-bottom hover:cursor-pointer"
+      onClick={onClick}
+    >
+      <span className="font-Jeju text-4xl text-white">
+        <span className="font-Bungee">{section}</span> 구역
       </span>
-    </button>
+    </div>
   );
 };
 
