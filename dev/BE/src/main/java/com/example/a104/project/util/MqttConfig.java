@@ -100,9 +100,8 @@ public class MqttConfig implements MqttCallback {
                 // 3. 해당 deviceCode(Topic)으로 메세지 전송
                 send(deviceCode, "your turn");
             }
-            // 다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
-            else {
-                System.out.println("====================check==============");
+            //다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
+            else{
                 readerStateRepository.nExistReservation(reader);
             }
         } else {

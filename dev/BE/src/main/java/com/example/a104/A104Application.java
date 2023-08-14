@@ -10,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
 @SpringBootApplication
-@EnableScheduling
+//@EnableScheduling
 @ComponentScan(basePackages = "com.example.a104.project")
 public class A104Application {
     
@@ -25,10 +25,5 @@ public class A104Application {
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
         mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
         System.out.println("구독 완료");
-
-
     }
-
-
-
 }
