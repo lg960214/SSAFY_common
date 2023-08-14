@@ -1,5 +1,6 @@
 import { RankData } from '@/types/user.type';
 import { useEffect, useState } from 'react';
+import SectionHeader from './sectionHeader';
 interface TotalTimesProps {
   rankMonth: RankData[];
 }
@@ -16,11 +17,9 @@ const TotalTimes = ({ rankMonth }: TotalTimesProps) => {
     }
   }, [rankMonth]);
   return (
-    <div className="w-[200px] mt-[5px]">
-      <div className="w-[120px] h-[30px] mx-auto bg-CustomOrange rounded-[20px] text-white font-Jeju text-center text-[20px]">
-        총 운동시간
-      </div>
-      <div className="w-[120px] h-[30px] mt-[5px] mx-auto font-Jeju text-[20px]">
+    <div className="">
+      <SectionHeader title="총 운동시간" />
+      <div className="font-Jeju text-[20px]">
         <p className="text-center">{myTime} 분</p>
       </div>
     </div>

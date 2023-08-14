@@ -23,13 +23,10 @@ const MonthRecordPage = () => {
   const resetListData = async () => {
     const response = await recordApi({ date: searchMonth.format('YYYY-MM') });
     setExerciseList11(response);
-    return response;
   };
   const resetRankData = async () => {
-    console.log(searchMonth.format('YYYY-MM'));
     const responserank = await getRank(searchMonth.format('YYYY-MM'));
     setRankMonth(responserank);
-    console.log(responserank);
   };
 
   useEffect(() => {
@@ -38,15 +35,17 @@ const MonthRecordPage = () => {
   }, [searchMonth]);
 
   return (
-    <>
-      <div className="flex justify-center mx-auto w-[350px] items-center bg-CustomNavy h-14 text-white rounded-lg">
+    <div className="mb-[70px]">
+      <div className="flex justify-center mx-auto items-center bg-CustomNavy h-14 text-white rounded-lg">
         <MonthSelect
           searchMonth={searchMonth}
           setSearchMonth={setSearchMonth}
         />
       </div>
-      <div className="w-[360px] h-[710px] rounded-[15px] bg-white mx-auto">
-        <div className="flex">
+      <div className="mx-auto">
+        <WholeMonthRank rankMonth={rankMonth} />
+        <div className="my-2 border"></div>
+        <div className="flex justify-around mt-2 mb-6">
           <div>
             <MyRank rankMonth={rankMonth} />
           </div>
@@ -55,11 +54,10 @@ const MonthRecordPage = () => {
             <TotalTimes rankMonth={rankMonth} />
           </div>
         </div>
-        <WholeMonthRank rankMonth={rankMonth} />
         <CountStandard exerciseList1={exerciseList1} />
         <TimeStandard exerciseList1={exerciseList1} />
       </div>
-    </>
+    </div>
   );
 };
 
