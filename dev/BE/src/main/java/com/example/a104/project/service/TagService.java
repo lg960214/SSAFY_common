@@ -5,7 +5,7 @@ import com.example.a104.project.entity.ReservationEntity;
 import com.example.a104.project.entity.TagInfoEntity;
 import com.example.a104.project.entity.UserEntity;
 import com.example.a104.project.repository.*;
-import com.example.a104.project.util.MqttConfig;
+import com.example.a104.project.util.MqttConfig2;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,7 @@ public class TagService {
     private final ReservationRepository reservationRepository;
     private final TagInfoRepository tagInfoRepository;
     private final UserRepository userRepository;
-    private final TagService tagService;
-    private final ReaderService readerService;
-    private final AdminService adminService;
-    private final DeviceService deviceService;
+
 
     public void Tagging(String deviceCode, String reader) {
         ReaderStateEntity readerState = readerStateRepository.findByReader(reader);
@@ -65,8 +62,8 @@ public class TagService {
                                 List<ReservationEntity> reservationList = reservationRepository
                                         .findByReaderOrderByReservationAsc(readers.getReader());
                                 if (reservationList.size() != 0) {
-                                    MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository,
-                                            readerStateRepository, tagService,readerService,adminService,deviceService);
+                                    MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository,
+                                            readerStateRepository);
 
                                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                     readerStateRepository.ExistReservation(readers.getReader());
@@ -91,7 +88,7 @@ public class TagService {
                                 ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 0, user.getUserId());
 
                                 // =============메시지 off 전송====================
-                                MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository,tagService,readerService,adminService,deviceService);
+                                MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                                 mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                 mqtt.send(deviceCode, "off");
                                 mqtt.close();
@@ -118,7 +115,7 @@ public class TagService {
                                 ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 0, user.getUserId());
 
                                 // =============메시지 off 전송====================
-                                MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository,tagService,readerService,adminService,deviceService);
+                                MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                                 mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                                 mqtt.send(deviceCode, "off");
                                 mqtt.close();
@@ -173,7 +170,7 @@ public class TagService {
                     List<ReservationEntity> reservationList = reservationRepository
                             .findByReaderOrderByReservationAsc(readers.getReader());
                     if (reservationList.size() != 0) {
-                        MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository,tagService,readerService,adminService,deviceService);
+                        MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                         mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                         readerStateRepository.ExistReservation(readers.getReader());
                         int userId = reservationList.get(0).getUserId();
@@ -208,7 +205,7 @@ public class TagService {
                     ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 0, user.getUserId());
 
                     // =============메시지 off 전송====================
-                    MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository,tagService,readerService,adminService,deviceService);
+                    MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
 
 
@@ -244,7 +241,7 @@ public class TagService {
 
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
-                    MqttConfig mqtt = new MqttConfig(userRepository, reservationRepository, readerStateRepository,tagService,readerService,adminService,deviceService);
+                    MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                     ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 2, null);
                     readerStateRepository.save(readerStateVo);

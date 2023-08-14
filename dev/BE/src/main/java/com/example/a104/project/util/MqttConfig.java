@@ -41,6 +41,7 @@ public class MqttConfig implements MqttCallback {
         this.deviceService = deviceService;
     }
 
+
     // clientId는 broker가 클라이언트를 식별하기 위한 문자열 - 고유
     public MqttConfig init(String server, String clientId) {
         try {
