@@ -27,7 +27,7 @@ const ApproveContent = ({
 
 const ApproveItem = ({ ...item }: UnAuthorizedUser) => {
   return (
-    <div className="flex justify-evenly items-center h-12 basis-32 text-center">
+    <div className="flex justify-evenly items-center h-12 border-b-[1px] border-CustomNavy/10 basis-32 text-center">
       <span className="basis-1/4">{item.name}</span>
       <span className="basis-1/4">{item.userId}</span>
       <span className="basis-1/4">{item.date}</span>
