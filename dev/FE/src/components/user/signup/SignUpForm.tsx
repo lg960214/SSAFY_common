@@ -84,6 +84,12 @@ const SignUpForm = () => {
       return;
     }
 
+    // ID 최대 12자
+    if (id.length > 12) {
+      setErrorMessage('ID는 최대 12자 까지 설정 가능합니다.');
+      return;
+    }
+
     // ID가 알파벳과 숫자로만 구성되어 있는지 확인
     if (!/^[A-Za-z0-9]+$/.test(id)) {
       setErrorMessage('ID는 알파벳과 숫자로만 구성되어야 합니다.');
