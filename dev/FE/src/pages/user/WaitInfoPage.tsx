@@ -13,6 +13,7 @@ import FormInput from '@/components/common/FormInput';
 import { registGym } from '@/api/waitInfoApi';
 import { GymEquipments, SearchingData } from '@/types/user.type';
 import { useLocation, useNavigate } from 'react-router-dom';
+import EquipmentStatus from '@/components/user/waitinfo/EquipmentStatus';
 
 const WaitInfoPage = () => {
   const token = JSON.parse(localStorage.getItem('userToken') as string);
@@ -59,14 +60,18 @@ const WaitInfoPage = () => {
     }
   }, [location]);
 
+  const [equipmentStatus, setEquipmentStatus] = useState<boolean>(false);
   // 헬스장 기구정보
   const { data } = useQuery(['getGymEquipments'], getGymEquipments, {
     enabled: !!getGymName,
   });
 
-  const [searchingData, setSearchingData] = useState<SearchingData | null>(
-    null,
-  );
+  const [searchingData, setSearchingData] = useState<SearchingData>({
+    now: 0,
+    week: 0,
+    week2: 0,
+    week3: 0,
+  });
   // 헬스장 기구 검색
   const gymSearchMutation = useMutation(
     () =>
@@ -79,6 +84,7 @@ const WaitInfoPage = () => {
     {
       onSuccess: (data) => {
         setSearchingData(data);
+        setEquipmentStatus(true);
       },
     },
   );
@@ -101,15 +107,19 @@ const WaitInfoPage = () => {
 
   useEffect(() => {
     const date = new Date();
-    const roundedMinute = (Math.ceil(date.getMinutes() / 10) * 10) % 60;
-    setHour(String(date.getHours()));
-    setMinute(String(roundedMinute));
+    const roundedMinute = Math.ceil(date.getMinutes() / 10) * 10;
+    if (roundedMinute === 60) {
+      setHour(String((date.getHours() + 1) % 24));
+    } else {
+      setHour(String(date.getHours()));
+    }
+    setMinute(String(roundedMinute % 60));
   }, []);
 
   return (
     <div className="">
       {checkGymApprove ? (
-        <>
+        <div className="mb-[60px]">
           <WaitTitle text={getGymName} />
           <div className="p-4 mb-5">
             <span className="float-right">현재 {usingGymUsers}명 이용중</span>
@@ -165,53 +175,18 @@ const WaitInfoPage = () => {
             </div>
           </div>
           <div className="w-[360px] h-[200px] mt-8 flex justify-evenly py-4 bg-slate-200 rounded-lg mx-auto">
-            <div className="w-[120px] text-black border-r-2 border-black">
-              <span className="font-bold text-center">
-                현재 <br /> {pickEquipment?.name}
-              </span>
-              <p>
-                {!searchingData
-                  ? 0
-                  : !searchingData.now
-                  ? 0
-                  : searchingData.now}
-                명
-                <br />
-                사용중
-              </p>
-            </div>
-            <div className="flex flex-col justify-evenly">
-              <div></div>
-              <div className="w-[176px] h-[40px] bg-white rounded">
-                저번주:
-                {!searchingData
-                  ? 0
-                  : !searchingData.week
-                  ? 0
-                  : searchingData.week}
-                명
-              </div>
-              <div className="w-[176px] h-[40px] bg-white rounded">
-                저저번주:
-                {!searchingData
-                  ? 0
-                  : !searchingData.week2
-                  ? 0
-                  : searchingData.week2}
-                명
-              </div>
-              <div className="w-[176px] h-[40px] bg-white rounded">
-                저저저번주:
-                {!searchingData
-                  ? 0
-                  : !searchingData.week3
-                  ? 0
-                  : searchingData.week3}
-                명
-              </div>
-            </div>
+            {equipmentStatus === false ? (
+              '원하는 기구와 시간을 검색해주세요'
+            ) : (
+              <EquipmentStatus
+                pickEquipment={pickEquipment}
+                searchingData={searchingData}
+                hour={hour}
+                minute={minute}
+              />
+            )}
           </div>
-        </>
+        </div>
       ) : (
         <>
           <WaitTitle text="헬스장을 등록하세요!" />
