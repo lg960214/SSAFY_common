@@ -1,12 +1,20 @@
 package com.example.a104.project.util;
 
+import com.example.a104.project.dto.RealTimeDto;
+import com.example.a104.project.entity.ReaderEntity;
 import com.example.a104.project.entity.ReservationEntity;
 import com.example.a104.project.repository.ReaderStateRepository;
 import com.example.a104.project.repository.ReservationRepository;
 import com.example.a104.project.repository.UserRepository;
+import com.example.a104.project.service.AdminService;
+import com.example.a104.project.service.DeviceService;
+import com.example.a104.project.service.ReaderService;
+import com.example.a104.project.service.TagService;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 
@@ -18,12 +26,19 @@ public class MqttConfig implements MqttCallback {
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
     private final ReaderStateRepository readerStateRepository;
-
+    private final TagService tagService;
+    private final ReaderService readerService;
+    private final AdminService adminService;
+    private final DeviceService deviceService;
     public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository,
-            ReaderStateRepository readerStateRepository) {
+            ReaderStateRepository readerStateRepository, TagService tagService, ReaderService readerService, AdminService adminService, DeviceService deviceService) {
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.readerStateRepository = readerStateRepository;
+        this.tagService = tagService;
+        this.readerService = readerService;
+        this.adminService = adminService;
+        this.deviceService = deviceService;
     }
 
     // clientId는 broker가 클라이언트를 식별하기 위한 문자열 - 고유
@@ -85,6 +100,8 @@ public class MqttConfig implements MqttCallback {
         String msg = new String(message.getPayload());
         String arr[] = msg.split("&");
         if (arr[2].equals("noshow")) {
+            EmitterList emitterList = new EmitterList();
+            List<SseEmitter> sseEmitterList = emitterList.getEmitters();
             // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
             int userId = userRepository.findByDeviceCode(arr[0]).getUserId(); // 노쇼한 사람의 userId
             // 1. 노쇼 한 사람의 예약 취소
@@ -92,6 +109,17 @@ public class MqttConfig implements MqttCallback {
             reservationRepository.deleteByUserId(userId);
             // 2. 해당 기국 다음 차례 사람 찾기 => deviceCode
             List<ReservationEntity> list = reservationRepository.findByReaderOrderByReservationAsc(reader);
+
+            int gymCode =deviceService.getDevice(arr[0]).getGymCode();
+            List<RealTimeDto> list2 = adminService.realTimeDtoList(gymCode);
+            for (SseEmitter emitter : sseEmitterList) {
+                try {
+                    emitter.send(list2, MediaType.APPLICATION_JSON);
+                } catch (Exception e) {
+
+                }
+            }
+
 
             // 다음 예약자가 있는 경우
             if (list.size() != 0) {
@@ -104,8 +132,23 @@ public class MqttConfig implements MqttCallback {
             else{
                 readerStateRepository.nExistReservation(reader);
             }
-        } else {
-            send("esp32/led", "notag");
+        } else if(arr[2].equals("tag")) {
+            String deviceCode = arr[0];
+            String reader = arr[1];
+            EmitterList emitterList = new EmitterList();
+            List<SseEmitter> sseEmitterList = emitterList.getEmitters();
+            tagService.Tagging(deviceCode, reader);
+            ReaderEntity readerVo = readerService.getReader(reader);
+            int gymCode = readerVo.getGymCode();
+            List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
+            for (SseEmitter emitter : sseEmitterList) {
+                try {
+                    emitter.send(list, MediaType.APPLICATION_JSON);
+                } catch (Exception e) {
+
+                }
+            }
+
 
         }
 
