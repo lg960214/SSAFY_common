@@ -89,11 +89,8 @@ public class UserService {
     //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
-<<<<<<< dev/BE/src/main/java/com/example/a104/project/service/UserService.java
         userRepository.UpdateGymCode(code,id);
-=======
         log.info("logging"+adminRepository.findByGymCode(code));
->>>>>>> dev/BE/src/main/java/com/example/a104/project/service/UserService.java
         if(adminRepository.findByGymCode(code) == null){
             log.info("Method : UpdateGymCode, Not Exist GymCode");
         }
