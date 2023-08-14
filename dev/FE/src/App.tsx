@@ -22,6 +22,7 @@ import SignUpPage from './pages/user/SignUpPage';
 import UserNavBar from './components/common/UserNavBar';
 import ManagerAuthGuard from './components/manager/auth/ManagerAuthGuard';
 import UserAuthGuard from './components/user/auth/UserAuthGuard';
+import NotFoundPage from './pages/etc/NotFoundPage';
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -54,6 +55,7 @@ const App: React.FC = () => {
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
             </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </>
         </Routes>
       </Router>
