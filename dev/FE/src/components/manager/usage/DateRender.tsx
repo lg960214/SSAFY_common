@@ -28,19 +28,19 @@ const DateRender = ({
   return (
     <>
       <img
-        className=" w-10 h-10 -z-[0]"
+        className=" w-10 h-10 -z-[0] cursor-pointer"
         src="img/usage/left_circle.png"
         alt="left_circle"
         onClick={() => handleDate(0)}
       />
       <p
-        className="mx-2 pt-1 font-Bungee text-3xl"
+        className="mx-2 pt-1 font-Bungee text-3xl cursor-pointer"
         onClick={() => setDropdownVisibility(!dropdownVisibility)}
       >
         {todayDate.format('MM - DD')}
       </p>
       <img
-        className=" w-10 h-10"
+        className=" w-10 h-10 cursor-pointer"
         src="img/usage/right_circle.png"
         alt="right_circle"
         onClick={() => handleDate(1)}

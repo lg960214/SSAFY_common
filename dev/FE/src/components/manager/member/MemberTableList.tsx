@@ -18,7 +18,7 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
     { title: '태그 번호', className: 'w-28' },
   ];
   return (
-    <div className="bg-slate-200 w-full h-[700px] -mt-12 z-10 relative text-[#323554] p-2 rounded-2xl shadow-lg">
+    <div className="bg-slate-200 w-full h-[700px] -mt-12 z-10 relative text-[#323554] py-2 px-5 rounded-2xl shadow-lg">
       <div className="flex justify-evenly items-center h-12 text-center text-lg font-bold">
         {tableName.map((item, idx: number) => {
           return (
