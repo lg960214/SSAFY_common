@@ -80,9 +80,6 @@ const WaitInfoPage = () => {
       onSuccess: (data) => {
         setSearchingData(data);
       },
-      onError: () => {
-        alert('기구를 선택해주세요!');
-      },
     },
   );
 
@@ -104,7 +101,7 @@ const WaitInfoPage = () => {
 
   useEffect(() => {
     const date = new Date();
-    const roundedMinute = Math.ceil(date.getMinutes() / 10) * 10;
+    const roundedMinute = (Math.ceil(date.getMinutes() / 10) * 10) % 60;
     setHour(String(date.getHours()));
     setMinute(String(roundedMinute));
   }, []);
@@ -154,7 +151,13 @@ const WaitInfoPage = () => {
                 />
               </div>
               <button
-                onClick={() => gymSearchMutation.mutate()}
+                onClick={() => {
+                  if (pickEquipment === null) {
+                    alert('기구를 선택해 주세요!');
+                  } else {
+                    gymSearchMutation.mutate();
+                  }
+                }}
                 className="w-25 h-11 bg-CustomOrange text-white"
               >
                 조회
