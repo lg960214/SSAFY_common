@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { RankData } from '@/types/user.type';
-import SectionHeader from './sectionHeader';
+import SectionHeader from './SectionHeader';
 interface MyRankProps {
   rankMonth: RankData[];
 }
@@ -8,7 +8,6 @@ interface MyRankProps {
 const MyRank = ({ rankMonth }: MyRankProps) => {
   const tokendata = localStorage.getItem('userToken');
   const [myRank, setMyRank] = useState<number>(0);
-  const [icon, setIcon] = useState<string>('');
 
   const medal = ['goldmedal', 'silvermedal', 'bronzemedal'];
 

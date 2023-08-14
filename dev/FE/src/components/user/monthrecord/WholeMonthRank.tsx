@@ -1,6 +1,6 @@
 import { RankData } from '@/types/user.type';
 import DetailRank from './DetailRank';
-import SectionHeader from './sectionHeader';
+import SectionHeader from './SectionHeader';
 interface WholeMonthRankProps {
   rankMonth: RankData[];
 }

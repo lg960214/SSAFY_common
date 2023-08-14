@@ -1,5 +1,5 @@
 import { Exercise } from '@/pages/user/RecordPage';
-import SectionHeader from './sectionHeader';
+import SectionHeader from './SectionHeader';
 
 interface CountStandardProps {
   exerciseList1: Exercise[];
