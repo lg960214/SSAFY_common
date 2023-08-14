@@ -7,6 +7,7 @@ import com.example.a104.project.entity.UserEntity;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
+import com.example.a104.project.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
