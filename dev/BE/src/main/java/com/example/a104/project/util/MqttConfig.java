@@ -102,7 +102,6 @@ public class MqttConfig implements MqttCallback {
             }
             // 다음 예약자가 없는 경우 -> 리더기 상태를 1로 변경
             else {
-                System.out.println("====================check==============");
                 readerStateRepository.nExistReservation(reader);
             }
         } else {

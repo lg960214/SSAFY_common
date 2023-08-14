@@ -8,21 +8,26 @@ import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.TagService;
 import com.example.a104.project.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Tag(name="태그관련 API", description = "Sse 연결, 태깅 로직 관련 API")
 @CrossOrigin("*")
 @RequiredArgsConstructor
@@ -40,19 +45,25 @@ public class TagController {
     @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping(value = "sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token) throws IOException {
-        SseEmitter emitter = new SseEmitter(1800000l);
-        emitters.add(emitter);
-
-        // emitter.onCompletion(()-> );
-        // emitter.onTimeout(() -> );
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-
-        List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
-
-        emitter.send(list, MediaType.APPLICATION_JSON);
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
-                .body(emitter);
+        try{
+            SseEmitter emitter = new SseEmitter(1800000l);
+            emitters.add(emitter);
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<RealTimeDto> list = adminService.realTimeDtoList(gymCode);
+            emitter.send(list, MediaType.APPLICATION_JSON);
+            log.info("Method : sse, SSE Connect On");
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_EVENT_STREAM_VALUE)
+                    .body(emitter);
+        }
+        catch(JwtException e){
+            log.info("Method: sse, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: sse, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
 
     }
 
@@ -69,11 +80,13 @@ public class TagController {
 
             }
         }
+        log.info("Method : noShow, deviceCode {} NoSHOW",deviceCode);
     }
 
     @Operation(summary = "태그시 데이터 전송",description = "태그를 찍게 되면 실시간 데이터를 연결된 클라이언트에게 전송")
     @PostMapping
     public void Tagging(@RequestBody Map<String, String> map) {
+        log.info("태그 시간"+ LocalDateTime.now());
         String deviceCode = map.get("device_code");
         String reader = map.get("reader");
 
@@ -88,6 +101,8 @@ public class TagController {
 
             }
         }
+        log.info("실시간 데이터 전송 시간"+ LocalDateTime.now());
+        log.info("Method : Tagging, deviceCode {} tags reader {}",deviceCode,reader);
 
 
     }

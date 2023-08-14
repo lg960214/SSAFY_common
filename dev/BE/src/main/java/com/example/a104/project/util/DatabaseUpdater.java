@@ -6,6 +6,7 @@ import com.example.a104.project.entity.WaitEntity;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.ReservationRepository;
 import com.example.a104.project.repository.WaitRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Component
 public class DatabaseUpdater {
 
@@ -30,6 +32,7 @@ public class DatabaseUpdater {
 
     @Scheduled(cron = "0 0,10,20,30,40,50 * * * *")
     public void updateDatabase(){
+        log.info("현재 예약정보 저장 완료");
         List<ReservationEntity> list = reservationRepository.findAll();
         Set<String> set = new HashSet<>();
         for(ReservationEntity reservationVo : list){
