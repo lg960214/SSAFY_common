@@ -3,12 +3,14 @@ package com.example.a104;
 import com.example.a104.project.repository.*;
 import com.example.a104.project.util.DatabaseUpdater;
 import com.example.a104.project.util.MqttConfig;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+@Slf4j
 @SpringBootApplication
 //@EnableScheduling
 @ComponentScan(basePackages = "com.example.a104.project")
@@ -24,6 +26,6 @@ public class A104Application {
         new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
         mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
-        System.out.println("구독 완료");
+        log.info("MQTT 구독 완료");
     }
 }
