@@ -4,6 +4,7 @@ import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.TagInfoEntity;
 import com.example.a104.project.entity.UserEntity;
+import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
@@ -88,7 +89,11 @@ public class UserService {
     //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
+<<<<<<< dev/BE/src/main/java/com/example/a104/project/service/UserService.java
+        userRepository.UpdateGymCode(code,id);
+=======
         log.info("logging"+adminRepository.findByGymCode(code));
+>>>>>>> dev/BE/src/main/java/com/example/a104/project/service/UserService.java
         if(adminRepository.findByGymCode(code) == null){
             log.info("Method : UpdateGymCode, Not Exist GymCode");
         }
@@ -96,6 +101,7 @@ public class UserService {
             count = userRepository.UpdateGymCode(code, id);
             log.info("Method : UpdateGymCode, Update GymCode");
         }
+
         // try{
         //     count = userRepository.UpdateGymCode(code, id);
         //     log.info("Method : UpdateGymCode, Update GymCode");

@@ -1,6 +1,10 @@
 package com.example.a104;
 
 import com.example.a104.project.repository.*;
+import com.example.a104.project.service.AdminService;
+import com.example.a104.project.service.DeviceService;
+import com.example.a104.project.service.ReaderService;
+import com.example.a104.project.service.TagService;
 import com.example.a104.project.util.DatabaseUpdater;
 import com.example.a104.project.util.MqttConfig;
 import lombok.extern.slf4j.Slf4j;
@@ -23,8 +27,12 @@ public class A104Application {
         ReaderStateRepository readerStateRepository = context.getBean(ReaderStateRepository.class);
         ReaderRepository readerRepository = context.getBean(ReaderRepository.class);
         WaitRepository waitRepository = context.getBean(WaitRepository.class);
+        TagService tagService = context.getBean(TagService.class);
+        ReaderService readerService = context.getBean(ReaderService.class);
+        AdminService adminService = context.getBean(AdminService.class);
+        DeviceService deviceService = context.getBean(DeviceService.class);
         new DatabaseUpdater(reservationRepository,waitRepository, readerRepository);
-        MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository);
+        MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository,tagService,readerService,adminService,deviceService);
         mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
         log.info("MQTT 구독 완료");
     }
