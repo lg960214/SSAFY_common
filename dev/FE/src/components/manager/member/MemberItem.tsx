@@ -30,22 +30,24 @@ export const MemberItem = ({
   };
 
   return (
-    <li
-      onClick={handleClick}
-      className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer"
-    >
-      <span className="w-20">{item.userId}</span>
-      <span className="w-24">{item.name}</span>
-      <span className="w-28">{item.phoneNumber}</span>
-      <span className="w-16">{item.sex}</span>
-      <span className="w-28" onClick={handleRegiClick}>
-        <TagRegister
-          id={item.id}
-          deviceCode={item.deviceCode}
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-        />
-      </span>
+    <li>
+      <div
+        onClick={handleClick}
+        className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer border-b-[1px] border-CustomNavy/10 hover:scale-105 duration-150"
+      >
+        <span className="w-20">{item.userId}</span>
+        <span className="w-24">{item.name}</span>
+        <span className="w-28">{item.phoneNumber}</span>
+        <span className="w-16">{item.sex}</span>
+        <span className="w-28" onClick={handleRegiClick}>
+          <TagRegister
+            id={item.id}
+            deviceCode={item.deviceCode}
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+          />
+        </span>
+      </div>
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
         <MemberInfomation {...item} />

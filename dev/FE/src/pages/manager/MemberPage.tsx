@@ -76,7 +76,7 @@ const MemberPage = () => {
             <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
           </Modal>
           <button
-            className="mt-4 bg-CustomOrange text-white text-lg float-right hover:border-CustomNavy"
+            className="mt-4 bg-CustomOrange text-white text-lg float-right hover:bg-CustomOrange/80 transition-colors duration-300"
             onClick={openApproveModal}
           >
             승인 요청

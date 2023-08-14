@@ -4,7 +4,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 export const TagItem = ({ ...item }: MemberInfo) => {
   return (
-    <li className="flex justify-evenly items-center h-12 text-center">
+    <li className="flex justify-evenly items-center h-12 text-center border-b-[1px] border-CustomNavy/10">
       <span className="basis-1/5">{item.userId}</span>
       <span className="basis-1/5">{item.name}</span>
       <div className="basis-2/5 flex justify-evenly items-center">
