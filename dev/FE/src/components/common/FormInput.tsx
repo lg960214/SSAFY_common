@@ -22,7 +22,8 @@ const FormInput = ({
   return (
     <div className="relative my-2">
       <input
-        className={`w-[${width ?? 256}px] px-5 py-2 rounded-xl`}
+        className={'px-5 py-2 rounded-xl'}
+        style={{ width: `${width ?? 256}px` }}
         type={type}
         value={value}
         onChange={onChange}
