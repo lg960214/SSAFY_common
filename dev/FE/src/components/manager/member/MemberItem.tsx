@@ -16,6 +16,7 @@ export const MemberItem = ({
   setCurrentPage,
 }: MemberItemProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isTagListOpen, setIsTagListOpen] = useState(false);
 
   const handleClick: React.MouseEventHandler<HTMLElement> = () => {
     setIsModalOpen(true);
@@ -29,28 +30,44 @@ export const MemberItem = ({
     setIsModalOpen(false);
   };
 
+  const handleIstagListClose = () => {
+    setIsTagListOpen(false);
+  };
+
   return (
     <li>
       <div
         onClick={handleClick}
-        className="flex justify-evenly items-center h-12 basis-32 text-center cursor-pointer border-b-[1px] border-CustomNavy/10 hover:scale-105 duration-150"
+        className={` bg-slate-200 rounded-lg text-center cursor-pointer  hover:scale-105 duration-150`}
       >
-        <span className="w-20">{item.userId}</span>
-        <span className="w-24">{item.name}</span>
-        <span className="w-28">{item.phoneNumber}</span>
-        <span className="w-16">{item.sex}</span>
-        <span className="w-28" onClick={handleRegiClick}>
-          <TagRegister
-            id={item.id}
-            deviceCode={item.deviceCode}
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-          />
-        </span>
+        <div className="flex justify-evenly items-center h-12  border-b-[1px] border-CustomNavy/10">
+          <span className="w-20">{item.userId}</span>
+          <span className="w-24">{item.name}</span>
+          <span className="w-28">{item.phoneNumber}</span>
+          <span className="w-16">{item.sex}</span>
+          <span className="w-28" onClick={handleRegiClick}>
+            <TagRegister
+              id={item.id}
+              deviceCode={item.deviceCode}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              isTagListOpen={isTagListOpen}
+              setIsTagListOpen={setIsTagListOpen}
+            />
+          </span>
+        </div>
       </div>
 
       <Modal onClose={handleClose} isOpen={isModalOpen}>
         <MemberInfomation {...item} />
+      </Modal>
+      <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
+        <TagLists
+          currentPaginationIdx={currentPage}
+          setCurrentPaginationIdx={setCurrentPage}
+          onClose={handleIstagListClose}
+          id={item.id}
+        />
       </Modal>
     </li>
   );
@@ -61,20 +78,13 @@ interface TagRegisterProps {
   deviceCode: string | null;
   currentPage: number;
   setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  isTagListOpen: boolean;
+  setIsTagListOpen: (status: boolean) => void;
 }
 
-const TagRegister = ({
-  id,
-  deviceCode,
-  currentPage,
-  setCurrentPage,
-}: TagRegisterProps) => {
-  const [isTagListOpen, setIsTagListOpen] = useState(false);
+const TagRegister = ({ deviceCode, setIsTagListOpen }: TagRegisterProps) => {
   const handleIsTagListClick = () => {
     setIsTagListOpen(true);
-  };
-  const handleIstagListClose = () => {
-    setIsTagListOpen(false);
   };
 
   if (deviceCode === null) {
@@ -85,14 +95,6 @@ const TagRegister = ({
           name="등록"
           color=""
         />
-        <Modal onClose={handleIstagListClose} isOpen={isTagListOpen}>
-          <TagLists
-            currentPaginationIdx={currentPage}
-            setCurrentPaginationIdx={setCurrentPage}
-            onClose={handleIstagListClose}
-            id={id}
-          />
-        </Modal>
       </>
     );
   } else {
