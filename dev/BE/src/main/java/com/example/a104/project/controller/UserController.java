@@ -219,6 +219,7 @@ public class UserController {
             String id = (String) claims.get("sub");
             Map<String, String> returnMsg = new HashMap<>();
             int check = userService.UpdateGymCode(Integer.valueOf(map.get("gym_code")), id);
+            log.info("check: "+check);
             if (check != 0){
                 int userId = userDateService.createUserId(id);
                 userDateService.accessUser(userId);
@@ -239,6 +240,7 @@ public class UserController {
         }
         catch (Exception e2){
             log.info("Method: RegistGym, Exception");
+            log.error(e2.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
 

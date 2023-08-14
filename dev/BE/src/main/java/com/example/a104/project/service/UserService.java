@@ -4,6 +4,7 @@ import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.TagInfoDto;
 import com.example.a104.project.entity.TagInfoEntity;
 import com.example.a104.project.entity.UserEntity;
+import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
@@ -22,6 +23,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
+    private final AdminRepository adminRepository;
 
     public int countUsers(int gymCode){
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode).size();
@@ -87,13 +89,21 @@ public class UserService {
     @Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
-        try{
+        userRepository.UpdateGymCode(code,id);
+        if(adminRepository.findByGymCode(code) == null){
+            log.info("Method : UpdateGymCode, Not Exist GymCode");
+        }
+        else{
             count = userRepository.UpdateGymCode(code, id);
             log.info("Method : UpdateGymCode, Update GymCode");
         }
-        catch (Exception e){
-            log.info("Method : UpdateGymCode, Not Exist GymCode");
-        }
+//        try{
+//            count = userRepository.UpdateGymCode(code, id);
+//            log.info("Method : UpdateGymCode, Update GymCode");
+//        }
+//        catch (Exception e){
+//            log.info("Method : UpdateGymCode, Not Exist GymCode");
+//        }
 
         return count;
     }
