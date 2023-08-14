@@ -13,7 +13,7 @@ const TotalTimes = ({ rankMonth }: TotalTimesProps) => {
       const findObj = rankMonth.findIndex((obj) => obj.id === myname);
       if (rankMonth[findObj]) {
         setMyTime(Math.round(rankMonth[findObj].second / 60));
-      }
+      } else setMyTime(0);
     }
   }, [rankMonth]);
   return (

@@ -30,16 +30,16 @@ const CountStandard = ({ exerciseList1 }: CountStandardProps) => {
           sortedCountReaders
             .slice(0, Math.min(3, sortedCountReaders.length))
             .map((item) => (
-              <div key={item}>
+              <div className="text-center" key={item}>
                 <div>{item}</div>
                 <img
-                  className="mx-auto w-[50px] h-[50px] bg-white rounded-[20px] mt-[10px]"
+                  className="mx-auto bg-white rounded-[20px] mt-[10px]"
                   src={`/img/equipments/${item}.png`}
                   alt={`${item}.png`}
+                  width={50}
                 />
                 <div className="font-Jeju mt-[10px]">
                   <div className="text-center">
-                    {' '}
                     {readerCountMap[`${item}`]} 회
                   </div>
                 </div>
