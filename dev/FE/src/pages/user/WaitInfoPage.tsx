@@ -22,7 +22,7 @@ const WaitInfoPage = () => {
   const { data: usingGymUsers } = useQuery(
     ['getUsingGymUsers'],
     getUsingGymUsers,
-    { enabled: !!getGymName },
+    { enabled: !!token?.regist },
   );
 
   const registGymMutation = useMutation(
@@ -71,7 +71,7 @@ const WaitInfoPage = () => {
   const [equipmentStatus, setEquipmentStatus] = useState<boolean>(false);
   // 헬스장 기구정보
   const { data } = useQuery(['getGymEquipments'], getGymEquipments, {
-    enabled: !!getGymName,
+    enabled: !!token?.regist,
   });
 
   const [searchingData, setSearchingData] = useState<SearchingData>({
