@@ -30,7 +30,6 @@ const SignUpForm = () => {
         phone_number: phoneNumber,
         sex: gender,
       };
-      console.log(signUpParam);
       signUpUser(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
