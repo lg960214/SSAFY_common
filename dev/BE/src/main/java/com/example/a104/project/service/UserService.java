@@ -22,7 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
-
+    private final AdminRepository adminRepository;
     public int countUsers(int gymCode){
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode).size();
     }
@@ -84,16 +84,24 @@ public class UserService {
         userRepository.Delete(id);
     }
 
-    @Transactional(dontRollbackOn = Exception.class)
+    //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
-        try{
+        log.info("logging"+adminRepository.findByGymCode(code));
+        if(adminRepository.findByGymCode(code) == null){
+            log.info("Method : UpdateGymCode, Not Exist GymCode");
+        }
+        else{
             count = userRepository.UpdateGymCode(code, id);
             log.info("Method : UpdateGymCode, Update GymCode");
         }
-        catch (Exception e){
-            log.info("Method : UpdateGymCode, Not Exist GymCode");
-        }
+        // try{
+        //     count = userRepository.UpdateGymCode(code, id);
+        //     log.info("Method : UpdateGymCode, Update GymCode");
+        // }
+        // catch (Exception e){
+        //     log.info("Method : UpdateGymCode, Not Exist GymCode");
+        // }
 
         return count;
     }
