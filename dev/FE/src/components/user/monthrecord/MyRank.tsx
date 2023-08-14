@@ -1,40 +1,48 @@
+import { useEffect, useState } from 'react';
 import { RankData } from '@/types/user.type';
+import SectionHeader from './sectionHeader';
 interface MyRankProps {
   rankMonth: RankData[];
 }
 
 const MyRank = ({ rankMonth }: MyRankProps) => {
   const tokendata = localStorage.getItem('userToken');
-  let myRank: number = 0;
-  let bgIcon: string = 'norank';
-  if (tokendata) {
-    const myname = JSON.parse(tokendata).subject;
-    const findObj = rankMonth.findIndex((obj) => obj.id === myname);
-    myRank = findObj + 1;
-    if (myRank <= 3) {
-      bgIcon = 'crown';
-      if (myRank == 1) {
-        bgIcon = 'crown1';
-      }
+  const [myRank, setMyRank] = useState<number>(0);
+  const [icon, setIcon] = useState<string>('');
+
+  const medal = ['goldmedal', 'silvermedal', 'bronzemedal'];
+
+  useEffect(() => {
+    if (tokendata) {
+      const myname = JSON.parse(tokendata).subject;
+      const findObj = rankMonth.findIndex((obj) => obj.id === myname);
+      setMyRank(findObj + 1);
     }
-  }
-  let myRankPercent: number = 0;
-  if (rankMonth.length != 0) {
-    myRankPercent = Math.round((myRank / rankMonth.length) * 100);
-  }
+  }, [tokendata, rankMonth]);
+
+  const myRankPercent = Math.round((myRank / rankMonth.length) * 100);
   return (
-    <div className="w-[140px] h-[140px] ms-[20px]  bg-CustomBg rounded-[20px] mt-[12px]">
-      <div className="mx-auto w-[100px] pt-[15px]">
-        <img
-          className="absolute  w-[80px] h-[80px] ms-[10px]"
-          src={`/img/rank/${bgIcon}.png`}
-          alt={`${bgIcon}.png`}
-        />
-        <p className="font-Jeju text-center pt-[35px]">{myRank}등 </p>
-        <p className="mt-[15px] text-center font-Jeju">
-          [ 상위 {myRankPercent}% ]
-        </p>
-      </div>
+    <div>
+      <SectionHeader title="나의 순위" />
+      {myRank > 3 || myRank < 1 ? (
+        <div className="bg-zinc-200 rounded-2xl flex flex-col mt-[16px]">
+          <span className="font-Jeju text-center pt-[10px] text-[18px] font-semibold">
+            {myRank} 위
+          </span>
+          <span className="my-[10px] text-center text-opacity-750">
+            상위 {myRankPercent}%
+          </span>
+        </div>
+      ) : (
+        <div className="bg-zinc-200 rounded-2xl flex flex-col mt-[16px]">
+          <img
+            className="m-2 mx-auto"
+            width={56}
+            src={`/img/rank/${medal[myRank - 1]}.svg`}
+            alt={`${medal[myRank - 1]}`}
+          />
+        </div>
+      )}
     </div>
   );
 };
