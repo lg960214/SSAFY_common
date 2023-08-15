@@ -29,7 +29,7 @@ const MyRank = ({ rankMonth }: MyRankProps) => {
             {myRank} 위
           </span>
           <span className="my-[10px] text-center text-opacity-750">
-            상위 {myRankPercent}%
+            상위 {myRankPercent || 0}%
           </span>
         </div>
       ) : (
