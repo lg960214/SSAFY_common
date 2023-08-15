@@ -100,7 +100,9 @@ public class MqttConfig implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String msg = new String(message.getPayload());
         String arr[] = msg.split("&");
+        System.out.println(arr);
         if (arr[2].equals("noshow")) {
+            System.out.println("NOSHOW");
             EmitterList emitterList = new EmitterList();
             List<SseEmitter> sseEmitterList = emitterList.getEmitters();
             // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
@@ -134,6 +136,7 @@ public class MqttConfig implements MqttCallback {
                 readerStateRepository.nExistReservation(reader);
             }
         } else if(arr[2].equals("tag")) {
+            System.out.println("TAG");
             String deviceCode = arr[0];
             String reader = arr[1];
             EmitterList emitterList = new EmitterList();
