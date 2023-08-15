@@ -10,14 +10,17 @@ import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.DeviceService;
 import com.example.a104.project.service.ReaderService;
 import com.example.a104.project.service.TagService;
+import lombok.extern.slf4j.Slf4j;
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
+import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Component
 @Configuration
 public class MqttConfig implements MqttCallback {
@@ -101,8 +104,10 @@ public class MqttConfig implements MqttCallback {
         String msg = new String(message.getPayload());
         String arr[] = msg.split("&");
         System.out.println(arr);
+        log.info("Array : {}", Arrays.toString(arr));
         if (arr[2].equals("noshow")) {
             System.out.println("NOSHOW");
+            log.info("NOSHOW");
             EmitterList emitterList = new EmitterList();
             List<SseEmitter> sseEmitterList = emitterList.getEmitters();
             // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
@@ -136,6 +141,7 @@ public class MqttConfig implements MqttCallback {
                 readerStateRepository.nExistReservation(reader);
             }
         } else if(arr[2].equals("tag")) {
+            log.info("TAG");
             System.out.println("TAG");
             String deviceCode = arr[0];
             String reader = arr[1];
