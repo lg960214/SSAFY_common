@@ -13,10 +13,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 @Slf4j
 @SpringBootApplication
-//@EnableScheduling
+@EnableScheduling
 @ComponentScan(basePackages = "com.example.a104.project")
 public class A104Application {
     

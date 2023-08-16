@@ -31,12 +31,12 @@ public class UserDateService {
     }
 
     public void accessUser(int userId){
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.now(ZoneId.of("Asia/Seoul"));
         userDateRepository.access_user(date,userId);
     }
 
     public void accessAdmin(int userId){
-        LocalDate date = LocalDate.now();
+        LocalDate date = LocalDate.now(ZoneId.of("Asia/Seoul"));
         userDateRepository.access_admin(date,userId);
     }
 
