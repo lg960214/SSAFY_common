@@ -8,12 +8,10 @@ import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
-import com.example.a104.project.repository.AdminRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,13 +87,13 @@ public class UserService {
     //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
         int count = 0;
-        userRepository.UpdateGymCode(code,id);
         log.info("logging"+adminRepository.findByGymCode(code));
         if(adminRepository.findByGymCode(code) == null){
             log.info("Method : UpdateGymCode, Not Exist GymCode");
         }
         else{
             count = userRepository.UpdateGymCode(code, id);
+            userRepository.UpdateGymCode(code,id);
             log.info("Method : UpdateGymCode, Update GymCode");
         }
 
