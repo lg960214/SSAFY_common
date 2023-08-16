@@ -56,6 +56,25 @@ const UserNavBar = () => {
       <nav className="h-[60px] bg-CustomNavy text-white userNavbar flex justify-evenly items-center text-center">
         <NavLink
           className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
+            currentPath.includes('information') ? 'active' : ''
+          }`}
+          to="information/"
+        >
+          {currentPath.includes('information') ? (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/on-time_orange.png"
+            />
+          ) : (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/on-time_white.png"
+            />
+          )}
+          <span>실시간현황</span>
+        </NavLink>
+        <NavLink
+          className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
             currentPath.includes('record') &&
             !currentPath.includes('record/' + currentMonth)
               ? 'active'
@@ -76,25 +95,6 @@ const UserNavBar = () => {
             />
           )}
           <span>운동기록</span>
-        </NavLink>
-        <NavLink
-          className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
-            currentPath.includes('information') ? 'active' : ''
-          }`}
-          to="information/"
-        >
-          {currentPath.includes('information') ? (
-            <img
-              className="w-[36px] mx-auto"
-              src="/img/navbar/on-time_orange.png"
-            />
-          ) : (
-            <img
-              className="w-[36px] mx-auto"
-              src="/img/navbar/on-time_white.png"
-            />
-          )}
-          <span>실시간현황</span>
         </NavLink>
         <NavLink
           className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
