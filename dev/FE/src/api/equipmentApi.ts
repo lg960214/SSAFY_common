@@ -21,8 +21,7 @@ export const getReaders = async () => {
 
 export const putReaders = async (jsonData: Reader[]) => {
   try {
-    const res = await axios.put(BASEURL + 'readers', jsonData);
-    console.log('putReaders: ', res);
+    await axios.put(BASEURL + 'readers', jsonData);
   } catch (err) {
     console.log('putReaders: ', err);
   }
