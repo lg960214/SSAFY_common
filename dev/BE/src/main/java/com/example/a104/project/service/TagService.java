@@ -57,10 +57,10 @@ public class TagService {
                                 reservationRepository.deleteByUserId(user.getUserId());
                                 // 기존 사용중이던 기구 종료 시간 저장
                                 LocalDateTime startTime = tagInfoRepository
-                                        .getStartDate(LocalDate.now(), user.getUserId(),
+                                        .getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(),
                                                 readerStateRepository.findByUserId(user.getUserId()).getReader())
                                         .get(0).getStartTime();
-                                tagInfoRepository.setEndTime(LocalDateTime.now(), startTime);
+                                tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
                                 // 기존 사용중이던 상태 삭제 후 MQTT 로 해당 기구에 대해 예약이 있는 경우 다음 사람에게 MQTT 송신 필요함 
                                 ReaderStateEntity readers = readerStateRepository.findByUserId(user.getUserId()); // 현재
                                 // 사용중이던
@@ -109,7 +109,7 @@ public class TagService {
                                 // 새로운 기구 사용 시작 시간 설정
                                 TagInfoEntity tagInfoVo = TagInfoEntity.builder()
                                         .primaryKey(null)
-                                        .tagDate(LocalDate.now())
+                                        .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                                         .userId(user.getUserId())
                                         .reader(reader)
                                         .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
@@ -137,7 +137,7 @@ public class TagService {
                                 // 새로운 기구 사용 시작 시간 설정
                                 TagInfoEntity tagInfoVo = TagInfoEntity.builder()
                                         .primaryKey(null)
-                                        .tagDate(LocalDate.now())
+                                        .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                                         .userId(user.getUserId())
                                         .reader(reader)
                                         .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
@@ -174,7 +174,7 @@ public class TagService {
                     log.info("내가 다른 기구 사용중인 상태");
                     // 기존 사용 종료 후 새로 사용 시작
                     LocalDateTime startTime = tagInfoRepository
-                            .getStartDate(LocalDate.now(), user.getUserId(),
+                            .getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(),
                                     readerStateRepository.findByUserId(user.getUserId()).getReader())
                             .get(0).getStartTime();
                     tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
@@ -209,7 +209,7 @@ public class TagService {
                     readerStateRepository.save(readerStateVo);
                     TagInfoEntity tagInfoVo = TagInfoEntity.builder()
                             .primaryKey(null)
-                            .tagDate(LocalDate.now())
+                            .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                             .userId(user.getUserId())
                             .reader(reader)
                             .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
@@ -236,7 +236,7 @@ public class TagService {
                     // 새로운 기구 사용 시작 시간 설정
                     TagInfoEntity tagInfoVo = TagInfoEntity.builder()
                             .primaryKey(null)
-                            .tagDate(LocalDate.now())
+                            .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                             .userId(user.getUserId())
                             .reader(reader)
                             .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
@@ -255,7 +255,7 @@ public class TagService {
             // 내가 사용중인 경우 (= 종료) (#003)
             if (readerState.getUserId() == user.getUserId()) {
                 // 태깅 정보 테이블에 종료 시간 추가 해줘야한다.
-                LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(), user.getUserId(), reader)
+                LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(), reader)
                         .get(0).getStartTime();
                 tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
                 log.info("내가 사용중인 상태");
