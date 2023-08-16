@@ -5,6 +5,7 @@ interface UsagePageProps {
 }
 
 const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
+  let maxValue = 0;
   return (
     <div className="relative rounded-[20px] -mt-[60px] z-10 bg-slate-200 shadow-right-bottom shadow-gray-300">
       {/* chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정 */}
@@ -14,8 +15,12 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
            * chart에 사용될 데이터
            */
           data={dailyUsageData.map((data) => {
+            if (data.usingCount > maxValue) {
+              maxValue = data.usingCount;
+            }
             return { equipment: data.name, 이용량: data.usingCount };
           })}
+          maxValue={maxValue + 5}
           /**
            * chart에 보여질 데이터 key (측정되는 값)
            */
