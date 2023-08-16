@@ -15,6 +15,9 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+
 @Slf4j
 @SpringBootApplication
 @EnableScheduling
@@ -37,5 +40,6 @@ public class A104Application {
         MqttConfig mqtt = new MqttConfig(userRepository,reservationRepository,readerStateRepository,tagService,readerService,adminService,deviceService,emitterList);
         mqtt.init("tcp://13.124.11.62:1883", "backend").subscriber("esp32");
         log.info("MQTT 구독 완료");
+        log.info("start time : {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
     }
 }
