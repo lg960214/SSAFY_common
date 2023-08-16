@@ -1,10 +1,12 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Outlet,
+  useNavigate,
+  useLocation,
 } from 'react-router-dom';
 import MemberPage from './pages/manager/MemberPage';
 import EquipmentPage from './pages/manager/EquipmentPage';
@@ -81,6 +83,14 @@ function NoNavbarLayout() {
 }
 
 function UserLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/user' || location.pathname === '/user/') {
+      navigate('/user/login');
+    }
+  }, [location.pathname, navigate]);
   return (
     <div>
       <div className="mx-auto w-[360px]">

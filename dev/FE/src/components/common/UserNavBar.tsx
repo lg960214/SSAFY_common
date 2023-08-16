@@ -83,7 +83,7 @@ const UserNavBar = () => {
           }`}
           to="information/"
         >
-          {currentPath.includes('information/') ? (
+          {currentPath.includes('information') ? (
             <img
               className="w-[36px] mx-auto"
               src="/img/navbar/on-time_orange.png"
