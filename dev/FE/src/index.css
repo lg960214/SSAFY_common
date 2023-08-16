@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 @font-face {
-  font-family: 'jejuGodic';
+  font-family: 'Jeju Gothic';
   src: url(./assets/fonts/JejuGothic.ttf);
 }
 
@@ -20,8 +20,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-  --font-jejuGodic: 'jejuGodic';
-  --font-Bungee-Regular: 'Bungee-Regular';
 }
 
 body {

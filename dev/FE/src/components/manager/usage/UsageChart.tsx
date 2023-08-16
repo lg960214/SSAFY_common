@@ -61,7 +61,7 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
               text: {
                 fontSize: 22,
                 fill: '#000000',
-                fontFamily: 'JejuGodic',
+                fontFamily: 'Jeju Gothic',
               },
             },
             axis: {
@@ -72,7 +72,7 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
                 text: {
                   fontSize: 20,
                   fill: '#000000',
-                  fontFamily: 'JejuGodic',
+                  fontFamily: 'Jeju Gothic',
                 },
               },
               /**
@@ -82,7 +82,7 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
                 text: {
                   fontSize: 16,
                   fill: '#000000',
-                  fontFamily: 'JejuGodic',
+                  fontFamily: 'Jeju Gothic',
                 },
               },
             },
