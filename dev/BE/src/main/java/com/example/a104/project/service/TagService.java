@@ -255,6 +255,8 @@ public class TagService {
             // 내가 사용중인 경우 (= 종료) (#003)
             if (readerState.getUserId() == user.getUserId()) {
                 // 태깅 정보 테이블에 종료 시간 추가 해줘야한다.
+                log.info("current Time {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+                log.info("tagInfo : {}", tagInfoRepository.getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(), reader));
                 LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(), reader)
                         .get(0).getStartTime();
                 tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
