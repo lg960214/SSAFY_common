@@ -40,6 +40,10 @@ const EquipmentPage = () => {
   });
 
   useEffect(() => {
+    if (selectedZoneData.length > 7) setIsRegisterModalOn(false);
+  }, [selectedZoneData]);
+
+  useEffect(() => {
     if (!isLoading) {
       setWholeData(data ?? []);
     }
