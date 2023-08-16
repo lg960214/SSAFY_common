@@ -22,21 +22,19 @@ const MonthSelect = ({ searchMonth, setSearchMonth }: MonthSelectProps) => {
   return (
     <>
       <button
-        className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl"
+        className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl m-0"
         onClick={() => handleMonth(0)}
       >
-        {' '}
-        {`<`}{' '}
+        <img src="/img/monthselect/arrow-left.png" alt="" />
       </button>
-      <p className="text-center text-2xl">
+      <p className="text-center text-2xl font-Jeju">
         {searchMonth?.format('MM')} 월의 통계
       </p>
       <button
-        className="px-2 py-0 bg-CustomNavy text-CustomOrange text-3xl"
+        className="px-2 py-0 align-middle bg-CustomNavy text-CustomOrange text-3xl m-0"
         onClick={() => handleMonth(1)}
       >
-        {' '}
-        {`>`}{' '}
+        <img src="/img/monthselect/arrow-right.png" alt="" />
       </button>
     </>
   );

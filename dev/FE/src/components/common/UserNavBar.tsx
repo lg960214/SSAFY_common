@@ -34,8 +34,8 @@ const UserNavBar = () => {
     <div className="fixed bottom-0 w-full">
       {isModal && (
         <Modal isOpen={isModal} onClose={handleCloseModal}>
-          <div className="w-[280px] h-[200px] bg-CustomNavy rounded-lg flex flex-wrap justify-evenly">
-            <span className="w-[240px] h-[100px] py-10 text-lg font-bold align-middle text-center text-white">
+          <div className="w-[280px] h-[180px] bg-CustomNavy rounded-lg flex flex-wrap justify-evenly">
+            <span className="w-[240px] h-[60px] py-10 text-lg font-bold align-middle text-center text-white">
               로그아웃 하시겠습니까?
             </span>
             <div
@@ -55,7 +55,7 @@ const UserNavBar = () => {
       )}
       <nav className="h-[60px] bg-CustomNavy text-white userNavbar flex justify-evenly items-center text-center">
         <NavLink
-          className={`w-[48px] ${
+          className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
             currentPath.includes('record') &&
             !currentPath.includes('record/' + currentMonth)
               ? 'active'
@@ -63,32 +63,68 @@ const UserNavBar = () => {
           }`}
           to="record/"
         >
-          <span>운동</span>
-          <br />
-          <span>기록</span>
+          {currentPath.includes('record/') &&
+          !currentPath.includes('record/' + currentMonth) ? (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/calendar_orange.png"
+            />
+          ) : (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/calendar_white.png"
+            />
+          )}
+          <span>운동기록</span>
         </NavLink>
         <NavLink
-          className={`w-[48px] ${
+          className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
             currentPath.includes('information') ? 'active' : ''
           }`}
           to="information/"
         >
-          <span>실시간</span>
-          <br />
-          <span>현황</span>
+          {currentPath.includes('information') ? (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/on-time_orange.png"
+            />
+          ) : (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/on-time_white.png"
+            />
+          )}
+          <span>실시간현황</span>
         </NavLink>
         <NavLink
-          className={`w-[48px] ${
+          className={`w-[60px] h-[60px] flex flex-col justify-evenly ${
             currentPath.includes('record/' + currentMonth) ? 'active' : ''
           }`}
           to={`/user/record/${currentMonth}`}
         >
-          <span>월별</span>
-          <br />
-          <span>통계</span>
+          {currentPath.includes('record/' + currentMonth) ? (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/statistical_orange.png"
+            />
+          ) : (
+            <img
+              className="w-[36px] mx-auto"
+              src="/img/navbar/statistical_white.png"
+            />
+          )}
+          <span>월별통계</span>
         </NavLink>
-        <div onClick={handleOpenModal} className=" w-[48px] fontBungee">
-          <img src="/img/navbar/sign-out.png" alt="" />
+        <div
+          onClick={handleOpenModal}
+          className="w-[60px] h-[60px] flex flex-col justify-evenly fontBungee"
+        >
+          <img
+            className="w-[36px] mx-auto"
+            src="/img/navbar/sign-out.png"
+            alt=""
+          />
+          <span className="text-xs">로그아웃</span>
         </div>
       </nav>
     </div>

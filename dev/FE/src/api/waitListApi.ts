@@ -2,6 +2,7 @@ import { BASEURL } from '@/constants/url';
 import { EquipList, ReaderStateType } from '@/types/wait.type';
 import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
+
 const waitListApi = (
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
   setState: React.Dispatch<React.SetStateAction<ReaderStateType[]>>,
