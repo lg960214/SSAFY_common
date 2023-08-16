@@ -86,14 +86,14 @@ public class UserController {
             int gymCode = user.getGymCode();
             String name = readerService.getReader(reader).getName();
             log.info("Method : searchDataDto, gymCode : {} , date : {}, reader : {}, name : {}",gymCode, date, reader, name);
-            List<CountEntity> countVo = countService.CountList(LocalDate.now(),name);
+            List<CountEntity> countVo = countService.CountList(LocalDate.now(ZoneId.of("Asia/Seoul")),name);
             // 검색 시 카운트 +1 하는 부분
             // db 에 정보가 없는 경우
             if(countVo.size()==0){
                 log.info("{} is already exist in DB",name);
                 CountEntity countVo1 = CountEntity.builder()
                         .count(1)
-                        .search(LocalDate.now())
+                        .search(LocalDate.now(ZoneId.of("Asia/Seoul")))
                         .name(name)
                         .gymCode(gymCode)
                         .build();
@@ -101,14 +101,14 @@ public class UserController {
             }
             else{
                 log.info("{} is not exist in DB",name);
-                countService.Count(LocalDate.now(),name);
+                countService.Count(LocalDate.now(ZoneId.of("Asia/Seoul")),name);
             }
             // 검색 시 카운트 +1 하는 부분 끝
 
             // 현재 기구의 대기인원과 1주일 2주일 3주일 전 대기 인원 반환
             List<ReservationEntity> reservationVoList = reservationService.getReservationList(reader);
             searchDataDto.setNow(reservationVoList.size());
-            String datetime = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd "))+date;
+            String datetime = LocalDate.now(ZoneId.of("Asia/Seoul")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd "))+date;
 
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
             LocalDateTime date2 = LocalDateTime.parse(datetime,formatter);
