@@ -9,7 +9,7 @@ import java.util.List;
 @Component
 public class EmitterList {
 
-    private final List<SseEmitter> emitters = new ArrayList<>();
+    private List<SseEmitter> emitters = new ArrayList<>();
     public List<SseEmitter> getEmitters(){
         return emitters;
     }
