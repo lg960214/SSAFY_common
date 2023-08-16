@@ -1,7 +1,6 @@
-import { BASEURL } from '@/constants/url';
 import { UsageData } from '@/types/usage.type';
 import { getToken } from '@/utils/storage';
-import axios from 'axios';
+import apiClient from './apiClient';
 
 export const getUsageData = async (
   date: string | null,
@@ -10,7 +9,7 @@ export const getUsageData = async (
   try {
     const token = getToken('managerToken');
     if (!token) return;
-    const res = await axios.get(BASEURL + 'admin/day-info', {
+    const res = await apiClient.get('admin/day-info', {
       params: { date: date },
       headers: {
         Authorization: `Bearer ${token}`, // Token을 헤더에 추가
