@@ -1,8 +1,8 @@
 .userNavbar a {
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.75rem;
 }
 
 .userNavbar .active {
-  color: #ff8000;
+  color: #ffaa50;
 }
