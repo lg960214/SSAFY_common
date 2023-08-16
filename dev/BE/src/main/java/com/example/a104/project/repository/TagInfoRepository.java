@@ -16,7 +16,7 @@ public interface TagInfoRepository extends JpaRepository<TagInfoEntity, Integer>
     @Query("select t from TagInfoEntity t  where function('date_format', t.tagDate, '%Y-%m') = :tagDate and t.userId = :userId")
     List<TagInfoEntity> getRecord(String tagDate, int userId);
 
-    @Query("select  t from TagInfoEntity t  where t.tagDate = :tagDate and t.userId = :userId and t.reader = :reader order by t.startTime desc ")
+    @Query("select  t from TagInfoEntity t  where t.tagDate = :tagDate and t.userId = :userId and t.reader = :reader and t.endTime is null order by t.startTime desc ")
     List<TagInfoEntity> getStartDate(LocalDate tagDate, int userId, String reader);
 
     @Modifying

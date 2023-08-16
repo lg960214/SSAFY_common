@@ -60,7 +60,7 @@ public class TagService {
                                         .getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(),
                                                 readerStateRepository.findByUserId(user.getUserId()).getReader())
                                         .get(0).getStartTime();
-                                tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
+                                tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3), startTime);
                                 // 기존 사용중이던 상태 삭제 후 MQTT 로 해당 기구에 대해 예약이 있는 경우 다음 사람에게 MQTT 송신 필요함 
                                 ReaderStateEntity readers = readerStateRepository.findByUserId(user.getUserId()); // 현재
                                 // 사용중이던
@@ -112,7 +112,7 @@ public class TagService {
                                         .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                                         .userId(user.getUserId())
                                         .reader(reader)
-                                        .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                                        .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3))
                                         .build();
 
                                 tagInfoRepository.save(tagInfoVo);
@@ -140,7 +140,7 @@ public class TagService {
                                         .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                                         .userId(user.getUserId())
                                         .reader(reader)
-                                        .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                                        .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3))
                                         .build();
 
                                 tagInfoRepository.save(tagInfoVo);
@@ -154,13 +154,13 @@ public class TagService {
                     else {
                         log.info("다른 기구를 예약중인 상태");
                         reservationRepository.deleteByUserId(user.getUserId());
-                        reservationRepository.save(new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul"))));
+                        reservationRepository.save(new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3)));
                     }
                 }
                 // 내가 예약이 없는 경우 (#001_5)
                 else if (reservationRepository.findByUserId(user.getUserId()) == null) {
                     log.info("예약이 없는 경우");
-                    ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+                    ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3));
                     reservationRepository.save(reservationVo);
                 }
                 ReaderStateEntity readerStateVo = new ReaderStateEntity(reader,0,user.getUserId());
@@ -177,7 +177,7 @@ public class TagService {
                             .getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(),
                                     readerStateRepository.findByUserId(user.getUserId()).getReader())
                             .get(0).getStartTime();
-                    tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
+                    tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3), startTime);
                     // 기존 사용중이던 상태 삭제 후 MQTT 로 해당 기구에 대해 예약이 있는 경우 다음 사람에게 MQTT 송신 필요함
                     ReaderStateEntity readers = readerStateRepository.findByUserId(user.getUserId()); // 현재 사용중이던 리더기 정보
 
@@ -212,7 +212,7 @@ public class TagService {
                             .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                             .userId(user.getUserId())
                             .reader(reader)
-                            .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                            .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3))
                             .build();
                     tagInfoRepository.save(tagInfoVo);
 
@@ -239,7 +239,7 @@ public class TagService {
                             .tagDate(LocalDate.now(ZoneId.of("Asia/Seoul")))
                             .userId(user.getUserId())
                             .reader(reader)
-                            .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
+                            .startTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3))
                             .build();
 
                     tagInfoRepository.save(tagInfoVo);
@@ -255,11 +255,11 @@ public class TagService {
             // 내가 사용중인 경우 (= 종료) (#003)
             if (readerState.getUserId() == user.getUserId()) {
                 // 태깅 정보 테이블에 종료 시간 추가 해줘야한다.
-                log.info("current Time {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+                log.info("current Time {}", LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3));
                 log.info("tagInfo : {}", tagInfoRepository.getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(), reader));
                 LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(ZoneId.of("Asia/Seoul")), user.getUserId(), reader)
                         .get(0).getStartTime();
-                tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
+                tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3), startTime);
                 log.info("내가 사용중인 상태");
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
@@ -302,7 +302,7 @@ public class TagService {
                     if (!reservationRepository.findByUserId(user.getUserId()).getReader().equals(reader)) {
                         log.info("다른 기구를 예약중인 경우");
                         reservationRepository.deleteByUserId(user.getUserId());
-                        ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+                        ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3));
                         reservationRepository.save(reservationVo);
                     }
                     // 아닌 경우는 무시 (#004_2)
@@ -311,7 +311,7 @@ public class TagService {
                 // 내가 예약이 없는경우 예약하기 (#004_3)
                 else {
                     log.info("내가 예약이 없는 경우");
-                    ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
+                    ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3));
                     reservationRepository.save(reservationVo);
                 }
             }
