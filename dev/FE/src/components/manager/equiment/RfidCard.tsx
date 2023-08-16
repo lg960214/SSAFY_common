@@ -44,7 +44,7 @@ const RfidCard = ({
       {isOnEdit ? (
         <img
           onClick={() => deleteReader(data)}
-          className="ml-1 pt-1 hover:cursor-pointer absolute right-7 top-[9px]"
+          className="ml-1 pt-1 hover:cursor-pointer absolute right-2 top-[9px]"
           width={24}
           src="/img/cancel.svg"
           alt="delete"

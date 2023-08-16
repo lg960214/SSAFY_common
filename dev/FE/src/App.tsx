@@ -1,10 +1,12 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Outlet,
+  useNavigate,
+  useLocation,
 } from 'react-router-dom';
 import MemberPage from './pages/manager/MemberPage';
 import EquipmentPage from './pages/manager/EquipmentPage';
@@ -22,6 +24,7 @@ import SignUpPage from './pages/user/SignUpPage';
 import UserNavBar from './components/common/UserNavBar';
 import ManagerAuthGuard from './components/manager/auth/ManagerAuthGuard';
 import UserAuthGuard from './components/user/auth/UserAuthGuard';
+import NotFoundPage from './pages/etc/NotFoundPage';
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -54,6 +57,7 @@ const App: React.FC = () => {
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
             </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </>
         </Routes>
       </Router>
@@ -79,6 +83,14 @@ function NoNavbarLayout() {
 }
 
 function UserLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/user' || location.pathname === '/user/') {
+      navigate('/user/login');
+    }
+  }, [location.pathname, navigate]);
   return (
     <div>
       <div className="mx-auto w-[360px]">

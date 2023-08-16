@@ -1,13 +1,14 @@
 import { BASEURL } from '@/constants/url';
 import { Reader } from '@/types/reader.type';
 import { getToken } from '@/utils/storage';
+import apiClient from './apiClient';
 import axios from 'axios';
 
 export const getReaders = async () => {
   try {
     const token = getToken('managerToken');
     if (!token) return;
-    const res = await axios.get(BASEURL + 'readers', {
+    const res = await apiClient.get('readers', {
       headers: {
         Authorization: `Bearer ${token}`, // Token을 헤더에 추가
       },

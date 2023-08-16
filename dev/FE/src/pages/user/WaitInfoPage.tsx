@@ -14,24 +14,32 @@ import { registGym } from '@/api/waitInfoApi';
 import { GymEquipments, SearchingData } from '@/types/user.type';
 import { useLocation, useNavigate } from 'react-router-dom';
 import EquipmentStatus from '@/components/user/waitinfo/EquipmentStatus';
+import { setStorage } from '@/utils/storage';
 
 const WaitInfoPage = () => {
   const token = JSON.parse(localStorage.getItem('userToken') as string);
-  const getGymName = token.gymName;
+  const [getGymName, setGetGymName] = useState(token.gymName);
   const { data: usingGymUsers } = useQuery(
     ['getUsingGymUsers'],
     getUsingGymUsers,
-    { enabled: !!getGymName },
+    { enabled: !!token?.regist },
   );
 
   const registGymMutation = useMutation(
     (regiGymCode: string) => registGym(regiGymCode),
     {
-      onSuccess: () => {
-        alert('등록이 완료되었습니다! 헬스장 승인 후에 다시 로그인해주세요.');
+      onSuccess: (res) => {
+        if (res.msg === '존재하지 않는 헬스장입니다.') {
+          alert(res.msg);
+        } else {
+          alert('등록이 완료되었습니다! 헬스장 승인 후에 다시 로그인해주세요.');
+          token.gymName = regiGymCode;
+          setStorage('userToken', token);
+          setGetGymName(regiGymCode);
+        }
       },
-      onError: () => {
-        alert('헬스장 번호를 입력해 주세요!');
+      onError: (err) => {
+        console.log(err);
       },
     },
   );
@@ -63,7 +71,7 @@ const WaitInfoPage = () => {
   const [equipmentStatus, setEquipmentStatus] = useState<boolean>(false);
   // 헬스장 기구정보
   const { data } = useQuery(['getGymEquipments'], getGymEquipments, {
-    enabled: !!getGymName,
+    enabled: !!token?.regist,
   });
 
   const [searchingData, setSearchingData] = useState<SearchingData>({
@@ -199,14 +207,20 @@ const WaitInfoPage = () => {
             />
             <button
               className="py-0 h-10 w-[80px] border-2 border-black"
-              onClick={() => registGymMutation.mutate(regiGymCode)}
+              onClick={() => {
+                if (regiGymCode === '') {
+                  alert('헬스장 번호를 입력해 주세요!');
+                } else {
+                  registGymMutation.mutate(regiGymCode);
+                }
+              }}
             >
               등록
             </button>
           </div>
           {getGymName && (
             <div>
-              <p>{getGymName} 등록 대기중입니다.</p>
+              <p>헬스장 등록 대기중입니다.</p>
               <p>다른 헬스장을 등록하고 싶으시다면 새로 등록을 해주세요</p>
             </div>
           )}
