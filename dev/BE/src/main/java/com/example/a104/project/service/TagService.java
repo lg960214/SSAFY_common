@@ -32,20 +32,27 @@ public class TagService {
         List<ReservationEntity> reservation = reservationRepository.findByReaderOrderByReservationAsc(reader);
         UserEntity user = userRepository.findByDeviceCode(deviceCode);
         // 기구 상태 [0: 사용중], [1: 미사용(대기X)], [2:미사용(대기O)]
-        log.info("Tagging Service Start");
+        log.info("Tagging Service Start, User : {}", user);
+        log.info("readerState : {}", readerState);
         // 1. 해당 기구 미사용 상태
         if (readerState == null || readerState.getState() != 0) {
+            log.info("해당 기구 미사용 상태");
             // 해당 기구 예약자가 있는 경우 (#001)
             if (reservation.size() != 0) {
+                log.info("해당 기구 예약자가 있는 경우");
                 // 내가 예약이 있는 경우
                 if (reservationRepository.findByUserId(user.getUserId()) != null) {
+                    log.info("내가 예약이 있는 경우");
                     // 내가 해당 기구 예약중
                     ReservationEntity reservationVo = reservationRepository.findByUserId(user.getUserId());
                     if (user.getUserId() == reservationVo.getUserId() && reader.equals(reservationVo.getReader())) {
+                        log.info("내가 태그한 기구를 이미 예약중인 경우");
                         // 내가 예약 1순번
                         if (reservation.get(0).getUserId() == user.getUserId()) {
+                            log.info("내가 예약이 1순위인 경우");
                             // 내가 다른 기구를 사용중인 상태 => 기존 사용과 예약을 취소 후 새로 사용으로 등록(#001_1)
                             if (readerStateRepository.findByUserId(user.getUserId()) != null) {
+                                log.info("내가 다른 기구를 사용중인 상태인 경우");
                                 // 해당 기구 예약 삭제
                                 reservationRepository.deleteByUserId(user.getUserId());
                                 // 기존 사용중이던 기구 종료 시간 저장
@@ -64,6 +71,7 @@ public class TagService {
                                 List<ReservationEntity> reservationList = reservationRepository
                                         .findByReaderOrderByReservationAsc(readers.getReader());
                                 if (reservationList.size() != 0) {
+                                    log.info("취소되는 기구의 다음 예약자가 있는 경우");
                                     MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository,
                                             readerStateRepository);
 
@@ -80,6 +88,7 @@ public class TagService {
                                 }
                                 // 취소 되는 기구의 다음 예약자가 없는ㄱ ㅕㅇ우 => 기존 기구 상태 1로 변경, 회원번호 null로 변경 (#001_1(2))
                                 else {
+                                    log.info("취소되는 기구의 다음 예약자가 없는 경우");
                                     readerStateRepository.nExistReservation(readers.getReader());
                                 }
 
@@ -111,6 +120,7 @@ public class TagService {
                             }
                             // 내가 사용중이지 않은 상태 => 기존 예약을 취소 후 사용중인 상태로 등록 (#001_2)
                             else {
+                                log.info("내가 아무런 기구도 사용중이지 않은 상태");
                                 // 해당 기구 예약 삭제
                                 reservationRepository.deleteByUserId(user.getUserId());
                                 // 새로 사용중인 상태로 등록
@@ -142,12 +152,14 @@ public class TagService {
 
                     // 내가 다른 기구 예약중 => 기존 예약 취소 후 예약 새로 생성 (#001_4)
                     else {
+                        log.info("다른 기구를 예약중인 상태");
                         reservationRepository.deleteByUserId(user.getUserId());
                         reservationRepository.save(new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul"))));
                     }
                 }
                 // 내가 예약이 없는 경우 (#001_5)
                 else if (reservationRepository.findByUserId(user.getUserId()) == null) {
+                    log.info("예약이 없는 경우");
                     ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
                     reservationRepository.save(reservationVo);
                 }
@@ -156,8 +168,10 @@ public class TagService {
             }
             // 해당 기구 예약자가 없는 경우 (#002)
             else {
+                log.info("태그한 기구 예약자가 없는 경우");
                 // 내가 사용중인 상태 (#002_1)
                 if (readerStateRepository.findByUserId(user.getUserId()) != null) {
+                    log.info("내가 다른 기구 사용중인 상태");
                     // 기존 사용 종료 후 새로 사용 시작
                     LocalDateTime startTime = tagInfoRepository
                             .getStartDate(LocalDate.now(), user.getUserId(),
@@ -172,6 +186,7 @@ public class TagService {
                     List<ReservationEntity> reservationList = reservationRepository
                             .findByReaderOrderByReservationAsc(readers.getReader());
                     if (reservationList.size() != 0) {
+                        log.info("취소되는 기구의 다음예약자가 있는 경우");
                         MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                         mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                         readerStateRepository.ExistReservation(readers.getReader());
@@ -186,6 +201,7 @@ public class TagService {
                     }
                     // 취소 되는 기구의 다음 예약자가 없는 경_우 => 기존 기구 상태 1로 변경, 회원번호 null로 변경
                     else {
+                        log.info("취소되는 기구의 다음예약자가 없는 경우");
                         readerStateRepository.nExistReservation(readers.getReader());
                     }
 
@@ -203,6 +219,7 @@ public class TagService {
                 }
                 // 아무것도 사용중이지 않은 상태 (#002_2)
                 else {
+                    log.info("다른 기구를 사용중이지 않은 상태");
                     // 기구 사용 시작
                     ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 0, user.getUserId());
 
@@ -234,15 +251,17 @@ public class TagService {
 
         // 1. 해당 기구 사용중 상태
         else {
+            log.info("해당 기구 사용중인 상태, {} , {}",readerState.getUserId(),user.getUserId());
             // 내가 사용중인 경우 (= 종료) (#003)
             if (readerState.getUserId() == user.getUserId()) {
                 // 태깅 정보 테이블에 종료 시간 추가 해줘야한다.
                 LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(), user.getUserId(), reader)
                         .get(0).getStartTime();
                 tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
-                log.info("사용중인 기구 종료태그 찍기.");
+                log.info("내가 사용중인 상태");
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
+                    log.info("취소되는 기구의 다음예약자가 있는 경우");
                     MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
                     mqtt.init("tcp://13.124.11.62:1883", deviceCode);
                     ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 2, null);
@@ -263,6 +282,7 @@ public class TagService {
                 }
                 // 해당 기구 예약이 없는경우 미사용(대기X)상태로 변경 (#003_2)
                 else {
+                    log.info("취소되는 기구의 다음예약자가 없는 경우");
                     //readerStateRepository.nExistReservation(reader);
                     ReaderStateEntity readerStateVo = new ReaderStateEntity(reader, 1, null);
                     readerStateRepository.save(readerStateVo);
@@ -272,10 +292,13 @@ public class TagService {
             }
             // 내가 사용중이 아닌 경우 (#004)
             else {
+                log.info("내가 사용중이 아닌 상태");
                 // 내가 예약이 있는 경우
                 if (reservationRepository.findByUserId(user.getUserId()) != null) {
+                    log.info("내가 예약이 있는 경우");
                     // 다른 기구를 예약중이면 기존 예약 취소 후 새로 예약 (#004_1)
                     if (!reservationRepository.findByUserId(user.getUserId()).getReader().equals(reader)) {
+                        log.info("다른 기구를 예약중인 경우");
                         reservationRepository.deleteByUserId(user.getUserId());
                         ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
                         reservationRepository.save(reservationVo);
@@ -285,6 +308,7 @@ public class TagService {
                 }
                 // 내가 예약이 없는경우 예약하기 (#004_3)
                 else {
+                    log.info("내가 예약이 없는 경우");
                     ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
                     reservationRepository.save(reservationVo);
                 }
