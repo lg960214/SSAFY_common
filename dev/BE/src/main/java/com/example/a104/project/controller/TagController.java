@@ -35,7 +35,7 @@ public class TagController {
     private final AdminService adminService;
     private final ReaderService readerService;
     private final DeviceService deviceService;
-
+    private final EmitterList emitterList;
     //private List<SseEmitter> emitters = new ArrayList<>();
 
     @Operation(summary = "SSE 연결",description = "sse 연결을 하게 되면 헬스장 실시간 데이터 전송")
@@ -43,7 +43,6 @@ public class TagController {
     @GetMapping(value = "sse", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<SseEmitter> sse(@RequestHeader(value = "Authorization") String token) throws IOException {
         try{
-            EmitterList emitterList = new EmitterList();
             List<SseEmitter> emitters = emitterList.getEmitters();
             SseEmitter emitter = new SseEmitter(1800000l);
             emitters.add(emitter);
