@@ -34,8 +34,8 @@ const UserNavBar = () => {
     <div className="fixed bottom-0 w-full">
       {isModal && (
         <Modal isOpen={isModal} onClose={handleCloseModal}>
-          <div className="w-[280px] h-[200px] bg-CustomNavy rounded-lg flex flex-wrap justify-evenly">
-            <span className="w-[240px] h-[100px] py-10 text-lg font-bold align-middle text-center text-white">
+          <div className="w-[280px] h-[180px] bg-CustomNavy rounded-lg flex flex-wrap justify-evenly">
+            <span className="w-[240px] h-[60px] py-10 text-lg font-bold align-middle text-center text-white">
               로그아웃 하시겠습니까?
             </span>
             <div
