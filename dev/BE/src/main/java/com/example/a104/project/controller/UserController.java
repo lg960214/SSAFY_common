@@ -340,7 +340,7 @@ public class UserController {
         int userId = userDateService.createUserId(map.get("id"));
         UserDateEntity userDate = UserDateEntity.builder()
                 .userId(userId)
-                .signin(LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3))
+                .signin(LocalDateTime.now(ZoneId.of("Asia/Seoul")))
                 .build();
         userDateService.createUserDate(userDate);
         log.info("Method : signUp, signUp User : {}",user);

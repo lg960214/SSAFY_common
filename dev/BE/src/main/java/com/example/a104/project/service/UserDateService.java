@@ -41,7 +41,7 @@ public class UserDateService {
     }
 
     public void dropout(int userId){
-        LocalDateTime date = LocalDateTime.now(ZoneId.of("Asia/Seoul")).minusHours(3);
+        LocalDateTime date = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         userDateRepository.dropout(date,userId);
     }
 }
