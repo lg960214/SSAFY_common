@@ -5,16 +5,6 @@ interface UsagePageProps {
 }
 
 const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
-  const handle = {
-    barClick: (data: any) => {
-      console.log(data);
-    },
-
-    legendClick: (data: any) => {
-      console.log(data);
-    },
-  };
-
   return (
     <div className="relative rounded-[20px] -mt-[60px] z-10 bg-slate-200 shadow-right-bottom shadow-gray-300">
       {/* chart height이 100%이기 때문이 chart를 덮는 마크업 요소에 height 설정 */}
@@ -125,10 +115,6 @@ const UsagePage = ({ dailyUsageData }: UsagePageProps) => {
            * label 안보이게 할 기준 height
            */
           labelSkipHeight={12}
-          /**
-           * bar 클릭 이벤트
-           */
-          onClick={handle.barClick}
           /**
            * legend 설정 (default로 우측 하단에 있는 색상별 key 표시)
            */
