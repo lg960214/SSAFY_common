@@ -103,10 +103,8 @@ public class MqttConfig implements MqttCallback {
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         String msg = new String(message.getPayload());
         String arr[] = msg.split("&");
-        System.out.println(arr);
         log.info("Array : {}", Arrays.toString(arr));
         if (arr[2].equals("noshow")) {
-            System.out.println("NOSHOW");
             log.info("NOSHOW");
             EmitterList emitterList = new EmitterList();
             List<SseEmitter> sseEmitterList = emitterList.getEmitters();
@@ -142,7 +140,6 @@ public class MqttConfig implements MqttCallback {
             }
         } else if(arr[2].equals("tag")) {
             log.info("TAG");
-            System.out.println("TAG");
             String deviceCode = arr[0];
             String reader = arr[1];
             EmitterList emitterList = new EmitterList();
