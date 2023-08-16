@@ -86,7 +86,7 @@ export default function Root() {
   return (
     <AuthProvider>
       <nav
-        className="flex justify-between items-center w-[80%] md:w-[100%] mx-auto bg-CustomNavy shadow-md shadow-black"
+        className="flex justify-between items-center w-[80%] sm:min-w-[1150px] md:w-full mx-auto bg-CustomNavy shadow-md shadow-black"
         style={{ maxWidth: '1440px' }}
       >
         <div className="flex flex-col text-white font-Bungee ml-6 my-3 me-8">

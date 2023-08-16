@@ -204,9 +204,10 @@ const WaitInfoPage = () => {
               value={regiGymCode}
               placeholder="헬스장 번호"
               onChange={handleChangeGymCode}
+              setValueEmpty={() => setRegiGymCode('')}
             />
             <button
-              className="py-0 h-10 w-[80px] border-2 border-black"
+              className="py-0 h-10 w-[80px] bg-CustomOrange text-white"
               onClick={() => {
                 if (regiGymCode === '') {
                   alert('헬스장 번호를 입력해 주세요!');
