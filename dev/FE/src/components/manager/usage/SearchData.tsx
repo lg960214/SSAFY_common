@@ -32,6 +32,7 @@ const SearchData = ({ dailyUsageData }: SearchDataProps) => {
           breakLabel="..."
           nextLabel=">"
           nextLinkClassName="text-[#323554] hover:text-CustomOrange"
+          disabledLinkClassName="text-transparent hover:text-transparent cursor-default"
           className="flex justify-center text-2xl font-Bungee"
           pageLinkClassName="mx-2 hover:text-CustomOrange"
           activeLinkClassName="font-extrabold text-CustomOrange"
