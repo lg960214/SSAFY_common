@@ -7,6 +7,7 @@ import com.example.a104.project.entity.UserEntity;
 import com.example.a104.project.repository.*;
 import com.example.a104.project.util.MqttConfig2;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -14,6 +15,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TagService {
@@ -30,7 +32,7 @@ public class TagService {
         List<ReservationEntity> reservation = reservationRepository.findByReaderOrderByReservationAsc(reader);
         UserEntity user = userRepository.findByDeviceCode(deviceCode);
         // 기구 상태 [0: 사용중], [1: 미사용(대기X)], [2:미사용(대기O)]
-
+        log.info("Tagging Service Start");
         // 1. 해당 기구 미사용 상태
         if (readerState == null || readerState.getState() != 0) {
             // 해당 기구 예약자가 있는 경우 (#001)
@@ -238,7 +240,7 @@ public class TagService {
                 LocalDateTime startTime = tagInfoRepository.getStartDate(LocalDate.now(), user.getUserId(), reader)
                         .get(0).getStartTime();
                 tagInfoRepository.setEndTime(LocalDateTime.now(ZoneId.of("Asia/Seoul")), startTime);
-
+                log.info("사용중인 기구 종료태그 찍기.");
                 // 해당 기구 예약이 있는경우 미사용(대기O)상태로 변경 (#003_1)
                 if (reservation.size() != 0) {
                     MqttConfig2 mqtt = new MqttConfig2(userRepository, reservationRepository, readerStateRepository);
