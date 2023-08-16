@@ -33,7 +33,7 @@ const WaitCard = ({ data, state }: WaitCardProps) => {
     );
   }
   return (
-    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px] shadow-lg">
+    <div className="flex w-[685px] h-[186px] bg-white mx-[70px] mb-[35px] rounded-[15px] shadow-lg font-Jeju">
       <div className="w-[465px] h-[186px] bg-CustomLightNavy text-white rounded-[15px]  flex flex-col justify-between items-center shadow-lg">
         <div className="flex justify-between mt-5 w-[350px] text-xl">
           <span>기구명</span>
