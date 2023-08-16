@@ -33,8 +33,10 @@ public class MqttConfig implements MqttCallback {
     private final ReaderService readerService;
     private final AdminService adminService;
     private final DeviceService deviceService;
+    private final EmitterList emitterList;
+
     public MqttConfig(UserRepository userRepository, ReservationRepository reservationRepository,
-            ReaderStateRepository readerStateRepository, TagService tagService, ReaderService readerService, AdminService adminService, DeviceService deviceService) {
+            ReaderStateRepository readerStateRepository, TagService tagService, ReaderService readerService, AdminService adminService, DeviceService deviceService,EmitterList emitterList) {
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
         this.readerStateRepository = readerStateRepository;
@@ -42,6 +44,7 @@ public class MqttConfig implements MqttCallback {
         this.readerService = readerService;
         this.adminService = adminService;
         this.deviceService = deviceService;
+        this.emitterList = emitterList;
     }
 
 
@@ -106,7 +109,6 @@ public class MqttConfig implements MqttCallback {
         log.info("Array : {}", Arrays.toString(arr));
         if (arr[2].equals("noshow")) {
             log.info("NOSHOW");
-            EmitterList emitterList = new EmitterList();
             List<SseEmitter> sseEmitterList = emitterList.getEmitters();
             // arr[0] = 노쇼한 사람의 deviceCode , arr[1] = 노쇼한 사람이 예약한 reader
             int userId = userRepository.findByDeviceCode(arr[0]).getUserId(); // 노쇼한 사람의 userId
@@ -142,7 +144,6 @@ public class MqttConfig implements MqttCallback {
             log.info("TAG");
             String deviceCode = arr[0];
             String reader = arr[1];
-            EmitterList emitterList = new EmitterList();
             List<SseEmitter> sseEmitterList = emitterList.getEmitters();
             tagService.Tagging(deviceCode, reader);
             ReaderEntity readerVo = readerService.getReader(reader);
