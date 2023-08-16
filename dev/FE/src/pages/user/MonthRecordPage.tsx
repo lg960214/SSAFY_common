@@ -11,8 +11,11 @@ import TotalDays from '@/components/user/monthrecord/TotalDays';
 import TotalTimes from '@/components/user/monthrecord/TotalTimes';
 import WholeMonthRank from '@/components/user/monthrecord/WholeMonthRank';
 import MyRank from '@/components/user/monthrecord/MyRank';
+import { useNavigate } from 'react-router-dom';
 
 const MonthRecordPage = () => {
+  const token = JSON.parse(localStorage.getItem('userToken') as string);
+  const navigate = useNavigate();
   const [searchMonth, setSearchMonth] = useState<dayjs.Dayjs>(
     dayjs(new Date()),
   );
@@ -29,8 +32,13 @@ const MonthRecordPage = () => {
   };
 
   useEffect(() => {
-    resetListData();
-    resetRankData();
+    if (token.regist === null) {
+      alert('헬스장 등록 승인 후 이용해주세요');
+      navigate(-1);
+    } else {
+      resetListData();
+      resetRankData();
+    }
   }, [searchMonth]);
 
   return (
