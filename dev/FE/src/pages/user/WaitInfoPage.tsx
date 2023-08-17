@@ -67,6 +67,11 @@ const WaitInfoPage = () => {
       setIsModal(false);
     }
   }, [location]);
+  const [statusProps, setStatusProps] = useState({
+    pickEquipment: '',
+    hour: '',
+    minute: '',
+  });
 
   const [equipmentStatus, setEquipmentStatus] = useState<boolean>(false);
   // 헬스장 기구정보
@@ -93,6 +98,11 @@ const WaitInfoPage = () => {
       onSuccess: (data) => {
         setSearchingData(data);
         setEquipmentStatus(true);
+        setStatusProps({
+          pickEquipment: pickEquipment.name,
+          hour: hour,
+          minute: minute,
+        });
       },
     },
   );
@@ -102,9 +112,12 @@ const WaitInfoPage = () => {
     setRegiGymCode(event.target.value);
   };
 
-  const [pickEquipment, setPickEquipment] = useState<GymEquipments | null>(
-    null,
-  );
+  const [pickEquipment, setPickEquipment] = useState<GymEquipments>({
+    reader: '',
+    region: '',
+    name: '',
+    gymCode: 1234,
+  });
   const handleSetPickEquipment = (equipment: GymEquipments) => {
     setPickEquipment(equipment);
   };
@@ -142,7 +155,7 @@ const WaitInfoPage = () => {
               />
             </Modal>
           )}
-          <div className="bg-slate-200 py-3 rounded-lg">
+          <div className="bg-zinc-200 py-3 rounded-lg">
             <div className="flex justify-evenly items-center my-4">
               <div className="flex justify-center">
                 <div className="flex flex-col justify-center items-center">
@@ -182,16 +195,13 @@ const WaitInfoPage = () => {
               </button>
             </div>
           </div>
-          <div className="w-[360px] h-[200px] mt-8 flex justify-evenly py-4 bg-slate-200 rounded-lg mx-auto">
+          <div className="mt-4 rounded-lg mx-auto mb-[70px]">
             {equipmentStatus === false ? (
-              '원하는 기구와 시간을 검색해주세요'
+              <div className="text-center h-[120px] bg-zinc-200 p-4 rounded-lg">
+                원하는 기구와 시간을 조회해주세요
+              </div>
             ) : (
-              <EquipmentStatus
-                pickEquipment={pickEquipment}
-                searchingData={searchingData}
-                hour={hour}
-                minute={minute}
-              />
+              <EquipmentStatus {...statusProps} searchingData={searchingData} />
             )}
           </div>
         </div>
@@ -232,19 +242,19 @@ const WaitInfoPage = () => {
 };
 
 interface EquipmentCircleProps {
-  equipment: GymEquipments | null;
+  equipment: GymEquipments;
 }
 
 const EquipmentCircle = ({ equipment }: EquipmentCircleProps) => {
   const name =
-    equipment === null
+    equipment.name === ''
       ? ''
       : isNaN(parseInt(equipment.name[equipment.name.length - 1]))
       ? equipment.name
       : equipment.name.slice(0, equipment.name.length - 1);
   return (
     <div className="bg-white w-[84px] h-[84px] m-3 rounded-full flex justify-center items-center">
-      {equipment === null ? (
+      {equipment.name === '' ? (
         <span className="text-2xl text-black">?</span>
       ) : (
         <img src={`/img/equipments/${name}.png`} alt={name} width={52} />

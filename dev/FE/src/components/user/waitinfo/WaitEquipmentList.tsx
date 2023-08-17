@@ -14,7 +14,7 @@ const WaitEquipmentList = ({
   onClose,
 }: WaitEquipmentListProps) => {
   return (
-    <div className="w-[340px] bg-slate-200 rounded-lg py-4 px-2">
+    <div className="w-[340px] bg-zinc-200 rounded-lg py-4 px-2">
       <div className="w-[320px] h-12 text-center flex justify-center items-center border-b-2 border-black align-middle">
         <span className="w-[120px] mx-auto text-xl">기구 목록</span>
         <button
