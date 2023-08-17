@@ -163,7 +163,7 @@ public class AdminController {
                 userDto.setId(userVo.getId());
                 userDtoList.add(userDto);
             }
-            log.info("Method : unAuthorizedUsers, {} Gym get unAuthorizedUsers {}",gymCode, userDtoList);
+            log.info("Method : unAuthorizedUsers, {} Gym get unAuthorizedUsers",gymCode);
             return ResponseEntity.ok(userDtoList);
         }
         catch(JwtException e){
@@ -185,7 +185,7 @@ public class AdminController {
             Claims claims = JwtTokenProvider.parseJwtToken(token);
             int gymCode = adminService.getGymCode((String) claims.get("sub"));
             List<UserEntity> userList = adminService.userList(gymCode);
-            log.info("Method : userList, {} Gym's UserList : {}",gymCode, userList);
+            log.info("Method : userList, {} Gym's UseList",gymCode);
             return ResponseEntity.ok(userList);
         }
         catch(JwtException e){

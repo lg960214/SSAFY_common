@@ -48,6 +48,7 @@ public class AdminService {
     public List<RealTimeDto> realTimeDtoList(int gymCode){
         List<ReaderEntity> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
         List<RealTimeDto> realTimeDtoList = new ArrayList<>();
+        log.info("Method : realTimeDtoList");
         for(ReaderEntity readerVo: readerVoList){
             //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
             RealTimeDto realTimeDto = new RealTimeDto();
@@ -92,7 +93,6 @@ public class AdminService {
 
             realTimeDto.setWaitingList(userList); // 대기중인 사람들 리스트
             realTimeDto.setWaitingCount(cnt);
-            log.info("Method : realTimeDtoList, realTimeWaiting : {}",realTimeDto);
             realTimeDtoList.add(realTimeDto);
         }
         return realTimeDtoList;

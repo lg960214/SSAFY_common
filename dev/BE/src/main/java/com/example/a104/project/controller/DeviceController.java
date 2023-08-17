@@ -41,7 +41,7 @@ public class DeviceController {
             Claims claims = JwtTokenProvider.parseJwtToken(token);
             int gymCode = adminService.getGymCode((String) claims.get("sub"));
             List<DeviceEntity> list = deviceService.DeviceList(gymCode);
-            log.info("Method : DeviceList, {} gym owned deviceList : {}", gymCode, list);
+            log.info("Method : DeviceList, {} gym owned deviceList", gymCode);
             return ResponseEntity.ok(list);
         }
         catch(JwtException e){
@@ -63,7 +63,7 @@ public class DeviceController {
             Claims claims = JwtTokenProvider.parseJwtToken(token);
             int gymCode = adminService.getGymCode((String) claims.get("sub"));
             List<UserEntity> userEntityList = deviceService.UserDevice(gymCode);
-            log.info("Method : UserDevice, get userList with a device : {}",userEntityList);
+            log.info("Method : UserDevice, get userList with a device");
             return ResponseEntity.ok(userEntityList);
         }
         catch(JwtException e){
