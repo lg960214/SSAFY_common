@@ -6,7 +6,7 @@ export default {
     colors,
     extend: {
       fontFamily: {
-        Jeju: ['jejuGothic', 'sans'],
+        Jeju: ['Jeju Gothic', 'sans'],
         Bungee: ['Bungee-Regular', 'sans'],
       },
       colors: {

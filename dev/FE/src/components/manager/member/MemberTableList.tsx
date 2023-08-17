@@ -13,7 +13,7 @@ export const MemberTableList: React.FC<MemberTableListProps> = ({
   const tableName = [
     { title: '회원 번호', className: 'w-20' },
     { title: '이름', className: 'w-24' },
-    { title: '전화 번호', className: 'w-28' },
+    { title: '전화 번호', className: 'w-32' },
     { title: '성별', className: 'w-16' },
     { title: '태그 번호', className: 'w-28' },
   ];

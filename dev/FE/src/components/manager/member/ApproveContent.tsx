@@ -8,7 +8,7 @@ const ApproveContent = ({
   unAuthorizedUsers: UnAuthorizedUser[];
 }) => {
   return (
-    <div className="bg-white rounded-lg w-[460px] h-[480px] px-4">
+    <div className="bg-white rounded-lg w-[460px] h-[480px] px-4 py-2">
       <div className="flex justify-evenly items-center h-14 basis-32 font-bold text-lg text-center border-b-2 border-black">
         <span className="basis-1/4">이름</span>
         <span className="basis-1/4">회원 번호</span>
@@ -16,7 +16,7 @@ const ApproveContent = ({
         <span className="basis-1/4">승인/거절</span>
       </div>
       <div className="border-white border-b-2 h-0"></div>
-      <div className="overflow-y-auto">
+      <div className="overflow-y-auto h-[400px] py-1">
         {unAuthorizedUsers.map((item) => {
           return <ApproveItem key={item.userId} {...item} />;
         })}
