@@ -1,7 +1,7 @@
 import { useDraggable, useDroppableForRfidCard } from '@/hooks/dndhooks';
 import EquipmentCard from './EquipmentCard';
 import { Reader } from '@/types/reader.type';
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
 interface RfidCardProps {
   isOnEdit: boolean;
   data: Reader;
@@ -30,7 +30,10 @@ const RfidCard = ({
     data,
   );
   const { drag } = useDraggable('reader', data.reader);
-  drag(drop(ref));
+
+  useEffect(() => {
+    drag(drop(ref));
+  }, [isOnEdit]);
 
   return (
     <div

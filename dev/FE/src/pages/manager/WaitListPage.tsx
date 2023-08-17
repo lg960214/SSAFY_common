@@ -16,7 +16,7 @@ const WaitListPage = () => {
       const regionsSet = new Set(extractRegions);
       const makeArray = [...regionsSet];
       makeArray.sort();
-      setSectionList(makeArray);
+      setSectionList(makeArray.filter((cur) => !(cur === 'issue')));
     }
   }, [data, isLoading]);
 
