@@ -17,13 +17,11 @@ const waitListApi = (
 
   eventSource.onopen = () => {
     // 연결 시 할 일
-    console.log('sse connect success');
   };
 
   eventSource.onmessage = async (e) => {
     const res = await e.data;
     const parsedData = JSON.parse(res);
-    console.log('Tagged', parsedData);
     setWaitEquipList(parsedData);
     const readerStateArray = parsedData.map((data: EquipList) => {
       if (data.userId) return 'using';
@@ -39,7 +37,6 @@ const waitListApi = (
     eventSource.close();
 
     if (e.error) {
-      console.log('sse linking error 발생');
       // 에러 발생 시 할 일
     }
 

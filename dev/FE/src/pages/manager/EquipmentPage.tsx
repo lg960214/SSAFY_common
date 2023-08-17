@@ -34,9 +34,7 @@ const EquipmentPage = () => {
   const { data, isLoading } = useQuery<Reader[]>(['readers'], getReaders);
   const mutatation = useMutation(() => putReaders(wholeData), {
     onSuccess: () => {},
-    onError: (err) => {
-      console.log('readers PUT 실패: ', err);
-    },
+    onError: () => {},
   });
 
   useEffect(() => {

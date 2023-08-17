@@ -21,7 +21,5 @@ export const getUsageData = async (
     const sortedData = res.data.sort(sortByName);
     setDailyUsageData(sortedData);
     return res.data;
-  } catch (err) {
-    console.log('getUsageData err: ', err);
-  }
+  } catch (err) {}
 };

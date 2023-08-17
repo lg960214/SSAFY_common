@@ -38,9 +38,7 @@ const WaitInfoPage = () => {
           setGetGymName(regiGymCode);
         }
       },
-      onError: (err) => {
-        console.log(err);
-      },
+      onError: () => {},
     },
   );
   const [checkGymApprove, setCheckGymApprove] = useState(false);
