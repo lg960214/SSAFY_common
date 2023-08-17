@@ -35,7 +35,7 @@ public class ReaderController {
             Claims claims = JwtTokenProvider.parseJwtToken(token);
             int gymCode = adminService.getGymCode((String) claims.get("sub"));
             List<ReaderEntity> readerEntityList = readerService.getReaderList(gymCode);
-            log.info("Method : getReaderList, {} Gym owned ReaderList : {}", gymCode, readerEntityList);
+            log.info("Method : getReaderList, {} Gym owned ReaderList", gymCode);
             return ResponseEntity.ok(readerEntityList);
         }
         catch(JwtException e){
