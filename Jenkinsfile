@@ -1,6 +1,12 @@
 pipeline {
     agent any
 
+    
+    tools {
+        nodejs 'nodejs-20.5.0'
+    }
+
+
     stages {
         stage('Remove Previous SpringBoot Settings') {
             steps {
