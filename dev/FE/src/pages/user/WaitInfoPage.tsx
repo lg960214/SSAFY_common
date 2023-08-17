@@ -181,7 +181,7 @@ const WaitInfoPage = () => {
               </div>
               <button
                 onClick={() => {
-                  if (pickEquipment === null) {
+                  if (pickEquipment.name === '') {
                     alert('기구를 선택해 주세요!');
                   } else {
                     gymSearchMutation.mutate();
