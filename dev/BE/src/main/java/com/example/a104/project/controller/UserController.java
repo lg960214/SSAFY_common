@@ -194,7 +194,7 @@ public class UserController {
             int userId = userDateService.createUserId(id);
             List<TagInfoEntity> list = userService.getUserDate(date,userId);
             List<TagInfoDto> userRecord = userService.getTagInfo(list);
-            log.info("Method : userDate, User Exercise Record : {}", userRecord);
+            log.info("Method : userDate, User Exercise Record");
             return ResponseEntity.ok(userRecord);
         }
         catch(JwtException e){
@@ -219,7 +219,6 @@ public class UserController {
             String id = (String) claims.get("sub");
             Map<String, String> returnMsg = new HashMap<>();
             int check = userService.UpdateGymCode(Integer.valueOf(map.get("gym_code")), id);
-            log.info("check: "+check);
             if (check != 0){
                 int userId = userDateService.createUserId(id);
                 userDateService.accessUser(userId);
@@ -312,7 +311,7 @@ public class UserController {
             int month = Integer.valueOf(dateArr[1]);
             int year = Integer.valueOf(dateArr[0]);
             List<MonthRanking> monthRankingList = userService.getMonthRanking(year,month, gymCode);
-            log.info("Method : rank, {} ranking : {}",date,monthRankingList);
+            log.info("Method : rank, {} ranking",date);
             return ResponseEntity.ok(monthRankingList);
         }
         catch (Exception e){
