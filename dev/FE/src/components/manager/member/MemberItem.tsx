@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '@/components/common/Modal';
 import { MemberInfomation } from './MemberInfomation';
 import TagLists from './TagLists';
@@ -18,12 +18,12 @@ export const MemberItem = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isTagListOpen, setIsTagListOpen] = useState(false);
 
+  useEffect(() => {
+    handleClose();
+  }, [isTagListOpen]);
+
   const handleClick: React.MouseEventHandler<HTMLElement> = () => {
     setIsModalOpen(true);
-  };
-
-  const handleRegiClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
   };
 
   const handleClose = () => {
@@ -43,9 +43,9 @@ export const MemberItem = ({
         <div className="flex justify-evenly items-center h-12  border-b-[1px] border-CustomNavy/10">
           <span className="w-20">{item.userId}</span>
           <span className="w-24">{item.name}</span>
-          <span className="w-28">{item.phoneNumber}</span>
+          <span className="w-32">{item.phoneNumber}</span>
           <span className="w-16">{item.sex}</span>
-          <span className="w-28" onClick={handleRegiClick}>
+          <span className="w-28">
             <TagRegister
               id={item.id}
               deviceCode={item.deviceCode}

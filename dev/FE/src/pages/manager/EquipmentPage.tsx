@@ -34,10 +34,12 @@ const EquipmentPage = () => {
   const { data, isLoading } = useQuery<Reader[]>(['readers'], getReaders);
   const mutatation = useMutation(() => putReaders(wholeData), {
     onSuccess: () => {},
-    onError: (err) => {
-      console.log('readers PUT 실패: ', err);
-    },
+    onError: () => {},
   });
+
+  useEffect(() => {
+    if (selectedZoneData.length > 7) setIsRegisterModalOn(false);
+  }, [selectedZoneData]);
 
   useEffect(() => {
     if (!isLoading) {

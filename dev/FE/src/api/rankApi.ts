@@ -12,7 +12,5 @@ export const getRank = async (date: string) => {
       },
     });
     return res.data;
-  } catch (err) {
-    console.log('getReaders err: ', err);
-  }
+  } catch (e) {}
 };

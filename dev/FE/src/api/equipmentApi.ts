@@ -14,15 +14,11 @@ export const getReaders = async () => {
       },
     });
     return res.data;
-  } catch (err) {
-    console.log('getReaders err: ', err);
-  }
+  } catch (e) {}
 };
 
 export const putReaders = async (jsonData: Reader[]) => {
   try {
     await axios.put(BASEURL + 'readers', jsonData);
-  } catch (err) {
-    console.log('putReaders: ', err);
-  }
+  } catch (e) {}
 };

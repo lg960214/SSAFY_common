@@ -40,9 +40,13 @@ const EquipmentMatchingSection = ({
           deleteReader={deleteReader}
         />
       ))}
-      <div className="w-40 h-48 mx-4 flex justify-center items-center">
-        {isOnEdit ? <ReaderAddButton onClick={onReaderAddClick} /> : null}
-      </div>
+      {readers.length < 8 ? (
+        <div className="w-40 h-48 mx-4 flex justify-center items-center">
+          {isOnEdit ? <ReaderAddButton onClick={onReaderAddClick} /> : null}
+        </div>
+      ) : (
+        <></>
+      )}
     </div>
   );
 };
