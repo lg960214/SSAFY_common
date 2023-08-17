@@ -163,8 +163,8 @@ public class TagService {
                     ReservationEntity reservationVo = new ReservationEntity(reader, user.getUserId(), LocalDateTime.now(ZoneId.of("Asia/Seoul")));
                     reservationRepository.save(reservationVo);
                 }
-                ReaderStateEntity readerStateVo = new ReaderStateEntity(reader,0,user.getUserId());
-                readerStateRepository.save(readerStateVo);
+//                ReaderStateEntity readerStateVo = new ReaderStateEntity(reader,0,user.getUserId());
+//                readerStateRepository.save(readerStateVo);
             }
             // 해당 기구 예약자가 없는 경우 (#002)
             else {
