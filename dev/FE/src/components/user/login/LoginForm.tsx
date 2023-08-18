@@ -14,7 +14,7 @@ const LoginForm = () => {
     event.preventDefault();
     loginUser({ id: id, password: password })
       .then(() => navigate('/user/information'))
-      .catch((err) => alert('아이디와 비밀번호를 확인해주세요.'));
+      .catch(() => alert('아이디와 비밀번호를 확인해주세요.'));
   };
 
   const handleIdChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -32,6 +32,7 @@ const LoginForm = () => {
         onChange={handleIdChange}
         setValueEmpty={() => setId('')}
         placeholder="아이디"
+        autoFocus={true}
       />
       <FormInput
         type="password"

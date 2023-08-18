@@ -1,75 +1,49 @@
-import './usagechart.css';
+import { UsageData } from '@/types/usage.type';
 import { useState } from 'react';
+import ShowData from './ShowData';
+import ReactPaginate from 'react-paginate';
 
-type Data = {
-  name: string;
-  usage: number;
-};
-const SearchData = () => {
+interface SearchDataProps {
+  dailyUsageData: UsageData[];
+}
+
+const SearchData = ({ dailyUsageData }: SearchDataProps) => {
   const itemsPerPage = 3; // 페이지당 표시할 항목의 개수
-  const data: Data[] = [
-    { name: '벤치프레스', usage: 5 },
-    { name: '풀업바', usage: 6 },
-    { name: '데드리프트', usage: 15 },
-    { name: '랫풀다운', usage: 25 },
-    { name: '런닝머신', usage: 35 },
-    { name: '레그익스텐션', usage: 65 },
-    { name: '레그프레스', usage: 95 },
-    { name: '사이클', usage: 50 },
-    { name: '스쿼트랙', usage: 25 },
-    { name: '천국의계단', usage: 135 },
-    { name: '케이블', usage: 25 },
-  ];
-  const [currentPage, setCurrentPage] = useState(1);
 
-  // 현재 페이지에 해당하는 데이터를 계산하는 함수
-  const getCurrentPageData = () => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex);
+  const [itemOffset, setItemOffset] = useState(0);
+  const endOffset = itemOffset + itemsPerPage;
+  const currentItems = dailyUsageData.slice(itemOffset, endOffset);
+  const pageCount = Math.ceil(dailyUsageData.length / itemsPerPage);
+
+  const handlePageClick = (event: { selected: number }) => {
+    const newOffset = (event.selected * itemsPerPage) % dailyUsageData.length;
+    setItemOffset(newOffset);
   };
 
-  // 페이지 변경 시 호출되는 함수
-  const handlePageChange = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
-  const renderedData = getCurrentPageData();
-  console.log(renderedData);
   return (
     <>
-      <div className="searchbox mx-auto flex flex-col justify-between">
-        <p className="fontBungee text-center text-3xl pt-5"> Search data</p>
+      <div className="float-left -mt-11 py-5 w-[420px] h-[600px] rounded-[20px] bg-slate-200 mx-auto flex flex-col justify-between shadow-right-bottom shadow-gray-300">
         <ul>
-          {renderedData.map((item) => (
-            <li
-              className="flex justify-between equipmentbox mx-auto my-6"
-              key={item.name}
-            >
-              <img
-                className="w-24 h-24 mt-4 ms-4"
-                src={`/img/equipments/${item.name}.png`}
-                alt={`${item.name}.png`}
-              />
-              <p className="fontBungee text-4xl me-12 pt-12">{item.usage}</p>
-            </li>
+          {currentItems.map((item) => (
+            <ShowData renderData={item} key={item.name} />
           ))}
         </ul>
-        <div className=" flex justify-center fontBungee text-2xl">
-          {Array.from(
-            { length: Math.ceil(data.length / itemsPerPage) },
-            (_, index) => (
-              <button
-                key={index + 1}
-                onClick={() => handlePageChange(index + 1)}
-              >
-                {index + 1}
-              </button>
-            ),
-          )}
-        </div>
+        <ReactPaginate
+          breakLabel="..."
+          nextLabel=">"
+          nextLinkClassName="text-[#323554] hover:text-CustomOrange"
+          disabledLinkClassName="text-transparent hover:text-transparent cursor-default"
+          className="flex justify-center text-2xl font-Bungee"
+          pageLinkClassName="mx-2 hover:text-CustomOrange"
+          activeLinkClassName="font-extrabold text-CustomOrange"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={pageCount}
+          previousLabel="<"
+          previousLinkClassName="text-[#323554] hover:text-CustomOrange"
+          renderOnZeroPageCount={null}
+        />
       </div>
-      ;
     </>
   );
 };

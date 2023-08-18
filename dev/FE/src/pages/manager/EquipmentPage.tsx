@@ -20,8 +20,6 @@ const zoneDefault = [
   { name: 'D', isSelected: false },
   { name: 'E', isSelected: false },
   { name: 'F', isSelected: false },
-  { name: 'G', isSelected: false },
-  { name: 'H', isSelected: false },
 ];
 
 const EquipmentPage = () => {
@@ -35,13 +33,13 @@ const EquipmentPage = () => {
 
   const { data, isLoading } = useQuery<Reader[]>(['readers'], getReaders);
   const mutatation = useMutation(() => putReaders(wholeData), {
-    onSuccess: () => {
-      console.log('readers PUT 성공');
-    },
-    onError: (err) => {
-      console.log('readers PUT 실패: ', err);
-    },
+    onSuccess: () => {},
+    onError: () => {},
   });
+
+  useEffect(() => {
+    if (selectedZoneData.length > 7) setIsRegisterModalOn(false);
+  }, [selectedZoneData]);
 
   useEffect(() => {
     if (!isLoading) {
@@ -153,7 +151,7 @@ const EquipmentPage = () => {
   return (
     <div className="w-[1440px] mx-auto">
       <DndProvider backend={HTML5Backend}>
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-6 mb-1">
           <ZoneChoice zoneList={zoneList} onZoneClick={handleZoneClick} />
           {isOnEdit ? (
             <div className="flex">
@@ -199,6 +197,7 @@ const EquipmentPage = () => {
             setWholeData={setWholeData}
             currentZone={zoneList.filter((cur) => cur.isSelected)[0].name}
             readerData={wholeData}
+            closeModalFunc={() => setIsRegisterModalOn(false)}
           />
         }
         onClose={() => setIsRegisterModalOn(false)}

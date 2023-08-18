@@ -1,38 +1,61 @@
 package com.example.a104.project.service;
 
+import com.example.a104.project.dto.MonthRanking;
 import com.example.a104.project.dto.TagInfoDto;
-import com.example.a104.project.entity.TagInfoVo;
-import com.example.a104.project.entity.UserVo;
+import com.example.a104.project.entity.TagInfoEntity;
+import com.example.a104.project.entity.UserEntity;
+import com.example.a104.project.repository.AdminRepository;
 import com.example.a104.project.repository.ReaderRepository;
 import com.example.a104.project.repository.TagInfoRepository;
 import com.example.a104.project.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final TagInfoRepository tagInfoRepository;
     private final ReaderRepository readerRepository;
-
+    private final AdminRepository adminRepository;
     public int countUsers(int gymCode){
         return userRepository.findByGymCodeAndDeviceCodeIsNotNull(gymCode).size();
     }
 
-    public List<TagInfoVo> getUserDate(String date, int userId){
-        List<TagInfoVo> userRecords = tagInfoRepository.getRecord(date,userId);
-        System.out.println(userRecords);
+    public List<TagInfoEntity> getUserDate(String date, int userId){
+        List<TagInfoEntity> userRecords = tagInfoRepository.getRecord(date,userId);
         return userRecords;
     };
 
+    // 회원 리스트를 받아
+    public List<MonthRanking> getMonthRanking(int year, int month, int gymCode){
+        List<MonthRanking> monthRankingList= new ArrayList<>();
+        for(Object[] object: tagInfoRepository.getRank(year,month,gymCode)){
+            MonthRanking monthRanking = new MonthRanking();
+            monthRanking.setUserId(Integer.valueOf(object[0].toString()));
+            monthRanking.setId(userRepository.findByUserId(Integer.valueOf(object[0].toString())).getId());
+            monthRanking.setSecond(Integer.valueOf(object[1].toString()));
+            monthRankingList.add(monthRanking);
 
-    public List<TagInfoDto> getTagInfo(List<TagInfoVo> list){
+        }
+
+        return monthRankingList;
+    }
+
+    // 헬스장에 등록된 회원리스트
+    public List<UserEntity> getGymUsers(int gymCode){
+        List<UserEntity> userEntityList = userRepository.findByGymCodeAndRegistIsNotNull(gymCode);
+        return userEntityList;
+    }
+
+    public List<TagInfoDto> getTagInfo(List<TagInfoEntity> list){
         List<TagInfoDto> tagInfoDtoList = new ArrayList<>();
-        for(TagInfoVo tag: list){
+        for(TagInfoEntity tag: list){
             TagInfoDto tagInfoDto = new TagInfoDto();
             tagInfoDto.setTagData(tag.getTagDate());
             tagInfoDto.setEndTime(tag.getEndTime());
@@ -45,7 +68,7 @@ public class UserService {
         return tagInfoDtoList;
     }
 
-    public UserVo getUser(String deviceCode){
+    public UserEntity getUser(String deviceCode){
         return userRepository.findByDeviceCode(deviceCode);
     }
 
@@ -61,30 +84,49 @@ public class UserService {
         userRepository.Delete(id);
     }
 
+    //@Transactional(dontRollbackOn = Exception.class)
     public int UpdateGymCode(int code, String id) {
-        int count = userRepository.UpdateGymCode(code, id);
+        int count = 0;
+        log.info("logging"+adminRepository.findByGymCode(code));
+        if(adminRepository.findByGymCode(code) == null){
+            log.info("Method : UpdateGymCode, Not Exist GymCode");
+        }
+        else{
+            count = userRepository.UpdateGymCode(code, id);
+            userRepository.UpdateGymCode(code,id);
+            log.info("Method : UpdateGymCode, Update GymCode");
+        }
+
+        // try{
+        //     count = userRepository.UpdateGymCode(code, id);
+        //     log.info("Method : UpdateGymCode, Update GymCode");
+        // }
+        // catch (Exception e){
+        //     log.info("Method : UpdateGymCode, Not Exist GymCode");
+        // }
+
         return count;
     }
 
-    public UserVo getUserInfo(String id){
+    public UserEntity getUserInfo(String id){
         return userRepository.findById(id).get(0);
     }
     public boolean checkId(String id){
 
-        List<UserVo> userid = userRepository.findById(id);
+        List<UserEntity> userid = userRepository.findById(id);
         if (userid.size() == 1) {
             return true;
         }
         return false;
     }
 
-    public List<UserVo> login(String id) {
-        List<UserVo> user = userRepository.findById(id);
+    public List<UserEntity> login(String id) {
+        List<UserEntity> user = userRepository.findById(id);
         return user;
     }
 
-    public UserVo createUser(UserVo user) {
-        UserVo savedUser = userRepository.save(user);
+    public UserEntity createUser(UserEntity user) {
+        UserEntity savedUser = userRepository.save(user);
         return savedUser;
     }
 }

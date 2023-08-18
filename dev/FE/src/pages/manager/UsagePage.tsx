@@ -1,52 +1,49 @@
 import UsageChart from '@/components/manager/usage/UsageChart';
 import SearchData from '@/components/manager/usage/SearchData';
-import './usagePage.css';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
-
+import { getUsageData } from '@/api/usageDataApi';
+import { UsageData } from '@/types/usage.type';
+import DropDown from '@/components/common/DropDown';
+import DateSelect from '@/components/manager/usage/DateSelect';
+import DateRender from '@/components/manager/usage/DateRender';
+import { TableMenu } from './MemberPage';
 const UsagePage = () => {
-  const [todayDate, setTodayDate] = useState(dayjs(new Date()));
+  const [dropdownVisibility, setDropdownVisibility] = useState<boolean>(false);
 
-  const handleDate = (index: number) => {
-    if (index == 0) {
-      setTodayDate(() => {
-        return todayDate.add(-1, 'day');
-      });
-    } else {
-      setTodayDate(() => {
-        return todayDate.add(1, 'day');
-      });
-    }
-    return todayDate;
-  };
+  const [todayDate, setTodayDate] = useState<dayjs.Dayjs>(dayjs(new Date()));
+  const [dailyUsageData, setDailyUsageData] = useState<UsageData[]>([]);
+
+  useEffect(() => {
+    getUsageData(todayDate.format('YYYY-MM-DD'), setDailyUsageData);
+    setDropdownVisibility(false);
+  }, [todayDate]);
 
   return (
     <>
-      <div className="flex mx-auto mainpage">
-        <div className="w-1/3 pt-10">
-          <SearchData />
+      <div className="flex mx-auto w-[1440px] ">
+        <div className="w-1/3 pt-12 ">
+          <TableMenu name="검색량" />
+          <SearchData dailyUsageData={dailyUsageData} />
         </div>
-        <div className="w-2/3 ">
-          <div className="flex h-28 place-content-end me-10 ">
-            <img
-              className="mt-20 w-10 h-10"
-              src="img/usage/left_circle.png"
-              alt="left_circle"
-              onClick={() => handleDate(0)}
-            />
-            <p className="mx-2 pt-20 fontBungee text-3xl">
-              {todayDate.format('MM - DD')}
-            </p>
-            <img
-              className="mt-20 w-10 h-10"
-              src="img/usage/right_circle.png"
-              alt="right_circle"
-              onClick={() => handleDate(1)}
-            />
+        <div className="w-2/3  pt-12 ">
+          <div className="flex -z-50 justify-between h-28 me-1">
+            <TableMenu name="이용량" />
+            <div className="flex w-[210px] justify-end">
+              <DateRender
+                todayDate={todayDate}
+                setTodayDate={setTodayDate}
+                dropdownVisibility={dropdownVisibility}
+                setDropdownVisibility={setDropdownVisibility}
+              />
+              <div className="absolute bg-white z-20  top-[190px] rounded-[20px]">
+                <DropDown visibility={dropdownVisibility}>
+                  <DateSelect setTodayDate={setTodayDate} />
+                </DropDown>
+              </div>
+            </div>
           </div>
-          <div className="mx-auto mt-5">
-            <UsageChart />
-          </div>
+          <UsageChart dailyUsageData={dailyUsageData} />
         </div>
       </div>
     </>

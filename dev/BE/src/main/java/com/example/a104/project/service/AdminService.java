@@ -4,12 +4,14 @@ import com.example.a104.project.dto.RealTimeDto;
 import com.example.a104.project.entity.*;
 import com.example.a104.project.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminService {
@@ -20,53 +22,70 @@ public class AdminService {
     private final ReservationRepository reservationRepository;
     private final TagInfoRepository tagInfoRepository;
     private final CountRepository countRepository;
-    public int getDayUsing(ReaderVo readerVo,LocalDate date){
+    public int getDayUsing(ReaderEntity readerVo, LocalDate date){
         int cnt = 0;
         try{
             cnt = tagInfoRepository.findByReaderAndTagDate(readerVo.getReader(),date).size();
         }
         catch (Exception e){
-
+            log.info("Method : getDayUsing, no using data {} in {}",readerVo.getReader(),date);
         }
         return cnt;
     }
 
-    public int getDaySearch(ReaderVo readerVo, LocalDate date){
+    public int getDaySearch(ReaderEntity readerVo, LocalDate date){
         int cnt = 0;
         try{
             cnt = countRepository.findBySearchAndName(date,readerVo.getName()).get(0).getCount();
         }
         catch (Exception e){
-
+            log.info("Method : getDaySearch, no search data {} in {}",readerVo.getReader(),date);
         }
         return cnt;
 
     }
     // 실시간 대기, 사용 현황
     public List<RealTimeDto> realTimeDtoList(int gymCode){
-        List<ReaderVo> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
+        List<ReaderEntity> readerVoList =readerRepository.findByGymCode(gymCode); // 헬스장 구역 별 리더기 리스트
         List<RealTimeDto> realTimeDtoList = new ArrayList<>();
-        for(ReaderVo readerVo: readerVoList){
+        log.info("Method : realTimeDtoList");
+        for(ReaderEntity readerVo: readerVoList){
             //String reader = readerVo.getReader(); // 해당 리더기 번호 => 해당 리더기 번호의 사용, 예약 정보 Dto 에 저장
             RealTimeDto realTimeDto = new RealTimeDto();
             realTimeDto.setName(readerVo.getName());
             realTimeDto.setReader(readerVo.getReader());
             realTimeDto.setGymCode(readerVo.getGymCode());
             realTimeDto.setRegion(readerVo.getRegion());
-
-
-            try{
-                realTimeDto.setUserId(readerStateRepository.findByReader(readerVo.getReader()).getUserId()); // 사용중인 사람의 Id
-            }
-            catch (NullPointerException e){
+            Integer userId;
+            // 사용중이지 않은 경우
+            if(readerStateRepository.findByReader(readerVo.getReader())== null){
                 realTimeDto.setUserId(null);
+                userId = null;
+            }
+            else{
+                userId = readerStateRepository.findByReader(readerVo.getReader()).getUserId();
+                realTimeDto.setUserId(userId);
+            }
+            if(userId == null){
+                realTimeDto.setStartTime(null);
+            }
+            else{
+                if(tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).size()==0){
+                    realTimeDto.setStartTime(null);
+                }
+                else{
+                    TagInfoEntity tagInfoVo = tagInfoRepository.findByUserIdAndReaderAndEndTimeIsNullOrderByStartTimeAsc(userId,readerVo.getReader()).get(0);
+                    realTimeDto.setStartTime(tagInfoVo.getStartTime());
+                }
+
             }
 
-            List<ReservationVo> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
+
+            List<ReservationEntity> reservationVoList = reservationRepository.findByReaderOrderByReservationAsc(readerVo.getReader());
             List<Integer> userList = new ArrayList<>();
             int cnt = reservationVoList.size();
             int i = 0;
-            for(ReservationVo reservationVo: reservationVoList){
+            for(ReservationEntity reservationVo: reservationVoList){
                 userList.add(reservationVo.getUserId());
                 i++;
                 if(i== 6) break;
@@ -82,41 +101,36 @@ public class AdminService {
 
 
     // 회원 검색
-    public List<UserVo> search(String keyword,int gymCode){
+    public List<UserEntity> search(String keyword, int gymCode){
         return userRepository.findByNameContainingAndGymCode(keyword,gymCode);
     }
 
     // 회원 승인
     public void approval(int regist,String id){
-        System.out.println("Service: "+id);
-        System.out.println(regist);
         userRepository.Approval(regist,id);
     }
 
-    public List<UserVo> unauthorizedUser(int gymCode){
+    public List<UserEntity> unauthorizedUser(int gymCode){
         return userRepository.findByGymCodeAndRegistIsNull(gymCode);
     }
 
-    public List<UserVo> userList(int GymCode){
-        List<UserVo> userList = userRepository.findByGymCodeAndRegistIsNotNull(GymCode);
-        System.out.println(userList);
+    public List<UserEntity> userList(int GymCode){
+        List<UserEntity> userList = userRepository.findByGymCodeAndRegistIsNotNull(GymCode);
         return userList;
     }
 
     // 관리자 id 를 가지고 헬스장 코드 알아내기
     public int getGymCode(String id){
-        List<AdminVo> admin = adminRepository.findById(id);
-        System.out.println(admin.get(0));
+        List<AdminEntity> admin = adminRepository.findById(id);
         return admin.get(0).getGymCode();
     }
 
-    public List<AdminVo> login(String id){
-        List<AdminVo> admin = adminRepository.findById(id);
-        System.out.println(admin);
+    public List<AdminEntity> login(String id){
+        List<AdminEntity> admin = adminRepository.findById(id);
         return admin;
     }
-    public AdminVo createAdmin(AdminVo admin){
-        AdminVo savedAdmin = adminRepository.save(admin);
+    public AdminEntity createAdmin(AdminEntity admin){
+        AdminEntity savedAdmin = adminRepository.save(admin);
         return savedAdmin;
     }
 }

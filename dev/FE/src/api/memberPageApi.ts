@@ -1,14 +1,13 @@
 import axios from 'axios';
 import { MemberInfo, UnAuthorizedUser, Device } from '@/types/member.type';
 import { getToken } from '@/utils/storage';
-
-// BASEURL 자리
-const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
+import { BASEURL } from '@/constants/url';
+import apiClient from './apiClient';
 
 // 회원정보 리스트 불러오는 api
 const getUserLists = async (): Promise<MemberInfo[]> => {
   const token = getToken('managerToken');
-  const response = await axios.get<MemberInfo[]>(BASEURL + 'admin/users/', {
+  const response = await apiClient.get<MemberInfo[]>('admin/users/', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -19,8 +18,8 @@ const getUserLists = async (): Promise<MemberInfo[]> => {
 // 미승인 회원 리스트 불러오는 api
 const getUnAuthorizedUsers = async (): Promise<UnAuthorizedUser[]> => {
   const token = getToken('managerToken');
-  const response = await axios.get<UnAuthorizedUser[]>(
-    BASEURL + 'admin/unauthorized-users',
+  const response = await apiClient.get<UnAuthorizedUser[]>(
+    'admin/unauthorized-users',
     {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -69,7 +68,7 @@ const matchDevice = async (id: string, device_code: string | null) => {
 // 디바이스 리스트 api
 const deviceLists = async (): Promise<Device[]> => {
   const token = getToken('managerToken');
-  const response = await axios.get<Device[]>(BASEURL + 'devices/', {
+  const response = await apiClient.get<Device[]>('devices/', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

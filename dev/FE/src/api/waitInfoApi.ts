@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { getToken } from '@/utils/storage';
-
-const BASEURL = 'http://i9a104.p.ssafy.io:8081/';
+import { BASEURL } from '@/constants/url';
+import apiClient from './apiClient';
 
 // 헬스장 이용객 수 알아오는 api
 const getUsingGymUsers = async (): Promise<number[]> => {
   const token = getToken('userToken');
-  const response = await axios.get<number[]>(BASEURL + 'user/using-gym', {
+  const response = await apiClient.get<number[]>('user/using-gym', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -34,7 +34,7 @@ const registGym = async (gymCode: string) => {
 // 헬스장 기구 받아오는 api
 const getGymEquipments = async () => {
   const token = getToken('userToken');
-  const response = await axios.get(BASEURL + 'user/readers', {
+  const response = await apiClient.get('user/readers', {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -51,7 +51,7 @@ const getGymSearch = async ({
   reader: string;
 }) => {
   const token = getToken('userToken');
-  const response = await axios.get(BASEURL + 'user/search', {
+  const response = await apiClient.get('user/search', {
     headers: {
       Authorization: `Bearer ${token}`,
     },

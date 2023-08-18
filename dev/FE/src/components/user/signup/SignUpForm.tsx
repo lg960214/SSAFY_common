@@ -30,7 +30,6 @@ const SignUpForm = () => {
         phone_number: phoneNumber,
         sex: gender,
       };
-      console.log(signUpParam);
       signUpUser(signUpParam).then(() => navigate('/user/login'));
     } else {
       alert(errorMessage);
@@ -84,6 +83,12 @@ const SignUpForm = () => {
       return;
     }
 
+    // ID 최대 12자
+    if (id.length > 12) {
+      setErrorMessage('ID는 최대 12자 까지 설정 가능합니다.');
+      return;
+    }
+
     // ID가 알파벳과 숫자로만 구성되어 있는지 확인
     if (!/^[A-Za-z0-9]+$/.test(id)) {
       setErrorMessage('ID는 알파벳과 숫자로만 구성되어야 합니다.');
@@ -110,9 +115,20 @@ const SignUpForm = () => {
     setErrorMessage('');
   }, [name, id, password, passwordCheck, phoneNumber, email, gender]);
 
+  const checkIdWarning = (id: string) => {
+    if (id.length > 12) return '12자 이하로 설정하세요.';
+    else return '';
+  };
+
   useEffect(() => {
     if (id) {
-      checkUserId(id).then((res) => setIdResponse(res));
+      checkUserId(id).then((res) => {
+        setIdResponse(
+          res === '이미 있는 아이디'
+            ? '중복된 아이디가 존재합니다.'
+            : checkIdWarning(id),
+        );
+      });
     } else {
       setIdResponse('');
     }
@@ -126,6 +142,7 @@ const SignUpForm = () => {
         onChange={handleNameChange}
         setValueEmpty={() => setName('')}
         placeholder="이 름"
+        autoFocus={true}
       />
       <FormInput
         type="text"
@@ -134,13 +151,15 @@ const SignUpForm = () => {
         setValueEmpty={() => setId('')}
         placeholder="아이디"
       />
-      <div className="text-red-500">{idCheckResponse}</div>
+      <div className="text-sm text-red-500 font-semibold">
+        {idCheckResponse}
+      </div>
       <FormInput
         type="password"
         value={password}
         onChange={handlePasswordChange}
         setValueEmpty={() => setPassword('')}
-        placeholder="비밀번호"
+        placeholder="비밀번호 (8자~15자)"
       />
       <FormInput
         type="password"
@@ -154,7 +173,7 @@ const SignUpForm = () => {
         value={phoneNumber}
         onChange={handlePhoneNumberChange}
         setValueEmpty={() => setPhoneNumber('')}
-        placeholder="전화번호"
+        placeholder="전화번호 (000-0000-000)"
       />
       <FormInput
         type="email"
@@ -194,9 +213,9 @@ const GenderSelectButton = ({
   onFemaleClick,
 }: GenderSelectButtonProps) => {
   const selectedClass =
-    'bg-CustomOrange text-white mx-2 my-2 px-10 py-2 rounded-xl';
+    'bg-CustomOrange text-white mx-2 my-2 px-10 py-2 rounded-xl hover:cursor-pointer';
   const unSelectedClass =
-    'text-gray-400 bg-white mx-2 my-2 px-10 py-2 rounded-xl';
+    'text-gray-400 bg-white mx-2 my-2 px-10 py-2 rounded-xl hover:cursor-pointer';
   return (
     <div className="flex ">
       <div

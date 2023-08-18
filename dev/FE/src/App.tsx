@@ -1,10 +1,12 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
   Outlet,
+  useNavigate,
+  useLocation,
 } from 'react-router-dom';
 import MemberPage from './pages/manager/MemberPage';
 import EquipmentPage from './pages/manager/EquipmentPage';
@@ -20,6 +22,9 @@ import WaitInfoPage from './pages/user/WaitInfoPage';
 import LoginPage from './pages/user/LoginPage';
 import SignUpPage from './pages/user/SignUpPage';
 import UserNavBar from './components/common/UserNavBar';
+import ManagerAuthGuard from './components/manager/auth/ManagerAuthGuard';
+import UserAuthGuard from './components/user/auth/UserAuthGuard';
+import NotFoundPage from './pages/etc/NotFoundPage';
 const App: React.FC = () => {
   return (
     <AuthProvider>
@@ -28,27 +33,31 @@ const App: React.FC = () => {
           <>
             <Route path="/" element={<Layout />}>
               <Route path="" element={<MainPage />} />
-              <Route path="member" element={<MemberPage />} />
-              <Route path="equipment" element={<EquipmentPage />} />
-              <Route path="usage" element={<UsagePage />} />
-              <Route path="waitlist" element={<WaitListPage />} />
+              <Route element={<ManagerAuthGuard />}>
+                <Route path="member" element={<MemberPage />} />
+                <Route path="equipment" element={<EquipmentPage />} />
+                <Route path="usage" element={<UsagePage />} />
+                <Route path="waitlist" element={<WaitListPage />} />
+              </Route>
             </Route>
             <Route path="/" element={<NoNavbarLayout />}>
               <Route
                 path="waitlist/:sectionName"
                 element={<WaitListDetailPage />}
-              />{' '}
-              {/* other routes that do not require Navbar */}
+              />
             </Route>
             <Route path="/user" element={<UserLayout />}>
-              <Route path="record" element={<RecordPage />} />
-              <Route path="record/:month" element={<MonthRecordPage />} />
-              <Route path="information" element={<WaitInfoPage />} />
+              <Route element={<UserAuthGuard />}>
+                <Route path="record" element={<RecordPage />} />
+                <Route path="record/:month" element={<MonthRecordPage />} />
+                <Route path="information" element={<WaitInfoPage />} />
+              </Route>
             </Route>
             <Route path="/user" element={<NoNavbarUserLayout />}>
               <Route path="login" element={<LoginPage />} />
               <Route path="signup" element={<SignUpPage />} />
             </Route>
+            <Route path="*" element={<NotFoundPage />} />
           </>
         </Routes>
       </Router>
@@ -74,6 +83,14 @@ function NoNavbarLayout() {
 }
 
 function UserLayout() {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.pathname === '/user' || location.pathname === '/user/') {
+      navigate('/user/login');
+    }
+  }, [location.pathname, navigate]);
   return (
     <div>
       <div className="mx-auto w-[360px]">
