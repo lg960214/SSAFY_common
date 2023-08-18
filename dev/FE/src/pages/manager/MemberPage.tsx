@@ -38,9 +38,10 @@ const MemberPage = () => {
   }, [data, status]);
 
   // 미승인 회원정보 불러오기
-  const { data: unAuthorizedUsers, status: unAuthorizedUsersStatus } = useQuery<
-    UnAuthorizedUser[]
-  >(['unAuthorizedUsers'], getUnAuthorizedUsers);
+  const { data: unAuthorizedUsers } = useQuery<UnAuthorizedUser[]>(
+    ['unAuthorizedUsers'],
+    getUnAuthorizedUsers,
+  );
 
   return (
     <div
@@ -48,20 +49,21 @@ const MemberPage = () => {
       className="flex justify-between mx-auto mt-8"
       style={{ height: '830px', width: '1440px' }}
     >
-      <div className="w-[404px]">
+      <div className="w-[440px]">
         <TableMenu name="태그 현황" />
         <TagTableList memberInfoLists={userListsData} />
       </div>
-      <div className="w-[908px]">
+      <div className="w-[880px]">
         <div className="flex justify-between">
           <TableMenu name="회원 정보" />
-          <div className="ml-40 float-right border-2 justify-evenly align-middle items-center border-black flex w-[280px] h-10 rounded-2xl px-3">
+          <div className="ml-40 float-right border-2 bg-white justify-center align-middle items-center border-black/30 flex w-[260px] h-10 rounded-2xl px-0">
             <input
-              className="h-6 border-2 border-black rounded-lg pl-4"
+              className="h-6 border-b-2 border-black/30 focus-visible:outline-transparent mr-1"
               type="text"
+              placeholder="이름으로 검색"
               onInput={handleInputSearchText}
             />
-            <img className="w-8" src={`/img/member/loupe.png`} alt="" />
+            <img className="w-8 ml-1" src={`/img/member/loupe.png`} alt="" />
           </div>
         </div>
 
@@ -74,7 +76,7 @@ const MemberPage = () => {
             <ApproveContent unAuthorizedUsers={unAuthorizedUsers || []} />
           </Modal>
           <button
-            className="mt-2 bg-CustomOrange text-white text-lg float-right"
+            className="mt-4 bg-CustomOrange text-white text-lg float-right hover:bg-CustomOrange/80 transition-colors duration-300"
             onClick={openApproveModal}
           >
             승인 요청
@@ -89,9 +91,9 @@ interface TableMenuProps {
   name: string;
 }
 
-const TableMenu = (props: TableMenuProps) => {
+export const TableMenu = (props: TableMenuProps) => {
   return (
-    <div className="w-40 h-24 p-2 bg-CustomOrange -z-10 text-white text-center rounded-2xl text-xl">
+    <div className="w-40 h-24 p-2 font-Jeju bg-CustomOrange text-white text-center rounded-2xl text-xl">
       {props.name}
     </div>
   );

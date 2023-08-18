@@ -1,28 +1,34 @@
+import { BASEURL } from '@/constants/url';
+import { EquipList, ReaderStateType } from '@/types/wait.type';
 import { getToken } from '@/utils/storage';
 import { EventSourcePolyfill } from 'event-source-polyfill';
-import { EquipList } from '@/components/manager/waitlist/WaitListDetail';
+
 const waitListApi = (
   setWaitEquipList: React.Dispatch<React.SetStateAction<EquipList[]>>,
+  setState: React.Dispatch<React.SetStateAction<ReaderStateType[]>>,
 ) => {
-  const url = `http://i9a104.p.ssafy.io:8081/tags/sse`;
-
-  const eventSource = new EventSourcePolyfill(url, {
+  const token = getToken('managerToken');
+  const eventSource = new EventSourcePolyfill(BASEURL + 'sse/tags/sse', {
     headers: {
-      Authorization: `bearer ${getToken('managerToken')}`,
+      Authorization: `bearer ${token}`,
     },
     heartbeatTimeout: 600000,
   });
 
   eventSource.onopen = () => {
     // 연결 시 할 일
-    console.log('connect success');
   };
 
   eventSource.onmessage = async (e) => {
     const res = await e.data;
     const parsedData = JSON.parse(res);
-    console.log(parsedData);
     setWaitEquipList(parsedData);
+    const readerStateArray = parsedData.map((data: EquipList) => {
+      if (data.userId) return 'using';
+      else if (data.waitingCount) return 'waitnext';
+      else return 'empty';
+    });
+    setState(readerStateArray);
     // 받아오는 data로 할 일
   };
 
@@ -31,8 +37,6 @@ const waitListApi = (
     eventSource.close();
 
     if (e.error) {
-      console.log('error 발생');
-      alert('에러 발생하여 접속이 끊겼습니다. 다시 연결해주세요!');
       // 에러 발생 시 할 일
     }
 

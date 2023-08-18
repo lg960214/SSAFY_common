@@ -1,6 +1,7 @@
 package com.example.a104.project.controller;
 
 import com.example.a104.project.dto.DayInfoDto;
+import com.example.a104.project.dto.UserDto;
 import com.example.a104.project.entity.*;
 import com.example.a104.project.service.AdminService;
 import com.example.a104.project.service.ReaderService;
@@ -8,7 +9,13 @@ import com.example.a104.project.service.UserDateService;
 import com.example.a104.project.service.UserService;
 import com.example.a104.project.util.JwtTokenProvider;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
+@Tag(name="관리자페이지 API", description = "관리자 페이지에서 사용되는 API 입니다.")
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/admin")
@@ -31,48 +40,70 @@ public class AdminController {
     private final UserService userService;
     private final ReaderService readerService;
 
-    // 실시간 대기, 사용 현황 (사용안함)
-    // @GetMapping("waiting")
-    // public List<RealTimeDto> getRealTimeInfo(@RequestHeader(value = "Authorization") String token, @RequestParam String region) {
-
-    //     Claims claims = JwtTokenProvider.parseJwtToken(token);
-    //     int gymCode = adminService.getGymCode((String) claims.get("sub"));
-
-    //     List<RealTimeDto> list = adminService.realTimeDtoList(region,gymCode);
-    //     return list;
-    // }
 
     // 일변 운동기구별 검색량과 이용량
+    @Operation(summary = "일별, 운동기구별 검색량과 이용량",description = "헬스장 이용객들이 실제로 이용한 데이터와 검색 데이터를 가지고 관리자 페이지에서 시각화할수 있도록 제공하는 데이터")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="date", description = "YYYY-MM-DD 형식의 날짜 데이터, 타입은 문자열")
+    })
     @GetMapping("day-info")
-    public List<DayInfoDto> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
-        List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<ReaderVo> readerVoList = readerService.getMatchReaders(gymCode);
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate localDate = LocalDate.parse(date, formatter);
-        for(ReaderVo readerVo: readerVoList){
-            DayInfoDto dayInfoDto = new DayInfoDto();
-            dayInfoDto.setName(readerVo.getName());
-            dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
-            dayInfoDto.setUsingCount(adminService.getDayUsing(readerVo,localDate));
-            dayInfoDtoList.add(dayInfoDto);
+    public ResponseEntity<List<DayInfoDto>> getDayInfo(@RequestHeader(value = "Authorization") String token,@RequestParam String date){
+        try{
+            List<DayInfoDto> dayInfoDtoList = new ArrayList<>();
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<ReaderEntity> readerVoList = readerService.getMatchReaders(gymCode);
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+            LocalDate localDate = LocalDate.parse(date, formatter);
+            for(ReaderEntity readerVo: readerVoList){
+                DayInfoDto dayInfoDto = new DayInfoDto();
+                dayInfoDto.setName(readerVo.getName());
+                dayInfoDto.setSearchCount(adminService.getDaySearch(readerVo,localDate));
+                dayInfoDto.setUsingCount(adminService.getDayUsing(readerVo,localDate));
+                dayInfoDtoList.add(dayInfoDto);
+            }
+            log.info("Method : getDayInfo, {} Gym {} search data and using data", gymCode, date);
+            return ResponseEntity.ok(dayInfoDtoList);
         }
-        return dayInfoDtoList;
+        catch(JwtException e){
+            log.info("Method: getDayInfo, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: getDayInfo, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // 헬스장 회원 검색(이름으로 검색)
+    @Operation(summary = "헬스장 회원 검색",description = "검색란에 키워드를 입력하면 키워드를 포함한 이름을 가진 이용자들을 반환해줌")
+    @Parameters({
+            @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT"),
+            @Parameter(name="keyword", description = "검색할 키워드 문자열")
+    })
     @GetMapping("search")
-    public List<UserVo> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.search(keyword, gymCode);
-        System.out.println(users);
-        return users;
+    public ResponseEntity<List<UserEntity>> search(@RequestHeader(value = "Authorization") String token, @RequestParam String keyword) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> users = adminService.search(keyword, gymCode);
+            log.info("Method : search, search User keyword : {}",keyword);
+            return ResponseEntity.ok(users);
+        }
+        catch(JwtException e){
+            log.info("Method: search, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: search, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 헬스장 회원 삭제
+    @Operation(summary = "헬스장 회원 삭제",description = "삭제할 회원의 ID 를 입력 받아 해당 회원 삭제 (등록된 헬스장이 삭제)")
     @Transactional
     @PutMapping("users")
     public String delete(@RequestBody Map<String, String> map) {
@@ -81,51 +112,101 @@ public class AdminController {
         // 회원의 탈퇴 날짜 저장
         int userId = userDateService.createUserId(map.get("id"));
         userDateService.dropout(userId);
+        log.info("Method : delete, delete {} user", map.get("id"));
         return "Delete Success";
     }
 
     // 헬스장 등록 회원 승인
+    @Operation(summary = "헬스장 등록 회원 승인",description = "헬스장을 등록 신청한 회원을 승인해주는 API")
     @Modifying
     @Transactional
     @PutMapping("approval")
-    public String approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, String> map) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        String id = map.get("id");
-        adminService.approval(1, id);
+    public ResponseEntity<String> approval(@RequestHeader(value = "Authorization") String token, @RequestBody Map<String, String> map) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            String id = map.get("id");
+            adminService.approval(1, id);
 
-        // 승인 후 승인 날짜 저장
-        int userId = userDateService.createUserId(id);
-        userDateService.accessAdmin(userId);
-        return "Success";
+            // 승인 후 승인 날짜 저장
+            int userId = userDateService.createUserId(id);
+            userDateService.accessAdmin(userId);
+            log.info("Method : approval, approval {} user",map.get("id"));
+            return ResponseEntity.ok("Success");
+        }
+        catch(JwtException e){
+            log.info("Method: approval, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: approval, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
     // 헬스장 등록은 했지만 승인되지 않은 사용자 목록
+    @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("unauthorized-users")
-    public List<UserVo> unautorizedUsers(@RequestHeader(value = "Authorization") String token) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        List<UserVo> users = adminService.unauthorizedUser(gymCode);
-        return users;
+    public ResponseEntity<List<UserDto>> unAuthorizedUsers(@RequestHeader(value = "Authorization") String token) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> users = adminService.unauthorizedUser(gymCode);
+            List<UserDto> userDtoList = new ArrayList<>();
+            for(UserEntity userVo: users){
+                UserDto userDto = new UserDto();
+                userDto.setDate(userDateService.getUserDate(userVo.getUserId()));
+                userDto.setUserId(userVo.getUserId());
+                userDto.setName(userVo.getName());
+                userDto.setId(userVo.getId());
+                userDtoList.add(userDto);
+            }
+            log.info("Method : unAuthorizedUsers, {} Gym get unAuthorizedUsers",gymCode);
+            return ResponseEntity.ok(userDtoList);
+        }
+        catch(JwtException e){
+            log.info("Method: unAuthorizedUsers, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: unAuthorizedUsers, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // 헬스장 등록 후 승인 완료된 사용자 목록록
+    @Operation(summary = "헬스장 등록 신청 한 회원 목록",description = "헬스장에 등록 신청을 했지만 아직 승인이 되지 않은 사용자 목록을 반환해준다.")
+    @Parameter(name="Authorization", description = "유저의 정보를 담은 JWT")
     @GetMapping("users")
-    public List<UserVo> userList(@RequestHeader(value = "Authorization") String token) {
-        Claims claims = JwtTokenProvider.parseJwtToken(token);
-        int gymCode = adminService.getGymCode((String) claims.get("sub"));
-        System.out.println(gymCode);
-        List<UserVo> userList = adminService.userList(gymCode);
-        System.out.println(claims);
-        return userList;
+    public ResponseEntity<List<UserEntity>> userList(@RequestHeader(value = "Authorization") String token) {
+        try{
+            Claims claims = JwtTokenProvider.parseJwtToken(token);
+            int gymCode = adminService.getGymCode((String) claims.get("sub"));
+            List<UserEntity> userList = adminService.userList(gymCode);
+            log.info("Method : userList, {} Gym's UseList",gymCode);
+            return ResponseEntity.ok(userList);
+        }
+        catch(JwtException e){
+            log.info("Method: userList, JWT is invalid");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+        catch (Exception e2){
+            log.info("Method: userList, Exception");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+
     }
 
+    @Operation(summary = "관리자 로그인",description = "아이디와 비밀번호를 입력받아 로그인.")
     @PostMapping("login")
     public TokenResponse login(@RequestBody Map<String, String> map) {
-        List<AdminVo> admin = adminService.login(map.get("id"));
+        List<AdminEntity> admin = adminService.login(map.get("id"));
 
         TokenDataResponse tokenDataResponse;
         TokenResponse tokenResponse;
+        log.info("Method : login, {} admin login",map.get("id"));
         try {
             if (admin.size() != 0 && admin.get(0).getPassword().equals(map.get("password"))) {
                 String token = JwtTokenProvider.createToken(admin.get(0).getId()); // 토큰 생성
@@ -133,34 +214,27 @@ public class AdminController {
                 tokenDataResponse = new TokenDataResponse(token, claims.getSubject(), admin.get(0).getName(),null,admin.get(0).getName(),
                         claims.getIssuedAt().toString(), claims.getExpiration().toString());
                 tokenResponse = new TokenResponse("200", "OK", tokenDataResponse);
-
+                log.info("admin login success");
                 return tokenResponse;
             }
-        } catch (Exception siginError) {
-
+        } catch (Exception loginError) {
+            log.error("admin login fail");
         }
 
-        tokenResponse = new TokenResponse("200", "FAIL", "FAIL");
+        tokenResponse = new TokenResponse("202", "FAIL", "FAIL");
         return tokenResponse;
     }
-    // if(admin.size()!=0 && admin.get(0).getPassword().equals(map.get("password"))
-    // ){
-    // returnMsg.put("msg","로그인 성공");
-    // }
-    // else{
-    // returnMsg.put("msg","로그인 실패");
-    // }
-    // return returnMsg;
+
 
     @PostMapping("create")
-    public ResponseEntity<AdminVo> createAdmin(@RequestBody Map<String, Object> map) {
-        AdminVo admin = AdminVo.builder()
+    public ResponseEntity<AdminEntity> createAdmin(@RequestBody Map<String, Object> map) {
+        AdminEntity admin = AdminEntity.builder()
                 .gymCode((int) map.get("code"))
                 .id((String) map.get("id"))
                 .name((String) map.get("name"))
                 .password((String) map.get("password"))
                 .build();
-        AdminVo savedAdmin = adminService.createAdmin(admin);
+        AdminEntity savedAdmin = adminService.createAdmin(admin);
         return new ResponseEntity<>(savedAdmin, HttpStatus.OK);
     }
 
