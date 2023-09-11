@@ -1,16 +1,16 @@
 #include <WiFi.h>
 #include <PubSubClient.h>
 
-const char* ssid = "alveo";
-const char* password = "905612yy@@";
-const char* mqttServer = "13.124.11.62"; // MQTT 브로커의 IP 주소
-const int mqttPort = 1883; // MQTT 브로커의 포트 번호
-const char* clientId = "esp32";
+const char* ssid = "";
+const char* password = "";
+const char* mqttServer = ""; // MQTT 브로커의 IP 주소
+const int mqttPort = ; // MQTT 브로커의 포트 번호
+const char* clientId = "";
 const int ledPin = 18; // LED가 연결된 핀 번호
 const int ledPinMax = 22; // LED가 연결된 핀 번호
 const int movePin = 17; // 진동센서가 연결된 핀 번호
-const char* deviceNum = "23145C09"; // 53E26709
-const char* readerNum = "1111";     // 2222
+const char* deviceNum = ""; // 
+const char* readerNum = "";     // 
 
 
 WiFiClient espClient;
