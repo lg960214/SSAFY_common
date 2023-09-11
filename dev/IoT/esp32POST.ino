@@ -9,8 +9,8 @@
 
 MFRC522 rfid(SS_PIN, RST_PIN);
 
-const char* ssid = "alveo";
-const char* password = "905612yy@@";
+const char* ssid = "";
+const char* password = "";
 
 void setup() {
   Serial.begin(115200);
@@ -32,7 +32,7 @@ void setup() {
 void loop() {
   if (WiFi.status() == WL_CONNECTED) {
     HTTPClient http;
-    http.begin("http://i9a104.p.ssafy.io:8080/sdata");
+    http.begin("");
     http.addHeader("Content-Type", "application/json"); // HTTP POST 요청을 보낼 때, 요청 본문의 데이터가 JSON 형식임을 나타냄
   
     if (rfid.PICC_IsNewCardPresent() && rfid.PICC_ReadCardSerial()) {
