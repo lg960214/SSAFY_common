@@ -12,11 +12,11 @@
 RTC_DS1302 rtc;
 
 
-char ssid[] = "alveo";             // your network SSID (name)
-char pass[] = "905612yy@@";         // your network password
+char ssid[] = "";             // your network SSID (name)
+char pass[] = "";         // your network password
 
-char user[]         = "A104";          // MySQL user login username
-char password[]     = "1234";          // MySQL user login password
+char user[]         = "";          // MySQL user login username
+char password[]     = "";          // MySQL user login password
 
 // RFID 연결
 #define SS_PIN  22  // ESP32 pin GIOP5 
@@ -35,7 +35,7 @@ MFRC522 rfid(SS_PIN, RST_PIN);
   // Optional using hostname, and Ethernet built-in DNS lookup
   char SQL_server[] = ""; // change to your server's hostname/URL
 #else
-  IPAddress SQL_server(54, 180, 103, 16); //EC2 server
+  IPAddress SQL_server(, , , ); //EC2 server
 #endif
 
 uint16_t server_port = 3306;
