@@ -4,11 +4,11 @@
 #include <SPIFFS.h>
 
 // 네트워크 및 MQTT 정보 설정
-const char* ssid = "alveo";
-const char* password = "905612yy@@";
-const char* mqttServer = "13.124.11.62"; // MQTT 브로커의 IP 주소
-const int mqttPort = 1883; // MQTT 브로커의 포트 번호
-const char* clientId = "band1";
+const char* ssid = "";
+const char* password = "";
+const char* mqttServer = ""; // MQTT 브로커의 IP 주소
+const int mqttPort = ; // MQTT 브로커의 포트 번호
+const char* clientId = "";
 
 // 핀 번호 설정
 const int movePin = 17; // 진동센서가 연결된 핀 번호
