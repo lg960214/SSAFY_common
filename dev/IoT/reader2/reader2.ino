@@ -7,8 +7,8 @@
 #define RST_PIN 27 // ESP32 pin GIOP27 
 MFRC522 rfid(SS_PIN, RST_PIN);
 
-const char* ssid = "alveo";//"alveo";
-const char* password = "905612yy@@";//"905612yy@@";
+const char* ssid = "";
+const char* password = "";
 
 const int buzzerPin = 25;  // 부저를 연결한 GPIO 핀
 // 소리 크기 조절을 하기 위한 변수 세팅
@@ -16,9 +16,9 @@ const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
 
-const char* mqttServer = "13.124.11.62"; // MQTT 브로커의 IP 주소
-const int mqttPort = 1883; // MQTT 브로커의 포트 번호
-const char* clientId = "reader1";
+const char* mqttServer = ""; // MQTT 브로커의 IP 주소
+const int mqttPort = ; // MQTT 브로커의 포트 번호
+const char* clientId = "";
 
 WiFiClient espClient;
 PubSubClient client(espClient);
