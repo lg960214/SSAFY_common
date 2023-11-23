@@ -10,7 +10,8 @@
 
 더 이상 눈치보지 말고 운동하세요!!
 
-![WaitWeight](/uploads/ad2c8fead86160638c08bb2cdb361a3d/Untitled__1_.png)
+![WaitWeight](https://github.com/lg960214/SSAFY_common/assets/46098797/e799a39b-3f8b-453a-a0ec-312070bd0ab0)
+
 
 ## 💡 주요기능
 
@@ -35,7 +36,7 @@
 ### 메인화면(반응형 페이지로 모바일은 이용자, 웹페이지는 관리자)
 
 <p align="center">  
-<img src="/uploads/40391d5090118ddc82f110ce7d608285/메인페이지_반응형.gif">
+<img src="[/uploads/40391d5090118ddc82f110ce7d608285/메인페이지_반응형.gif](https://github.com/lg960214/SSAFY_common/assets/46098797/28f944d0-82d2-4311-98e8-87620bc7a0a8)">
 
 </p>
 
