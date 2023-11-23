@@ -36,7 +36,7 @@
 ### 메인화면(반응형 페이지로 모바일은 이용자, 웹페이지는 관리자)
 
 <p align="center">  
-<img src="[/uploads/40391d5090118ddc82f110ce7d608285/메인페이지_반응형.gif](https://github.com/lg960214/SSAFY_common/assets/46098797/28f944d0-82d2-4311-98e8-87620bc7a0a8)">
+![반응형](https://github.com/lg960214/SSAFY_common/assets/46098797/35f7df98-f3b9-4c4e-b8e6-057683ef2ba1)
 
 </p>
 
