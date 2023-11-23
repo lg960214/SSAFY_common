@@ -46,7 +46,7 @@
 ### 회원관리 페이지(관리자)
 
 <p align="center">  
-<img src="/uploads/b0be9695e3c3f23afffee90cbe1a94d4/회원관리.gif"  >
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/3f61ee41-7377-45a4-9dff-a5c377a1ef22"  >
 
 
 </p>
@@ -56,7 +56,7 @@
 
 ### 기구관리 페이지(관리자)
 <p align="center">
-<img src="/uploads/71753a2d0a52e9518d45083a3ad5a645/기구관리.gif"  >
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/75f1d914-8de8-4e23-b084-95086e053b02"  >
 </p>
 
 ---
@@ -64,7 +64,7 @@
 
 ### 이용현황 페이지(관리자)
 <p align="center">
-<img src="/uploads/b3762506a365de84238924c5477bcfaf/이용현황.gif"  >
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/4117205d-8fc2-4aa8-8445-f5cd60adfa6c"  >
 </p>
 
 ---
@@ -73,7 +73,7 @@
 ### 대기현황 페이지(공통)
 
 <p align="center">
-<img src="/uploads/1fd018afc8239548ac067c3561f26f6a/대기현황.gif">
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/26149a4e-b812-4c6b-b8b3-54c7904733ea">
 
 
 </p>
@@ -84,7 +84,7 @@
 ### 운동기록 조회 페이지(사용자)
 
 <p align="center">
-<img src="/uploads/f4256ce0bfcb5e7429aa1fbee29e2168/운동기록조회.gif">
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/82d28b01-71e4-45d4-96e6-5dba19039e9f">
 
 </p>
 
@@ -94,7 +94,7 @@
 ### 운동기록 월별 통계 페이지(사용자)
 
 <p align="center">
-<img src="/uploads/1c80a275e906974f8749fd60cafcb807/월별통계.gif"/>
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/21694ca6-2a54-469b-a455-7a3171faf0fe"/>
 
 
 </p>
@@ -105,18 +105,18 @@
 ### 기구 검색 페이지(사용자)
 
 <p align="center">
-<img src="/uploads/9d348519c8f94dad8bfdf94ebc0cdb9e/기구검색.gif"/>
+<img src="https://github.com/lg960214/SSAFY_common/assets/46098797/f1a70d92-4306-494c-b4a6-0b8be118982b"/>
 
 
 </p>
 
 ## 태그 로직 Flow Chart
 
-![TagLogic](/uploads/5c6f0d626769d8de9ec199a18f9f36c4/image__7_.png)
+![TagLogic](https://github.com/lg960214/SSAFY_common/assets/46098797/9b03c9d8-af2c-4f8c-8e00-4eb825494749)
 
 ## 🐳 아키텍처
 
-![Architecture](/uploads/4732a2d9321a4e89bd3df3b961a8aefe/image__6_.png)
+![Architecture](https://github.com/lg960214/SSAFY_common/assets/46098797/98071af2-352c-40e2-a49b-ac6b1f84a73a)
 
 ## 🛠️ 기술스택
 
@@ -172,5 +172,5 @@
 
 ## 👨‍💻 팀원 소개
 
-![image](/uploads/9755183f96e3d2f3cabe35caeebcb4ab/캡처22.PNG)
+![image](https://github.com/lg960214/SSAFY_common/assets/46098797/af4cfe5a-3003-458c-97ab-d1052aaf6ef9)
 
